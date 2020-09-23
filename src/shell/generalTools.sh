@@ -47,7 +47,7 @@ function checkInputParam(){
 
 	if [[ ${3} == "" ]]; then
 		# fail 再秀 log.
-		checkInputParam_Title_Log="*** function [checkInputParam_Title_Log] -"
+		checkInputParam_Title_Log="*** function [checkInputParam] -"
 		echo
 		echo "${checkInputParam_Title_Log} Begin ***"
 		echo "${checkInputParam_Title_Log} Input param : Begin ***"
@@ -59,5 +59,42 @@ function checkInputParam(){
 		echo "${checkInputParam_Title_Log} End ***"
 		echo
 		exit 1
+	fi
+}
+
+# ============= This is separation line =============
+# @brief function : 檢查輸入 result code 是否失敗，並作對應處理。
+# @detail 
+#  - 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#  - 檢查輸入 result 是否失敗 (0: 成功，非0: 失敗)，失敗則切換目錄，並直接 return : exit result code.
+#  - 一般為呼叫完某個 command line，判斷其回傳值是否成功，失敗則離開此 shell.
+# @param $1: 要輸出的 title log : e.g. "${sample_Title_Log}"
+# @param $2: 要驗證的 result value: e.g. $? : 非0為失敗.
+# @param $3: 要 dump log".
+# @param $4: 切換回去的的 folder path".
+function checkResultFail_And_ChangeFolder(){
+
+	if [ "${2}" -ne 0 ]; then
+		# fail 再秀 log.
+		checkResultFail_And_ChangeFolder_Title_Log="*** function [checkResultFail_And_ChangeFolder] -"
+		echo
+		echo "${checkResultFail_And_ChangeFolder_Title_Log} Begin ***"
+		echo "${checkResultFail_And_ChangeFolder_Title_Log} Input param : Begin ***"
+		echo "${checkResultFail_And_ChangeFolder_Title_Log} TitleLog: ${1}"
+		echo "${checkResultFail_And_ChangeFolder_Title_Log} Result value: ${2}"
+		echo "${checkResultFail_And_ChangeFolder_Title_Log} Dump Log: ${3}"
+        echo "${checkResultFail_And_ChangeFolder_Title_Log} Change Folder: ${4}"
+		echo "${checkResultFail_And_ChangeFolder_Title_Log} Input param : End ***"
+		echo "${checkResultFail_And_ChangeFolder_Title_Log} End ***"
+
+        # 切回原有執行目錄.
+		echo
+        echo "${checkResultFail_And_ChangeFolder_Title_Log} ${1} ===> change director : ${4} <==="
+        changeToDirectory "${1}" "${4}"
+
+        echo
+		echo "${checkResultFail_And_ChangeFolder_Title_Log} ${1} ===> dump log : ${3} <==="
+        echo "${checkResultFail_And_ChangeFolder_Title_Log} ${1} ===> exit shell : result : ${2} <==="
+		exit ${2}
 	fi
 }
