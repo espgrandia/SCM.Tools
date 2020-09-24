@@ -22,7 +22,9 @@
 # @param $1: 要輸出的 title log : e.g. "${sample_Title_Log}"
 # @param $2: 切換的目的資料夾: e.g. "${sample_Shell_WorkPath}"，$(dirname $0)，etc ...
 function changeToDirectory(){
+
 	changeToDirectory_Title_Log="*** function [changeToDirectory] -"
+
 	echo
 	echo "${changeToDirectory_Title_Log} Begin ***"
 	echo "${changeToDirectory_Title_Log} Input param : Begin ***"
@@ -30,7 +32,9 @@ function changeToDirectory(){
 	echo "${changeToDirectory_Title_Log} ChangeDestFolder: ${2}"
 	echo "${changeToDirectory_Title_Log} Input param : End ***"
 	echo "${changeToDirectory_Title_Log} ${1} current path: `pwd` ***"
+
 	cd ${2}
+
 	echo "${changeToDirectory_Title_Log} ${1} change dir to ${2} ***"
 	echo "${changeToDirectory_Title_Log} ${1} current path: `pwd` ***"
 	echo "${changeToDirectory_Title_Log} End ***"
@@ -46,8 +50,10 @@ function changeToDirectory(){
 function checkInputParam(){
 
 	if [[ ${3} == "" ]]; then
+
 		# fail 再秀 log.
 		checkInputParam_Title_Log="*** function [checkInputParam] -"
+
 		echo
 		echo "${checkInputParam_Title_Log} Begin ***"
 		echo "${checkInputParam_Title_Log} Input param : Begin ***"
@@ -58,6 +64,7 @@ function checkInputParam(){
 		echo "${checkInputParam_Title_Log} ${1} ${2}: ${3} is illegal. Error !!!"
 		echo "${checkInputParam_Title_Log} End ***"
 		echo
+
 		exit 1
 	fi
 }
@@ -75,8 +82,10 @@ function checkInputParam(){
 function checkResultFail_And_ChangeFolder(){
 
 	if [ "${2}" -ne 0 ]; then
+
 		# fail 再秀 log.
 		checkResultFail_And_ChangeFolder_Title_Log="*** function [checkResultFail_And_ChangeFolder] -"
+
 		echo
 		echo "${checkResultFail_And_ChangeFolder_Title_Log} Begin ***"
 		echo "${checkResultFail_And_ChangeFolder_Title_Log} Input param : Begin ***"
@@ -85,7 +94,6 @@ function checkResultFail_And_ChangeFolder(){
 		echo "${checkResultFail_And_ChangeFolder_Title_Log} Dump Log: ${3}"
         echo "${checkResultFail_And_ChangeFolder_Title_Log} Change Folder: ${4}"
 		echo "${checkResultFail_And_ChangeFolder_Title_Log} Input param : End ***"
-		echo "${checkResultFail_And_ChangeFolder_Title_Log} End ***"
 
         # 切回原有執行目錄.
 		echo
@@ -95,6 +103,8 @@ function checkResultFail_And_ChangeFolder(){
         echo
 		echo "${checkResultFail_And_ChangeFolder_Title_Log} ${1} ===> dump log : ${3} <==="
         echo "${checkResultFail_And_ChangeFolder_Title_Log} ${1} ===> exit shell : result : ${2} <==="
+		echo "${checkResultFail_And_ChangeFolder_Title_Log} End ***"
+
 		exit ${2}
 	fi
 }
