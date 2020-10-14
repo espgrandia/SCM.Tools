@@ -13,6 +13,12 @@
 #  changeToDirectory "${sample_Title_Log}" "${sample_Shell_WorkPath}"
 #  ```
 #
+# ---
+#
+# Reference : 
+# - title: bash - How to change the output color of echo in Linux - Stack Overflow
+#   - website : https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+#
 
 # ============= This is separation line =============
 
@@ -52,6 +58,12 @@ function checkInputParam() {
 
 	if [[ ${3} == "" ]]; then
 
+		# for echo color
+		local func_Bold_Black='\033[1;30m'
+		local func_ForegroundColor_Red='\033[0;31m'
+		local func_BackgroundColor_Cyan='\033[46m'
+		local func_Color_Off='\033[0m'
+
 		# fail 再秀 log.
 		local func_Title_Log="*** function [checkInputParam] -"
 
@@ -62,7 +74,7 @@ function checkInputParam() {
 		echo "${func_Title_Log} param name: ${2}"
 		echo "${func_Title_Log} param value: ${3}"
 		echo "${func_Title_Log} Input param : End ***"
-		echo "${func_Title_Log} ${1} ${2}: ${3} is illegal. Error !!!"
+		echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} ${1} ${2}: ${3} is illegal. Error !!!${func_Color_Off}"
 		echo "${func_Title_Log} End ***"
 		echo
 
@@ -85,6 +97,12 @@ function checkResultFail_And_ChangeFolder() {
 
 	if [ "${2}" -ne 0 ]; then
 
+		# for echo color
+		local func_Bold_Black='\033[1;30m'
+		local func_ForegroundColor_Red='\033[0;31m'
+		local func_BackgroundColor_Cyan='\033[46m'
+		local func_Color_Off='\033[0m'
+
 		# fail 再秀 log.
 		local func_Title_Log="*** function [checkResultFail_And_ChangeFolder] -"
 
@@ -104,8 +122,8 @@ function checkResultFail_And_ChangeFolder() {
 		changeToDirectory "${1}" "${4}"
 
 		echo
-		echo "${func_Title_Log} ${1} ===> dump log : ${3} <==="
-		echo "${func_Title_Log} ${1} ===> exit shell : result : ${2} <==="
+		echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} ${1} ===> dump log : ${3} <===${func_Color_Off}"
+		echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} ${1} ===> exit shell : result : ${2} <===${func_Color_Off}"
 		echo
 		echo "${func_Title_Log} End ***"
 
