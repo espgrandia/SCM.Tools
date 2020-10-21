@@ -18,10 +18,8 @@
 # input 參數說明 :
 #   主要是 對應於 flutter pubspec.yaml 中
 #   version:[BuildName]+[BuildNumber] => e.g. version: 1.0.0+10
-# - $1 : exported_Param_BuildName="1.0.0" : 對應於 [BuildName]
-# - $2 : exported_Param_BuildNumber="10"  : 對應於 [BuildNumber]
-# - $3 : exported_Param_OutputFolder="[專案路徑]/[scm]/output" : 輸出資料夾 [需帶完整路徑].
-# - $4 : exported_Param_BuildConfigFile="[專案路徑]/[scm]/output/buildConfig.yaml" : 設定編譯的 config 功能檔案 [需帶完整路徑].
+# - $1 : exported_Param_OutputFolder="[專案路徑]/[scm]/output" : 輸出資料夾 [需帶完整路徑].
+# - $2 : exported_Param_BuildConfigFile="[專案路徑]/[scm]/output/buildConfig.yaml" : 設定編譯的 config 功能檔案 [需帶完整路徑].
 #   - 內容為協議好的格式，只是做成可彈性設定的方式，可選項目，沒有則以基本編譯。
 #
 #   - sample file : buildConfig.yaml
@@ -50,7 +48,19 @@
 # ---
 #
 # build 方式 :
-#  - 通用 :
+#  - 經由讀取 build config file 來處理，細部說明可參考 configTools.sh
+#
+#  - reauired:
+#    - version: [BuildName]+[BuildNumber] => e.g. 1.0.0+10
+#      - android : 
+#        - VersionName : [BuildName] => e.g. 1.0.0
+#        - VersionCode : [BuildNumber]  => e.g. 10
+#
+#      - iOS :
+#        - BundleShortVersion : [BuildName] => e.g. 1.0.0
+#        - BundleVersion : [BuildName].[BuildNumber] => e.g. 1.0.0.10
+#  
+#  - optinonal :
 #    - dart-define
 #      - key 設定於 exported_DartDef_Key_GitHash : gitHash
 #        用途 :git commit ID for short hash
@@ -59,9 +69,7 @@
 #        用途 : 設定於此次編譯的對應環境
 #        對應於 flutter 的使用方式 String.fromEnvironment('envName')
 #
-#  - android :
-#    - VersionName : [BuildName] => e.g. 1.0.0
-#    - VersionCode : [BuildNumber]  => e.g. 10
+#
 #
 # ---
 #
@@ -147,21 +155,15 @@ echo "${preExported_Title_Log} include parse_yaml function"
 
 # ============= This is separation line =============
 # set input param variable
-exported_Param_BuildName=${1}
-exported_Param_BuildNumber=${2}
-exported_Param_OutputFolder=${3}
-exported_Param_BuildConfigFile=${4}
+exported_Param_OutputFolder=${1}
+exported_Param_BuildConfigFile=${2}
 
 # check input parameters
-checkInputParam "${exported_Title_Log}" exported_Param_BuildName "${exported_Param_BuildName}"
-checkInputParam "${exported_Title_Log}" exported_Param_BuildNumber "${exported_Param_BuildNumber}"
 checkInputParam "${exported_Title_Log}" exported_Param_OutputFolder "${exported_Param_OutputFolder}"
 checkInputParam "${exported_Title_Log}" exported_Param_BuildConfigFile "${exported_Param_BuildConfigFile}"
 
 echo
 echo "${exported_Title_Log} ============= Param : Begin ============="
-echo "${exported_Title_Log} exported_Param_BuildName : ${exported_Param_BuildName}"
-echo "${exported_Title_Log} exported_Param_BuildNumber : ${exported_Param_BuildNumber}"
 echo "${exported_Title_Log} exported_Param_OutputFolder : ${exported_Param_OutputFolder}"
 echo "${exported_Title_Log} exported_Param_BuildConfigFile : ${exported_Param_BuildConfigFile}"
 echo "${exported_Title_Log} ============= Param : End ============="
@@ -255,15 +257,7 @@ function parseReruiredSection() {
     echo
 
     # for version
-    # FIXME:名稱先不變，之後要統合成可共用的 exported.sh，到時一起改。
-
-    unset exported_Param_BuildName
-    unset exported_Param_BuildNumber
-
-    echo "${exported_Title_Log} exported_Param_BuildName  : ${exported_Param_BuildName}"
-    echo "${exported_Title_Log} exported_Param_BuildNumber : ${exported_Param_BuildNumber}"
-
-    splitStringToPair "${exported_Title_Log}" "${exported_Config_required_version}" "+" exported_Param_BuildName exported_Param_BuildNumber
+    splitStringToPair "${exported_Title_Log}" "${exported_Config_required_version}" "+" exported_BuildName exported_BuildNumber
 
     local i
     for ((i = 0; i < ${#exported_Config_required_subcommands[@]}; i++)); do #請注意 ((   )) 雙層括號
@@ -303,11 +297,11 @@ function parseReruiredSection() {
     done
 
     # check input parameters
-    checkInputParam "${exported_Title_Log}" exported_Param_BuildName "${exported_Param_BuildName}"
-    checkInputParam "${exported_Title_Log}" exported_Param_BuildNumber "${exported_Param_BuildNumber}"
+    checkInputParam "${exported_Title_Log}" exported_BuildName "${exported_BuildName}"
+    checkInputParam "${exported_Title_Log}" exported_BuildNumber "${exported_BuildNumber}"
 
-    echo "${exported_Title_Log} exported_Param_BuildName  : ${exported_Param_BuildName}"
-    echo "${exported_Title_Log} exported_Param_BuildNumber : ${exported_Param_BuildNumber}"
+    echo "${exported_Title_Log} exported_BuildName  : ${exported_BuildName}"
+    echo "${exported_Title_Log} exported_BuildNumber : ${exported_BuildNumber}"
 
     # dump support sumcommand info
     echo "${exported_Title_Log} exported_SubcommandInfo_aar           : ${exported_SubcommandInfo_aar[@]}"
@@ -386,7 +380,8 @@ function parseDartDefine() {
 # ============= This is separation line =============
 # 判斷 build config file
 # 字串是否不為空。 (a non-empty string)
-# flutter build apk --target-platform android-arm,android-arm64
+# TODO: flutter build apk --target-platform android-arm,android-arm64
+# TODO: 之後可調整成函式，並去除判斷是否存在，Build Config File 會變成必要資訊。
 if [ -n "${exported_Param_BuildConfigFile}" ]; then
 
     echo
@@ -506,8 +501,8 @@ function func_Exported_apk() {
 
     # ===> value 設定 <===
     # for android 參數
-    local func_Android_VersionName="${exported_Param_BuildName}"
-    local func_Android_VersionCode="${exported_Param_BuildNumber}"
+    local func_Android_VersionName="${exported_BuildName}"
+    local func_Android_VersionCode="${exported_BuildNumber}"
 
     echo
     echo "${exported_Title_Log} ============= Value : Begin ============="
@@ -618,8 +613,8 @@ function func_Exported_ios() {
 
     # ===> value 設定 <===
     # for android 參數
-    local func_iOS_BundleShortVersion="${exported_Param_BuildName}"
-    local func_iOS_BundleVersion="${func_iOS_BundleShortVersion}.${exported_Param_BuildNumber}"
+    local func_iOS_BundleShortVersion="${exported_BuildName}"
+    local func_iOS_BundleVersion="${func_iOS_BundleShortVersion}.${exported_BuildNumber}"
 
     echo
     echo "${exported_Title_Log} ============= Value : Begin ============="
