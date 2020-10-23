@@ -70,29 +70,29 @@ function configTools_Gen_Required {
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
 
     # for [required]:
-    echo "# ${func_Required} section" >> ${func_Param_FilePath}    
-    echo "${func_Required} :" >> ${func_Param_FilePath}
+    echo "# ${func_Required} section" >> "${func_Param_FilePath}"
+    echo "${func_Required} :" >> "${func_Param_FilePath}"
 
     # for [required] [version]:
-    echo "" >> ${func_Param_FilePath}
-    echo "  # [${func_Required_Key_Version}] : 版本資訊 : 一般對應於 flutter pubspec.yaml 中的 version" >> ${func_Param_FilePath}
-    echo "  ${func_Required_Key_Version} : ${func_Param_Version}" >> ${func_Param_FilePath}
+    echo "" >> "${func_Param_FilePath}"
+    echo "  # [${func_Required_Key_Version}] : 版本資訊 : 一般對應於 flutter pubspec.yaml 中的 version" >> "${func_Param_FilePath}"
+    echo "  ${func_Required_Key_Version} : ${func_Param_Version}" >> "${func_Param_FilePath}"
 
     # for [required] [work_path]:
-    echo "" >> ${func_Param_FilePath}
-    echo "  # [${func_Required_Key_WorkPath}] : flutter 專案目錄的路徑 : 一般與 flutter pubspec.yaml 同一個資料夾路徑" >> ${func_Param_FilePath}
-    echo "  ${func_Required_Key_WorkPath} : ${func_Param_WorkPath}" >> ${func_Param_FilePath}
+    echo "" >> "${func_Param_FilePath}"
+    echo "  # [${func_Required_Key_WorkPath}] : flutter 專案目錄的路徑 : 一般與 flutter pubspec.yaml 同一個資料夾路徑" >> "${func_Param_FilePath}"
+    echo "  ${func_Required_Key_WorkPath} : ${func_Param_WorkPath}" >> "${func_Param_FilePath}"
 
     # for [required] [subcommands]:
-    echo "" >> ${func_Param_FilePath}
-    echo "  # [${func_Required_Key_Subcommands}] : build sumcommand (like as : apk, ios, ...)" >> ${func_Param_FilePath}
-    echo "  ${func_Required_Key_Subcommands} :" >> ${func_Param_FilePath}
+    echo "" >> "${func_Param_FilePath}"
+    echo "  # [${func_Required_Key_Subcommands}] : build sumcommand (like as : apk, ios, ...)" >> "${func_Param_FilePath}"
+    echo "  ${func_Required_Key_Subcommands} :" >> "${func_Param_FilePath}"
 
     local func_i
     for ((func_i = 0; func_i < ${#func_Param_Subcommands[@]}; func_i++)); do    #請注意 ((   )) 雙層括號
 
         local aSubcommand=${func_Param_Subcommands[${func_i}]}
-        echo "    - ${aSubcommand}" >> ${func_Param_FilePath}
+        echo "    - ${aSubcommand}" >> "${func_Param_FilePath}"
 
     done
 
@@ -138,19 +138,19 @@ function configTools_Gen_Optional_Dart_Define {
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
 
     # for dart-define
-    echo "" >> ${func_Param_FilePath}
-    echo "# ${func_Optional} sction" >> ${func_Param_FilePath}
-    echo "${func_Optional} :" >> ${func_Param_FilePath}
-    echo "  # [${func_Optional_Key_DartDef}] : dart-define 會用到的內容，為 list 型態，{key}{separator}{value}" >> ${func_Param_FilePath}
-    echo "  ${func_Optional_Key_DartDef} :" >> ${func_Param_FilePath}
-    echo "    ${func_Optional_Key_DartDef_Key_Separator} : ${func_Param_Separator}" >> ${func_Param_FilePath}
-    echo "    ${func_Optional_Key_DartDef_Key_Defines} :" >> ${func_Param_FilePath} >> ${func_Param_FilePath}
+    echo "" >> "${func_Param_FilePath}"
+    echo "# ${func_Optional} sction" >> "${func_Param_FilePath}"
+    echo "${func_Optional} :" >> "${func_Param_FilePath}"
+    echo "  # [${func_Optional_Key_DartDef}] : dart-define 會用到的內容，為 list 型態，{key}{separator}{value}" >> "${func_Param_FilePath}"
+    echo "  ${func_Optional_Key_DartDef} :" >> "${func_Param_FilePath}"
+    echo "    ${func_Optional_Key_DartDef_Key_Separator} : ${func_Param_Separator}" >> "${func_Param_FilePath}"
+    echo "    ${func_Optional_Key_DartDef_Key_Defines} :" >> "${func_Param_FilePath}"
 
     local func_i
     for ((func_i = 0; func_i < ${#func_Param_Defines[@]}; func_i++)); do    #請注意 ((   )) 雙層括號
 
         local aDefine=${func_Param_Defines[${func_i}]}
-        echo "      - ${aDefine}" >> ${func_Param_FilePath}
+        echo "      - ${aDefine}" >> "${func_Param_FilePath}"
 
     done
 
@@ -187,11 +187,14 @@ function configTools_Gen_Optional_Flavor {
 
     # for flavor
     func_Optional_Key_Flavor=flavor
-    echo "" >> ${func_Param_FilePath}
-    echo "# ${func_Optional} sction" >> ${func_Param_FilePath}
-    echo "${func_Optional} :" >> ${func_Param_FilePath}
-    echo "  # [${func_Optional_Key_Flavor}] : flavor 會用到的內容，對應於 flutter build 的 flavor 參數" >> ${func_Param_FilePath}
-    echo "  ${func_Optional_Key_Flavor} : ${func_Param_Flavor}" >> ${func_Param_FilePath}
+    echo "" >> "${func_Param_FilePath}"
+    echo "# ${func_Optional} sction" >> "${func_Param_FilePath}"
+    echo "${func_Optional} :" >> "${func_Param_FilePath}"
+    echo "  # [${func_Optional_Key_Flavor}] : flavor 會用到的內容，對應於 flutter build 的 flavor 參數" >> "${func_Param_FilePath}"
+    echo "  ${func_Optional_Key_Flavor} : ${func_Param_Flavor}" >> "${func_Param_FilePath}"
+
+    echo "${func_Title_Log} End ***"
+    echo
 }
 
 # TODO:
