@@ -18,8 +18,7 @@
 # input 參數說明 :
 #   主要是 對應於 flutter pubspec.yaml 中
 #   version:[BuildName]+[BuildNumber] => e.g. version: 1.0.0+10
-# - $1 : exported_Param_OutputFolder="[專案路徑]/[scm]/output" : 輸出資料夾 [需帶完整路徑].
-# - $2 : exported_Param_BuildConfigFile="[專案路徑]/[scm]/output/buildConfig.yaml" : 設定編譯的 config 功能檔案 [需帶完整路徑].
+# - $1 : exported_Param_BuildConfigFile="[專案路徑]/[scm]/output/buildConfig.yaml" : 設定編譯的 config 功能檔案 [需帶完整路徑].
 #   - 內容為協議好的格式，只是做成可彈性設定的方式，可選項目，沒有則以基本編譯。
 #
 #   - sample file : buildConfig.yaml
@@ -68,8 +67,6 @@
 #      - key : 設定於 exported_DartDef_Key_EnvName : envName
 #        用途 : 設定於此次編譯的對應環境
 #        對應於 flutter 的使用方式 String.fromEnvironment('envName')
-#
-#
 #
 # ---
 #
@@ -155,16 +152,13 @@ echo "${preExported_Title_Log} include parse_yaml function"
 
 # ============= This is separation line =============
 # set input param variable
-exported_Param_OutputFolder=${1}
-exported_Param_BuildConfigFile=${2}
+exported_Param_BuildConfigFile=${1}
 
 # check input parameters
-checkInputParam "${exported_Title_Log}" exported_Param_OutputFolder "${exported_Param_OutputFolder}"
 checkInputParam "${exported_Title_Log}" exported_Param_BuildConfigFile "${exported_Param_BuildConfigFile}"
 
 echo
 echo "${exported_Title_Log} ============= Param : Begin ============="
-echo "${exported_Title_Log} exported_Param_OutputFolder : ${exported_Param_OutputFolder}"
 echo "${exported_Title_Log} exported_Param_BuildConfigFile : ${exported_Param_BuildConfigFile}"
 echo "${exported_Title_Log} ============= Param : End ============="
 echo
@@ -245,13 +239,15 @@ function parseReruiredSection() {
 
     # check input parameters
     checkInputParam "${exported_Title_Log}" exported_Config_required_version "${exported_Config_required_version}"
-    checkInputParam "${exported_Title_Log}" exported_Config_required_work_path "${exported_Config_required_work_path}"
+    checkInputParam "${exported_Title_Log}" exported_Config_required_paths_work "${exported_Config_required_paths_work}"
+    checkInputParam "${exported_Title_Log}" exported_Config_required_paths_output "${exported_Config_required_paths_output}"
     checkInputParam "${exported_Title_Log}" exported_Config_required_subcommands "${exported_Config_required_subcommands[@]}"
 
     echo
     echo "${exported_Title_Log} ============= Param : Begin ============="
     echo "${exported_Title_Log} exported_Config_required_version : ${exported_Config_required_version}"
-    echo "${exported_Title_Log} exported_Config_required_work_path : ${exported_Config_required_work_path}"
+    echo "${exported_Title_Log} exported_Config_required_paths_work : ${exported_Config_required_paths_work}"
+    echo "${exported_Title_Log} exported_Config_required_paths_output : ${exported_Config_required_paths_output}"
     echo "${exported_Title_Log} exported_Config_required_subcommands : ${exported_Config_required_subcommands[@]}"
     echo "${exported_Title_Log} ============= Param : End ============="
     echo
@@ -281,18 +277,6 @@ function parseReruiredSection() {
 
         # 判斷是否為 ios_framework
         dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_ios_framework[0]}" exported_SubcommandInfo_ios_framework[1]
-
-        # # dump support sumcommand info
-        # echo
-        # echo "${exported_Title_Log} ${aSubcommand} : dump Begin ==="
-        # echo "${exported_Title_Log} ${aSubcommand} : exported_SubcommandInfo_aar           : ${exported_SubcommandInfo_aar[@]}"
-        # echo "${exported_Title_Log} ${aSubcommand} : exported_SubcommandInfo_apk           : ${exported_SubcommandInfo_apk[@]}"
-        # echo "${exported_Title_Log} ${aSubcommand} : exported_SubcommandInfo_appbundle     : ${exported_SubcommandInfo_appbundle[@]}"
-        # echo "${exported_Title_Log} ${aSubcommand} : exported_SubcommandInfo_bundle        : ${exported_SubcommandInfo_bundle[@]}"
-        # echo "${exported_Title_Log} ${aSubcommand} : exported_SubcommandInfo_ios           : ${exported_SubcommandInfo_ios[@]}"
-        # echo "${exported_Title_Log} ${aSubcommand} : exported_SubcommandInfo_ios_framework : ${exported_SubcommandInfo_ios_framework[@]}"
-        # echo "${exported_Title_Log} ${aSubcommand} : dump End ==="
-        # echo
 
     done
 
@@ -417,17 +401,17 @@ fi
 
 # ============= This is separation line =============
 # 切換到 config file 設定的 flutter project work path: 為 flutter 專案的工作目錄 shell 目錄 (之後會切回到原有呼叫的目錄)
-changeToDirectory "${exported_Title_Log}" "${exported_Config_required_work_path}"
+changeToDirectory "${exported_Title_Log}" "${exported_Config_required_paths_work}"
 exported_Flutter_WorkPath=$(pwd)
 
 echo
 echo "${exported_Title_Log} //========== dump paths : Begin ==========//"
-echo "${exported_Title_Log} exported_OldPath                    : ${exported_OldPath}"
-echo "${exported_Title_Log} exported_Shell_WorkPath             : ${exported_Shell_WorkPath}"
-echo "${exported_Title_Log} exported_Config_required_work_path  : ${exported_Config_required_work_path}"
-echo "${exported_Title_Log} exported_Flutter_WorkPath           : ${exported_Flutter_WorkPath}"
-echo "${exported_Title_Log} exported_Param_OutputFolder         : ${exported_Param_OutputFolder}"
-echo "${exported_Title_Log} current path                        : $(pwd)"
+echo "${exported_Title_Log} exported_OldPath                      : ${exported_OldPath}"
+echo "${exported_Title_Log} exported_Shell_WorkPath               : ${exported_Shell_WorkPath}"
+echo "${exported_Title_Log} exported_Config_required_paths_work   : ${exported_Config_required_paths_work}"
+echo "${exported_Title_Log} exported_Flutter_WorkPath             : ${exported_Flutter_WorkPath}"
+echo "${exported_Title_Log} exported_Config_required_paths_output : ${exported_Config_required_paths_output}"
+echo "${exported_Title_Log} current path                          : $(pwd)"
 echo "${exported_Title_Log} //========== dump paths : End ==========//"
 
 # ============= This is separation line =============
@@ -542,7 +526,7 @@ function func_Exported_apk() {
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").apk"
 
-    cp -r build/app/outputs/apk/${exported_ToogleFeature_BuildConfigType}/app-${exported_ToogleFeature_BuildConfigType}.apk ${exported_Param_OutputFolder}/${func_Build_FileName}
+    cp -r build/app/outputs/apk/${exported_ToogleFeature_BuildConfigType}/app-${exported_ToogleFeature_BuildConfigType}.apk "${exported_Config_required_paths_output}"/${func_Build_FileName}
 
     # check result - copy apk
     checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
@@ -644,12 +628,12 @@ function func_Exported_ios() {
     if [ -d build/ios/iphoneos/Runner.app ]; then
 
         # 切換到 輸出目錄，再打包才不會包到不該包的資料夾。
-        changeToDirectory "${exported_Title_Log}" "${exported_Param_OutputFolder}"
+        changeToDirectory "${exported_Title_Log}" "${exported_Config_required_paths_output}"
 
         # 打包 ipa 的固定資料夾名稱。
         mkdir Payload
 
-        cp -r ${exported_Flutter_WorkPath}/build/ios/iphoneos/Runner.app ${exported_Param_OutputFolder}/Payload
+        cp -r "${exported_Flutter_WorkPath}"/build/ios/iphoneos/Runner.app "${exported_Config_required_paths_output}"/Payload
 
         # check result - copy iOS Payload
         checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${exported_OldPath}"

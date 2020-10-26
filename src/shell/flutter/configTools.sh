@@ -29,9 +29,10 @@
 # @brief function : configTools_Gen_Required.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 # @param ${1} : file path : 要輸出的檔案位置 (含檔名)
-# @param ${2} : version : 對應 pubspec.yaml 的版本號碼。=> e.g. 1.0.0+0
-# @param ${3} : flutter project work path : 指的是 flutter 專案目錄的路徑。
-# @param ${!4} : subcommands : 對應 flutter subcommands : (aar apk appbundle bundle ios ios-framework)
+# @param ${2} : flutter project work path : 指的是 flutter 專案目錄的路徑。
+# @param ${3} : output path : 指的是 輸出的資料夾路徑。
+# @param ${4} : version : 對應 pubspec.yaml 的版本號碼。=> e.g. 1.0.0+0
+# @param ${!5} : subcommands : 對應 flutter subcommands : (aar apk appbundle bundle ios ios-framework)
 #   => e.g. sample_Subcommands=(apk ios)
 #
 # sample e.g. configTools_Gen_Required "${sample_FilePath}" "${sample_Pubspec_version}" "${sample_WorkPath}" sample_Subcommands[@]
@@ -43,19 +44,26 @@ function configTools_Gen_Required {
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
 	echo "${func_Title_Log} file path : "${1}""
-	echo "${func_Title_Log} version : "${2}""
-    echo "${func_Title_Log} project work path : "${3}""
-    echo "${func_Title_Log} subcommands : ("${!4}")"
+	echo "${func_Title_Log} project work path : "${2}""
+    echo "${func_Title_Log} output path : "${3}""
+    echo "${func_Title_Log} version : "${4}""
+    echo "${func_Title_Log} subcommands : ("${!5}")"
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient
     local func_Param_FilePath="${1}"
-    local func_Param_Version="${2}"
-    local func_Param_WorkPath="${3}"
-    local func_Param_Subcommands=("${!4}")
+    local func_Param_WorkPath="${2}"
+    local func_Param_OutputPath="${3}"
+    local func_Param_Version="${4}"
+    local func_Param_Subcommands=("${!5}")
 
     # for base key，最上層的 key
     local func_Required="required"
+
+    # [required] [paths] : 有關路徑的設定。
+    local func_Required_Key_Paths="paths"
+    local func_Required_Key_Paths_Work="work"
+    local func_Required_Key_Paths_Output="output"
 
     # for required
     # [required] [version]: 版本資訊 : 一般對應於 flutter pubspec.yaml 中的 version。
@@ -64,26 +72,32 @@ function configTools_Gen_Required {
     # [required] [subcommands]: 編譯不同的版本 : build sumcommand (like as : apk, ios, ...)。
     local func_Required_Key_Subcommands="subcommands"
 
-    # [required] [version]: 版本資訊 : 一般對應於 flutter pubspec.yaml 中的 version。
-    local func_Required_Key_WorkPath="work_path"
-
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
 
     # for [required]:
     echo "# ${func_Required} section" >> "${func_Param_FilePath}"
     echo "${func_Required} :" >> "${func_Param_FilePath}"
 
-    # for [required] [version]:
+    ## for [required] [paths]:
+    echo "" >> "${func_Param_FilePath}"
+    echo "  # [${func_Required_Key_Paths}] : 有關路徑的設定" >> "${func_Param_FilePath}"
+    echo "  ${func_Required_Key_Paths} :" >> "${func_Param_FilePath}"
+
+    ### for [required] [paths] [work]:
+    echo "    # [${func_Required_Key_Paths_Work}] : flutter 專案目錄的路徑 : 一般與 flutter pubspec.yaml 同一個資料夾路徑" >> "${func_Param_FilePath}"
+    echo "    ${func_Required_Key_Paths_Work} : "${func_Param_WorkPath}"" >> "${func_Param_FilePath}"
+
+    ### for [required] [paths] [output]:
+    echo "" >> "${func_Param_FilePath}"
+    echo "    # [${func_Required_Key_Paths_Output}] : 輸出資料夾 [需帶完整路徑] : apk，ipa 等輸出的資料夾位置 => e.g. [專案路徑]/[scm]/output" >> "${func_Param_FilePath}"
+    echo "    ${func_Required_Key_Paths_Output} : "${func_Param_OutputPath}"" >> "${func_Param_FilePath}"
+
+    ## for [required] [version]:
     echo "" >> "${func_Param_FilePath}"
     echo "  # [${func_Required_Key_Version}] : 版本資訊 : 一般對應於 flutter pubspec.yaml 中的 version" >> "${func_Param_FilePath}"
     echo "  ${func_Required_Key_Version} : ${func_Param_Version}" >> "${func_Param_FilePath}"
 
-    # for [required] [work_path]:
-    echo "" >> "${func_Param_FilePath}"
-    echo "  # [${func_Required_Key_WorkPath}] : flutter 專案目錄的路徑 : 一般與 flutter pubspec.yaml 同一個資料夾路徑" >> "${func_Param_FilePath}"
-    echo "  ${func_Required_Key_WorkPath} : ${func_Param_WorkPath}" >> "${func_Param_FilePath}"
-
-    # for [required] [subcommands]:
+    ## for [required] [subcommands]:
     echo "" >> "${func_Param_FilePath}"
     echo "  # [${func_Required_Key_Subcommands}] : build sumcommand (like as : apk, ios, ...)" >> "${func_Param_FilePath}"
     echo "  ${func_Required_Key_Subcommands} :" >> "${func_Param_FilePath}"
