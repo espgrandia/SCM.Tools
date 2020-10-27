@@ -34,13 +34,13 @@ function changeToDirectory() {
 	echo "${func_Title_Log} Begin ***"
 	echo "${func_Title_Log} Input param : Begin ***"
 	echo "${func_Title_Log} TitleLog: ${1}"
-	echo "${func_Title_Log} ChangeDestFolder: ${2}"
+	echo "${func_Title_Log} ChangeDestFolder: "${2}""
 	echo "${func_Title_Log} Input param : End ***"
 	echo "${func_Title_Log} ${1} current path: $(pwd) ***"
 
-	cd ${2}
+	cd "${2}"
 
-	echo "${func_Title_Log} ${1} change dir to ${2} ***"
+	echo "${func_Title_Log} ${1} change dir to "${2}" ***"
 	echo "${func_Title_Log} ${1} current path: $(pwd) ***"
 	echo "${func_Title_Log} End ***"
 	echo
