@@ -21,7 +21,78 @@
 #
 
 # ============= This is separation line =============
+# @brief function : 取得 git short hash .
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
+#   - 設定 git short hash 到輸入的參數 ${2}。
+# @param ${1}: 要輸出的 title log : e.g. "${exported_Title_Log}" .
+# @param ${2}: 要設定 git hash 的參數: e.g. sample_Shell_GitHash_Short .
+function getGitShortHash() {
 
+    local func_Title_Log="*** function [getGitShortHash] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} TitleLog : ${1}"
+    echo "${func_Title_Log} input param name for setting git hash : ${2}"
+    echo "${func_Title_Log} Input param : End ***"
+
+    # Git Hash version
+    # 使用 git show 的方式取得 shor commit ID (為 7 位數)。
+    eval ${2}=$(git show -s --format=%h)
+
+    echo
+    echo "${func_Title_Log} "${1}" ============= git hash - Begin ============="
+    echo "${func_Title_Log} "${1}" ${2} : $(eval echo \$${2})"
+    echo "${func_Title_Log} "${1}" ============= git hash - End ============="
+    echo
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+
+# ============= This is separation line =============
+# @brief function : 刪除並重新建立資料夾.
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
+#   - 刪除只會刪除 folder path 此層資料夾的所有資料
+#   - folder path (${2}) 階層中沒有的資料夾會全部建立。
+# @param ${1}: 要輸出的 title log : e.g. "${exported_Title_Log}" .
+# @param ${2}: 要處理的目標資料夾(含路徑) : e.g. "${sample_Shell_DestFolder}" .
+function remvoe_And_Makedir() {
+
+    local func_Title_Log="*** function [remvoe_And_Makedir] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} TitleLog : "${1}""
+    echo "${func_Title_Log} Dest Folder path : "${2}""
+    echo "${func_Title_Log} Input param : End ***"
+
+    echo
+    echo "${func_Title_Log} "${1}" ============= rm & mkdir folder - Begin ============="
+
+    # 設定輸出資料夾
+    func_DestFolder="${2}"
+
+    # 刪除輸出資料夾.
+    echo "${func_Title_Log} "${1}" rm -rf "${func_DestFolder}""
+    rm -rf "${func_DestFolder}"
+
+    # 建立輸出目錄
+    echo "${func_Title_Log} "${1}" mkdir -p "${func_DestFolder}""
+    mkdir -p "${func_DestFolder}"
+
+    echo "${func_Title_Log} "${1}" ============= rm & mkdir folder - End ============="
+    echo
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+
+# ============= This is separation line =============
 # @brief function : change to directory .
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 # @param $1: 要輸出的 title log : e.g. "${sample_Title_Log}" .
@@ -47,7 +118,6 @@ function changeToDirectory() {
 }
 
 # ============= This is separation line =============
-
 # @brief function : check input param is illegal.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #   - 判斷輸入參數的合法性，失敗會直接 return.
@@ -83,7 +153,6 @@ function checkInputParam() {
 }
 
 # ============= This is separation line =============
-
 # @brief function : 檢查輸入 result code 是否失敗，並作對應處理。
 # @detail
 #   - 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
@@ -132,7 +201,6 @@ function checkResultFail_And_ChangeFolder() {
 }
 
 # ============= This is separation line =============
-
 # @brief function : split string to a pair .
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #   - 依據輸入的字串，分隔符號，以及要寫入的參入名稱。
