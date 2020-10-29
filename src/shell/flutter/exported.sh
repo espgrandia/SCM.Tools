@@ -699,31 +699,23 @@ function func_Exported_ios_framework() {
 # ============= This is separation line =============
 # 確認是否要執行 exported subcommand 函式 區塊。
 
-# @Param $1: subcommandInfo 中， name 對應的 isExcute => e.g. ${exported_SubcommandInfo_apk[1]}
-# @Param $2: subcommand name 對應的 exported function => e.g. func_Exported_apk
-function checkAndExcute_ExportedSubcommandFunc() {
-    if [ ${1} = "Y" ]; then
-        ${2}
-    fi
-}
-
 # 判斷是否要出版 aar
-checkAndExcute_ExportedSubcommandFunc ${exported_SubcommandInfo_aar[1]} func_Exported_aar
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_aar[1]} func_Exported_aar
 
 # 判斷是否要出版 apk
-checkAndExcute_ExportedSubcommandFunc ${exported_SubcommandInfo_apk[1]} func_Exported_apk
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_apk[1]} func_Exported_apk
 
 # 判斷是否要出版 appbundle
-checkAndExcute_ExportedSubcommandFunc ${exported_SubcommandInfo_appbundle[1]} func_Exported_appbundle
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_appbundle[1]} func_Exported_appbundle
 
 # 判斷是否要出版 bundle
-checkAndExcute_ExportedSubcommandFunc ${exported_SubcommandInfo_bundle[1]} func_Exported_bundle
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_bundle[1]} func_Exported_bundle
 
 # 判斷是否要出版 ios
-checkAndExcute_ExportedSubcommandFunc ${exported_SubcommandInfo_ios[1]} func_Exported_ios
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios[1]} func_Exported_ios
 
 # 判斷是否要出版 ios_framework
-checkAndExcute_ExportedSubcommandFunc ${exported_SubcommandInfo_ios_framework[1]} func_Exported_ios_framework
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios_framework[1]} func_Exported_ios_framework
 
 # ============= This is separation line =============
 # 全部完成

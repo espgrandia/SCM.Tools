@@ -236,3 +236,84 @@ function splitStringToPair() {
     echo "${func_Title_Log} End ***"
     echo
 }
+
+# ============= This is separation line =============
+# @brief function : 確認成功，則執行 command.
+# @details : 要執行 command 前會判斷是否要帶入其對應參數 (commandParams)
+# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. ${sample_IsExcute}
+# @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. sample_Command
+# @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
+#   - 為 option，有才會帶入到 command 後面。
+#   - array : 第 0 個為 command line， 
+#   - array : 第 1 個 (含 1) 後面為依序要輸入的參數
+#
+# ---
+#
+# @sample
+#  - e.g.1.
+#     sample_CommandParams=("help" "build" "apk")
+#     check_OK_Then_Excute_Command "${sample_Title_Log}" "${sample_ToggleFeature_Is_Excute}" "flutter" sample_CommandParams[@]
+#  - e.g.2.
+#     sample_CommandParams=("${sample_OutputFolder}")
+#     check_OK_Then_Excute_Command "${sample_Title_Log}" "${sample_ToggleFeature_Is_Excute}" "open" sample_CommandParams[@]
+#
+# ---
+#
+# @reference : 
+#   - title: shell script - How to add/remove an element to/from the array in bash? - Unix & Linux Stack Exchange
+#     - website: https://unix.stackexchange.com/questions/328882/how-to-add-remove-an-element-to-from-the-array-in-bash
+#   - title : Bash if..else Statement | Linuxize
+#     - website: https://linuxize.com/post/bash-if-else-statement/
+#
+# @附註
+#  原先想採用只輸入一個 array，的方式，然後用 arry2=(arr1[@]:1) 的方式來設定，
+#  不過若某個 value 是有含空白，在 array copy 時會被視為不同的內容，也就是數量會長大。
+#  導致要用別的方式處理，後來改成直接輸入兩個參數 (command , command prarms) 來判斷比較簡單。
+#  
+function check_OK_Then_Excute_Command() {
+
+    # 驗證成功再處理後續。
+    if [ ${2} = "Y" ]; then
+
+        local func_Title_Log="*** function [check_OK_Then_Excute_Command] -"
+
+        echo
+        echo "${func_Title_Log} Begin ***"
+        echo "${func_Title_Log} Input param : Begin ***"
+        echo "${func_Title_Log} TitleLog : "${1}""
+        echo "${func_Title_Log} command : "${3}""
+        echo "${func_Title_Log} command params : "${!4}""
+        echo "${func_Title_Log} Input param : End ***"
+
+        echo
+        echo "${func_Title_Log} "${1}" ============= excute command - Begin ============="
+
+        # for local varient
+        local func_Command=("${3}")
+        local func_CommandParams=("${!4}")
+
+        # 若有 func_CommandParams
+        if [ -n "${func_CommandParams}" ]; then
+
+            echo "${func_Title_Log} "${1}" func_CommandParams : ${func_CommandParams[@]}"
+            echo "${func_Title_Log} "${1}" func_CommandParams count : ${#func_CommandParams[@]}"
+            echo "${func_Title_Log} "${1}" will excute command : "${func_Command}" "${func_CommandParams[@]}""
+
+            ${func_Command} "${func_CommandParams[@]}"
+
+        else
+
+            echo "${func_Title_Log} "${1}" will excute command : "${func_Command}""
+
+            ${func_Command}
+
+        fi
+
+        echo "${func_Title_Log} "${1}" ============= excute command - End ============="
+        echo
+
+        echo "${func_Title_Log} End ***"
+        echo
+    fi
+}
