@@ -51,14 +51,14 @@
 #
 #  - reauired:
 #    - version: [BuildName]+[BuildNumber] => e.g. 1.0.0+10
-#      - android : 
+#      - android :
 #        - VersionName : [BuildName] => e.g. 1.0.0
 #        - VersionCode : [BuildNumber]  => e.g. 10
 #
 #      - iOS :
 #        - BundleShortVersion : [BuildName] => e.g. 1.0.0
 #        - BundleVersion : [BuildName].[BuildNumber] => e.g. 1.0.0.10
-#  
+#
 #  - optinonal :
 #    - dart-define
 #      - key 設定於 exported_DartDef_Key_GitHash : gitHash
@@ -429,9 +429,9 @@ rm -rf build
 ## ================================== NotyetSupportSubcommand : Begin ==================================
 # @brief 尚未支援的 subcommand 的通用函式
 # @param $1 : command name
-function func_Exported_NotyetSupportSubcommand() {
+function export_NotyetSupportSubcommand() {
 
-    local func_Title_Log="*** function [func_Exported_NotyetSupportSubcommand] -"
+    local func_Title_Log="*** function [export_NotyetSupportSubcommand] -"
 
     # for echo color
     local func_Bold_Black='\033[1;30m'
@@ -444,15 +444,15 @@ function func_Exported_NotyetSupportSubcommand() {
 
     echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} OPPS!! Notyet support this subcommand ( "${func_Subcommand}" ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( "${func_Subcommand}" ).\n    Error !!! ***${func_Color_Off}"
 
-    # checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ OPPS!! Not yet support this subcommand:  "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
+    # checkResultFail_And_ChangeFolder "${exported_Title_Log}" "10" "!!! ~ OPPS!! Not yet support this subcommand:  "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
 }
 ## ================================== NotyetSupportSubcommand : End ==================================
 
 ## ================================== aar : Begin ==================================
 # @brief exported aar 部分
-function func_Exported_aar() {
+function export_aar() {
 
-    local func_Title_Log="*** function [func_Exported_aar] -"
+    local func_Title_Log="*** function [export_aar] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -461,7 +461,7 @@ function func_Exported_aar() {
     echo
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
 
-    func_Exported_NotyetSupportSubcommand ${func_Subcommand}
+    export_NotyetSupportSubcommand ${func_Subcommand}
 
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
@@ -470,7 +470,7 @@ function func_Exported_aar() {
 
 ## ================================== apk : Begin ==================================
 # @brief exported apk 部分
-function func_Exported_apk() {
+function export_apk() {
 
     # You are building a fat APK that includes binaries for android-arm,android-arm64, android-x64.
     # 之後要瘦身
@@ -543,9 +543,9 @@ function func_Exported_apk() {
 
 ## ================================== appbundle : Begin ==================================
 # @brief exported appbundle 部分
-function func_Exported_appbundle() {
+function export_appbundle() {
 
-    local func_Title_Log="*** function [func_Exported_appbundle] -"
+    local func_Title_Log="*** function [export_appbundle] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -554,7 +554,7 @@ function func_Exported_appbundle() {
     echo
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
 
-    func_Exported_NotyetSupportSubcommand ${func_Subcommand}
+    export_NotyetSupportSubcommand ${func_Subcommand}
 
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
@@ -563,9 +563,9 @@ function func_Exported_appbundle() {
 
 ## ================================== bundle : Begin ==================================
 # @brief exported bundle 部分
-function func_Exported_bundle() {
+function export_bundle() {
 
-    local func_Title_Log="*** function [func_Exported_bundle] -"
+    local func_Title_Log="*** function [export_bundle] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -574,7 +574,7 @@ function func_Exported_bundle() {
     echo
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
 
-    func_Exported_NotyetSupportSubcommand ${func_Subcommand}
+    export_NotyetSupportSubcommand ${func_Subcommand}
 
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
@@ -583,9 +583,9 @@ function func_Exported_bundle() {
 
 ## ================================== ios : Begin ==================================
 # @brief ios 部分
-function func_Exported_ios() {
+function export_ios() {
 
-    local func_Title_Log="*** function [func_Exported_ios] -"
+    local func_Title_Log="*** function [export_ios] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -678,9 +678,9 @@ function func_Exported_ios() {
 
 ##================================== ios_framework : Begin ==================================
 # @brief exported ios_framework 部分
-function func_Exported_ios_framework() {
+function export_ios_framework() {
 
-    local func_Title_Log="*** function [func_Exported_ios_framework] -"
+    local func_Title_Log="*** function [export_ios_framework] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -689,7 +689,7 @@ function func_Exported_ios_framework() {
     echo
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
 
-    func_Exported_NotyetSupportSubcommand ${func_Subcommand}
+    export_NotyetSupportSubcommand ${func_Subcommand}
 
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
@@ -700,22 +700,22 @@ function func_Exported_ios_framework() {
 # 確認是否要執行 exported subcommand 函式 區塊。
 
 # 判斷是否要出版 aar
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_aar[1]} func_Exported_aar
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_aar[1]} export_aar
 
 # 判斷是否要出版 apk
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_apk[1]} func_Exported_apk
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_apk[1]} export_apk
 
 # 判斷是否要出版 appbundle
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_appbundle[1]} func_Exported_appbundle
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_appbundle[1]} export_appbundle
 
 # 判斷是否要出版 bundle
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_bundle[1]} func_Exported_bundle
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_bundle[1]} export_bundle
 
 # 判斷是否要出版 ios
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios[1]} func_Exported_ios
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios[1]} export_ios
 
 # 判斷是否要出版 ios_framework
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios_framework[1]} func_Exported_ios_framework
+check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios_framework[1]} export_ios_framework
 
 # ============= This is separation line =============
 # 全部完成
