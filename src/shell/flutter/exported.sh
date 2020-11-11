@@ -80,75 +80,63 @@
 #  - flutter 的編譯組態是否要開放?
 #
 
+## ================================== prcess function section : Begin ==================================
 # ============= This is separation line =============
-## 計時，實測結果不同 shell 不會影響，各自有各自的 SECONDS。
-SECONDS=0
+# @brief function : [程序] 此 shell 的初始化。
+function process_Init() {
 
-# ============= This is separation line =============
-# @brief function : change to directory .
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
-# @param $1: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @param $2: 切換的目的資料夾: e.g. "${sample_Shell_WorkPath}"，$(dirname $0)，etc ...
-function changeToDirectory() {
+    # 計時，實測結果不同 shell 不會影響，各自有各自的 SECONDS。
+    SECONDS=0
 
-    local func_Title_Log="*** function [changeToDirectory] -"
+    # 此 shell 的 dump log title.
+    exported_Title_Log="[exported] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} TitleLog: ${1}"
-    echo "${func_Title_Log} ChangeDestFolder: ${2}"
-    echo "${func_Title_Log} Input param : End ***"
-    echo "${func_Title_Log} ${1} current path: $(pwd) ***"
+    echo "${exported_Title_Log} ||==========> exported : Begin <==========||"
 
-    cd ${2}
+    # 取得相對目錄.
+    local func_Shell_WorkPath=$(dirname $0)
 
-    echo "${func_Title_Log} ${1} change dir to ${2} ***"
-    echo "${func_Title_Log} ${1} current path: $(pwd) ***"
-    echo "${func_Title_Log} End ***"
+    echo
+    echo "${exported_Title_Log} func_Shell_WorkPath : ${func_Shell_WorkPath}"
+
+    # 前置處理作業
+
+    # import function
+    # 因使用 include 檔案的函式，所以在此之前需先確保路經是在此 shell 資料夾中。
+    # import general function
+    echo
+    echo "${exported_Title_Log} import general function"
+    . "${func_Shell_WorkPath}"/../generalTools.sh
+
+    # import parse_yaml function
+    echo
+    echo "${exported_Title_Log} import parse_yaml function"
+
+    # 同樣在 scm.tools 專案下的相對路徑。
+    . "${func_Shell_WorkPath}"/../../../submodules/bash-yaml/script/yaml.sh
+
+    # 設定原先的呼叫路徑。
+    exported_OldPath=$(pwd)
+
+    # 切換執行目錄.
+    changeToDirectory "${exported_Title_Log}" "${func_Shell_WorkPath}"
+
+    # 設定成完整路徑。
+    exported_Shell_WorkPath=$(pwd)
+
+    echo "${preExported_Title_Log} exported_OldPath : "${exported_OldPath}""
+    echo "${preExported_Title_Log} exported_Shell_WorkPath : "${exported_Shell_WorkPath}""
     echo
 }
+## ================================== prcess function section : End ==================================
 
+## ================================== deal prcess step section : Begin ==================================
 # ============= This is separation line =============
-# 此 shell 的 dump log title.
-exported_Title_Log="[exported] -"
+# call - [程序] 此 shell 的初始化。
+process_Init
 
-# ============= This is separation line =============
-# 切換執行目錄.
-exported_OldPath=$(pwd)
-
-# 先切到 shell 目錄 (之後會切回到原有呼叫的目錄)
-# 取得相對目錄.
-exported_Shell_WorkPath=$(dirname $0)
-
-changeToDirectory "${exported_Title_Log}" "${exported_Shell_WorkPath}"
-
-# 設定成完整路徑.
-exported_Shell_WorkPath=$(pwd)
-
-# ============= This is separation line =============
-echo
-echo "${exported_Title_Log} ||==========> exported : Begin <==========||"
-
-# ============= This is separation line =============
-# include function
-# 因使用 include 檔案的函式，所以在此之前需先確保路經是在此 shell 資料夾中。
-# 同名函式會後蓋前，可不需要 unset changeToDirectory。
-# 由於使用 git submodule 中的 scm.tools ， 需在 git submodule 更新完成後使用才正常。
-
-# include general function
-echo
-echo "${preExported_Title_Log} include general function"
-
-# 同樣在 scm.tools 專案下的相對路徑。
-. ../generalTools.sh
-
-# include parse_yaml function
-echo
-echo "${preExported_Title_Log} include parse_yaml function"
-
-# 同樣在 scm.tools 專案下的相對路徑。
-. ../../../submodules/bash-yaml/script/yaml.sh
+## ================================== deal prcess step section : End ==================================
 
 # ============= This is separation line =============
 # set input param variable
