@@ -129,6 +129,44 @@ function process_Init() {
     echo "${preExported_Title_Log} exported_Shell_WorkPath : "${exported_Shell_WorkPath}""
     echo
 }
+
+# ============= This is separation line =============
+# @brief function : [程序] 處理 input param。
+function process_Deal_InputParam() {
+
+    # set input param variable
+    exported_Param_BuildConfigFile="${1}"
+
+    # check input parameters
+    checkInputParam "${exported_Title_Log}" exported_Param_BuildConfigFile "${exported_Param_BuildConfigFile}"
+
+    echo
+    echo "${exported_Title_Log} ============= Param : Begin ============="
+    echo "${exported_Title_Log} exported_Param_BuildConfigFile : ${exported_Param_BuildConfigFile}"
+    echo "${exported_Title_Log} ============= Param : End ============="
+    echo
+}
+
+# ============= This is separation line =============
+# @brief function : [程序] Toggle Feature 設定。
+function process_Deal_ToggleFeature() {
+
+    # ---
+    # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
+    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
+
+    # build configutation type : 編譯組態設定，之後視情況是否要開放
+    # 依據 flutter build ， 有 debug ， profile ， release
+    exported_ToogleFeature_BuildConfigType=release
+
+    echo
+    echo "${preExported_Title_Log} ============= Toogle Feature : Begin ============="
+    echo "${preExported_Title_Log} exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile : ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile}"
+    echo "${preExported_Title_Log} exported_ToogleFeature_BuildConfigType : ${exported_ToogleFeature_BuildConfigType}"
+    echo "${preExported_Title_Log} ============= Toogle Feature : End ============="
+    echo
+
+}
 ## ================================== prcess function section : End ==================================
 
 ## ================================== deal prcess step section : Begin ==================================
@@ -136,38 +174,16 @@ function process_Init() {
 # call - [程序] 此 shell 的初始化。
 process_Init
 
+# ============= This is separation line =============
+# call - [程序] 處理 input param。
+# 需要帶入此 shell 的輸入參數。
+# TODO: 可思考是否有更好的方式？
+process_Deal_InputParam "${1}"
+
+# ============= This is separation line =============
+# call - [程序] Toggle Feature 設定。
+process_Deal_ToggleFeature
 ## ================================== deal prcess step section : End ==================================
-
-# ============= This is separation line =============
-# set input param variable
-exported_Param_BuildConfigFile=${1}
-
-# check input parameters
-checkInputParam "${exported_Title_Log}" exported_Param_BuildConfigFile "${exported_Param_BuildConfigFile}"
-
-echo
-echo "${exported_Title_Log} ============= Param : Begin ============="
-echo "${exported_Title_Log} exported_Param_BuildConfigFile : ${exported_Param_BuildConfigFile}"
-echo "${exported_Title_Log} ============= Param : End ============="
-echo
-
-# ============= This is separation line =============
-# Toggle Feature 設定
-
-# ---
-# 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
-
-# build configutation type : 編譯組態設定，之後視情況是否要開放
-# 依據 flutter build ， 有 debug ， profile ， release
-exported_ToogleFeature_BuildConfigType=release
-
-echo
-echo "${preExported_Title_Log} ============= Toogle Feature : Begin ============="
-echo "${preExported_Title_Log} exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile : ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile}"
-echo "${preExported_Title_Log} exported_ToogleFeature_BuildConfigType : ${exported_ToogleFeature_BuildConfigType}"
-echo "${preExported_Title_Log} ============= Toogle Feature : End ============="
-echo
 
 # ============= This is separation line =============
 # 設定目前支援的 subcomand
