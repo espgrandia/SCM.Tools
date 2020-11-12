@@ -80,125 +80,7 @@
 #  - flutter 的編譯組態是否要開放?
 #
 
-## ================================== prcess function section : Begin ==================================
-# ============= This is separation line =============
-# @brief function : [程序] 此 shell 的初始化。
-function process_Init() {
-
-    # 計時，實測結果不同 shell 不會影響，各自有各自的 SECONDS。
-    SECONDS=0
-
-    # 此 shell 的 dump log title.
-    exported_Title_Log="[exported] -"
-
-    echo
-    echo "${exported_Title_Log} ||==========> exported : Begin <==========||"
-
-    # 取得相對目錄.
-    local func_Shell_WorkPath=$(dirname $0)
-
-    echo
-    echo "${exported_Title_Log} func_Shell_WorkPath : ${func_Shell_WorkPath}"
-
-    # 前置處理作業
-
-    # import function
-    # 因使用 include 檔案的函式，所以在此之前需先確保路經是在此 shell 資料夾中。
-    # import general function
-    echo
-    echo "${exported_Title_Log} import general function"
-    . "${func_Shell_WorkPath}"/../generalTools.sh
-
-    # import parse_yaml function
-    echo
-    echo "${exported_Title_Log} import parse_yaml function"
-
-    # 同樣在 scm.tools 專案下的相對路徑。
-    . "${func_Shell_WorkPath}"/../../../submodules/bash-yaml/script/yaml.sh
-
-    # 設定原先的呼叫路徑。
-    exported_OldPath=$(pwd)
-
-    # 切換執行目錄.
-    changeToDirectory "${exported_Title_Log}" "${func_Shell_WorkPath}"
-
-    # 設定成完整路徑。
-    exported_Shell_WorkPath=$(pwd)
-
-    echo "${preExported_Title_Log} exported_OldPath : "${exported_OldPath}""
-    echo "${preExported_Title_Log} exported_Shell_WorkPath : "${exported_Shell_WorkPath}""
-    echo
-}
-
-# ============= This is separation line =============
-# @brief function : [程序] 處理 input param。
-function process_Deal_InputParam() {
-
-    # set input param variable
-    exported_Param_BuildConfigFile="${1}"
-
-    # check input parameters
-    checkInputParam "${exported_Title_Log}" exported_Param_BuildConfigFile "${exported_Param_BuildConfigFile}"
-
-    echo
-    echo "${exported_Title_Log} ============= Param : Begin ============="
-    echo "${exported_Title_Log} exported_Param_BuildConfigFile : ${exported_Param_BuildConfigFile}"
-    echo "${exported_Title_Log} ============= Param : End ============="
-    echo
-}
-
-# ============= This is separation line =============
-# @brief function : [程序] Toggle Feature 設定。
-function process_Deal_ToggleFeature() {
-
-    # ---
-    # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
-
-    # build configutation type : 編譯組態設定，之後視情況是否要開放
-    # 依據 flutter build ， 有 debug ， profile ， release
-    exported_ToogleFeature_BuildConfigType=release
-
-    echo
-    echo "${preExported_Title_Log} ============= Toogle Feature : Begin ============="
-    echo "${preExported_Title_Log} exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile : ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile}"
-    echo "${preExported_Title_Log} exported_ToogleFeature_BuildConfigType : ${exported_ToogleFeature_BuildConfigType}"
-    echo "${preExported_Title_Log} ============= Toogle Feature : End ============="
-    echo
-
-}
-## ================================== prcess function section : End ==================================
-
-## ================================== deal prcess step section : Begin ==================================
-# ============= This is separation line =============
-# call - [程序] 此 shell 的初始化。
-process_Init
-
-# ============= This is separation line =============
-# call - [程序] 處理 input param。
-# 需要帶入此 shell 的輸入參數。
-# TODO: 可思考是否有更好的方式？
-process_Deal_InputParam "${1}"
-
-# ============= This is separation line =============
-# call - [程序] Toggle Feature 設定。
-process_Deal_ToggleFeature
-## ================================== deal prcess step section : End ==================================
-
-# ============= This is separation line =============
-# 設定目前支援的 subcomand
-# exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
-# 規則 :
-#   [0] : build subcommand name
-#   [1]: 是否要執行 (isExcute)。
-# 目前只支援 apk 及 ios，之後視情況新增。
-exported_SubcommandInfo_aar=("aar" "N")
-exported_SubcommandInfo_apk=("apk" "N")
-exported_SubcommandInfo_appbundle=("appbundle" "N")
-exported_SubcommandInfo_bundle=("bundle" "N")
-exported_SubcommandInfo_ios=("ios" "N")
-exported_SubcommandInfo_ios_framework=("ios-framework" "N")
-
+## ================================== buildConfig function section : Begin ==================================
 # ============= This is separation line =============
 # @brief function : 剖析 required 部分，
 #        如 : version，subcommands
@@ -364,73 +246,10 @@ function parseDartDefine() {
 
     fi
 }
+## ================================== buildConfig function section : End ==================================
 
-# ============= This is separation line =============
-# 判斷 build config file
-# 字串是否不為空。 (a non-empty string)
-# TODO: flutter build apk --target-platform android-arm,android-arm64
-# TODO: 之後可調整成函式，並去除判斷是否存在，Build Config File 會變成必要資訊。
-if [ -n "${exported_Param_BuildConfigFile}" ]; then
-
-    echo
-    echo "${exported_Title_Log} ============= parse build config file : Begin ============="
-
-    # parse build config file
-    echo "${exported_Title_Log} 將剖析 Build Config File 來做細微的設定。"
-
-    create_variables "${exported_Param_BuildConfigFile}" "exported_Config_"
-
-    # 開啟可以抓到此 shell 目前有哪些設定值。
-    if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
-        set >${exported_Param_BuildConfigFile}_BeforeParseConfig.temp
-    fi
-
-    # parse required section
-    parseReruiredSection
-
-    # parse dart define
-    parseDartDefine
-
-    # 開啟可以抓到此 shell 目前有哪些設定值。
-    if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
-        set >${exported_Param_BuildConfigFile}_AfterParseConfig.temp
-    fi
-
-    echo "${exported_Title_Log} ============= parse build config file : End ============="
-    echo
-
-    # FIXME
-    # exit 1
-fi
-
-# ============= This is separation line =============
-# 切換到 config file 設定的 flutter project work path: 為 flutter 專案的工作目錄 shell 目錄 (之後會切回到原有呼叫的目錄)
-changeToDirectory "${exported_Title_Log}" "${exported_Config_required_paths_work}"
-exported_Flutter_WorkPath=$(pwd)
-
-echo
-echo "${exported_Title_Log} //========== dump paths : Begin ==========//"
-echo "${exported_Title_Log} exported_OldPath                      : ${exported_OldPath}"
-echo "${exported_Title_Log} exported_Shell_WorkPath               : ${exported_Shell_WorkPath}"
-echo "${exported_Title_Log} exported_Config_required_paths_work   : ${exported_Config_required_paths_work}"
-echo "${exported_Title_Log} exported_Flutter_WorkPath             : ${exported_Flutter_WorkPath}"
-echo "${exported_Title_Log} exported_Config_required_paths_output : ${exported_Config_required_paths_output}"
-echo "${exported_Title_Log} current path                          : $(pwd)"
-echo "${exported_Title_Log} //========== dump paths : End ==========//"
-
-# ============= This is separation line =============
-# 以 exported_Flutter_WorkPath 為工作目錄來執行
-# 先期準備，刪除舊的資料
-
-echo "${exported_Title_Log} 刪除 build"
-find . -d -name "build" | xargs rm -rf
-flutter clean
-rm -rf build
-
-# ============= This is separation line =============
-# 實際 exported subcommand 的 函式區塊。
-
-## ================================== NotyetSupportSubcommand : Begin ==================================
+## ================================== export function section : Begin ==================================
+### ==================== NotyetSupportSubcommand : Begin ====================
 # @brief 尚未支援的 subcommand 的通用函式
 # @param $1 : command name
 function export_NotyetSupportSubcommand() {
@@ -450,9 +269,9 @@ function export_NotyetSupportSubcommand() {
 
     # checkResultFail_And_ChangeFolder "${exported_Title_Log}" "10" "!!! ~ OPPS!! Not yet support this subcommand:  "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
 }
-## ================================== NotyetSupportSubcommand : End ==================================
+### ==================== NotyetSupportSubcommand : End ====================
 
-## ================================== aar : Begin ==================================
+### ==================== aar : Begin ====================
 # @brief exported aar 部分
 function export_aar() {
 
@@ -470,9 +289,9 @@ function export_aar() {
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
-## ================================== aar : End ==================================
+### ==================== aar : End ====================
 
-## ================================== apk : Begin ==================================
+### ==================== apk : Begin ====================
 # @brief exported apk 部分
 function export_apk() {
 
@@ -543,9 +362,9 @@ function export_apk() {
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
-## ================================== apk : End ==================================
+### ==================== apk : End ====================
 
-## ================================== appbundle : Begin ==================================
+### ==================== appbundle : Begin ====================
 # @brief exported appbundle 部分
 function export_appbundle() {
 
@@ -563,9 +382,9 @@ function export_appbundle() {
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
-## ================================== appbundle : End ==================================
+### ==================== appbundle : End ====================
 
-## ================================== bundle : Begin ==================================
+### ==================== bundle : Begin ====================
 # @brief exported bundle 部分
 function export_bundle() {
 
@@ -583,9 +402,9 @@ function export_bundle() {
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
-## ================================== bundle : End ==================================
+### ==================== bundle : End ====================
 
-## ================================== ios : Begin ==================================
+### ==================== ios : Begin ====================
 # @brief ios 部分
 function export_ios() {
 
@@ -678,9 +497,9 @@ function export_ios() {
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
-## ================================== ios : End ==================================
+### ==================== ios : End ====================
 
-##================================== ios_framework : Begin ==================================
+### ==================== ios_framework : Begin ====================
 # @brief exported ios_framework 部分
 function export_ios_framework() {
 
@@ -698,7 +517,191 @@ function export_ios_framework() {
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
-##================================== ios_framework : End ==================================
+### ==================== ios_framework : End ====================
+## ================================== export function section : End ==================================
+
+## ================================== prcess function section : Begin ==================================
+# ============= This is separation line =============
+# @brief function : [程序] 此 shell 的初始化。
+function process_Init() {
+
+    # 計時，實測結果不同 shell 不會影響，各自有各自的 SECONDS。
+    SECONDS=0
+
+    # 此 shell 的 dump log title.
+    exported_Title_Log="[exported] -"
+
+    echo
+    echo "${exported_Title_Log} ||==========> exported : Begin <==========||"
+
+    # 取得相對目錄.
+    local func_Shell_WorkPath=$(dirname $0)
+
+    echo
+    echo "${exported_Title_Log} func_Shell_WorkPath : ${func_Shell_WorkPath}"
+
+    # 前置處理作業
+
+    # import function
+    # 因使用 include 檔案的函式，所以在此之前需先確保路經是在此 shell 資料夾中。
+    # import general function
+    echo
+    echo "${exported_Title_Log} import general function"
+    . "${func_Shell_WorkPath}"/../generalTools.sh
+
+    # import parse_yaml function
+    echo
+    echo "${exported_Title_Log} import parse_yaml function"
+
+    # 同樣在 scm.tools 專案下的相對路徑。
+    . "${func_Shell_WorkPath}"/../../../submodules/bash-yaml/script/yaml.sh
+
+    # 設定原先的呼叫路徑。
+    exported_OldPath=$(pwd)
+
+    # 切換執行目錄.
+    changeToDirectory "${exported_Title_Log}" "${func_Shell_WorkPath}"
+
+    # 設定成完整路徑。
+    exported_Shell_WorkPath=$(pwd)
+
+    echo "${exported_Title_Log} exported_OldPath : "${exported_OldPath}""
+    echo "${exported_Title_Log} exported_Shell_WorkPath : "${exported_Shell_WorkPath}""
+    echo
+}
+
+# ============= This is separation line =============
+# @brief function : [程序] 處理 input param。
+function process_Deal_InputParam() {
+
+    # set input param variable
+    exported_Param_BuildConfigFile="${1}"
+
+    # check input parameters
+    checkInputParam "${exported_Title_Log}" exported_Param_BuildConfigFile "${exported_Param_BuildConfigFile}"
+
+    echo
+    echo "${exported_Title_Log} ============= Param : Begin ============="
+    echo "${exported_Title_Log} exported_Param_BuildConfigFile : ${exported_Param_BuildConfigFile}"
+    echo "${exported_Title_Log} ============= Param : End ============="
+    echo
+}
+
+# ============= This is separation line =============
+# @brief function : [程序] Toggle Feature 設定。
+function process_Deal_ToggleFeature() {
+
+    # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
+    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
+
+    # build configutation type : 編譯組態設定，之後視情況是否要開放
+    # 依據 flutter build ， 有 debug ， profile ， release
+    exported_ToogleFeature_BuildConfigType=release
+
+    echo
+    echo "${exported_Title_Log} ============= Toogle Feature : Begin ============="
+    echo "${exported_Title_Log} exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile : ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile}"
+    echo "${exported_Title_Log} exported_ToogleFeature_BuildConfigType : ${exported_ToogleFeature_BuildConfigType}"
+    echo "${exported_Title_Log} ============= Toogle Feature : End ============="
+    echo
+
+}
+## ================================== prcess function section : End ==================================
+
+## ================================== deal prcess step section : Begin ==================================
+# ============= This is separation line =============
+# call - [程序] 此 shell 的初始化。
+process_Init
+
+# ============= This is separation line =============
+# call - [程序] 處理 input param。
+# 需要帶入此 shell 的輸入參數。
+# TODO: 可思考是否有更好的方式？
+process_Deal_InputParam "${1}"
+
+# ============= This is separation line =============
+# call - [程序] Toggle Feature 設定。
+process_Deal_ToggleFeature
+## ================================== deal prcess step section : End ==================================
+
+# ============= This is separation line =============
+# 設定目前支援的 subcomand
+# exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
+# 規則 :
+#   [0] : build subcommand name
+#   [1]: 是否要執行 (isExcute)。
+# 目前只支援 apk 及 ios，之後視情況新增。
+exported_SubcommandInfo_aar=("aar" "N")
+exported_SubcommandInfo_apk=("apk" "N")
+exported_SubcommandInfo_appbundle=("appbundle" "N")
+exported_SubcommandInfo_bundle=("bundle" "N")
+exported_SubcommandInfo_ios=("ios" "N")
+exported_SubcommandInfo_ios_framework=("ios-framework" "N")
+
+# ============= This is separation line =============
+# 判斷 build config file
+# 字串是否不為空。 (a non-empty string)
+# TODO: flutter build apk --target-platform android-arm,android-arm64
+# TODO: 之後可調整成函式，並去除判斷是否存在，Build Config File 會變成必要資訊。
+if [ -n "${exported_Param_BuildConfigFile}" ]; then
+
+    echo
+    echo "${exported_Title_Log} ============= parse build config file : Begin ============="
+
+    # parse build config file
+    echo "${exported_Title_Log} 將剖析 Build Config File 來做細微的設定。"
+
+    create_variables "${exported_Param_BuildConfigFile}" "exported_Config_"
+
+    # 開啟可以抓到此 shell 目前有哪些設定值。
+    if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
+        set >${exported_Param_BuildConfigFile}_BeforeParseConfig.temp
+    fi
+
+    # parse required section
+    parseReruiredSection
+
+    # parse dart define
+    parseDartDefine
+
+    # 開啟可以抓到此 shell 目前有哪些設定值。
+    if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
+        set >${exported_Param_BuildConfigFile}_AfterParseConfig.temp
+    fi
+
+    echo "${exported_Title_Log} ============= parse build config file : End ============="
+    echo
+
+    # FIXME
+    # exit 1
+fi
+
+# ============= This is separation line =============
+# 切換到 config file 設定的 flutter project work path: 為 flutter 專案的工作目錄 shell 目錄 (之後會切回到原有呼叫的目錄)
+changeToDirectory "${exported_Title_Log}" "${exported_Config_required_paths_work}"
+exported_Flutter_WorkPath=$(pwd)
+
+echo
+echo "${exported_Title_Log} //========== dump paths : Begin ==========//"
+echo "${exported_Title_Log} exported_OldPath                      : ${exported_OldPath}"
+echo "${exported_Title_Log} exported_Shell_WorkPath               : ${exported_Shell_WorkPath}"
+echo "${exported_Title_Log} exported_Config_required_paths_work   : ${exported_Config_required_paths_work}"
+echo "${exported_Title_Log} exported_Flutter_WorkPath             : ${exported_Flutter_WorkPath}"
+echo "${exported_Title_Log} exported_Config_required_paths_output : ${exported_Config_required_paths_output}"
+echo "${exported_Title_Log} current path                          : $(pwd)"
+echo "${exported_Title_Log} //========== dump paths : End ==========//"
+
+# ============= This is separation line =============
+# 以 exported_Flutter_WorkPath 為工作目錄來執行
+# 先期準備，刪除舊的資料
+
+echo "${exported_Title_Log} 刪除 build"
+find . -d -name "build" | xargs rm -rf
+flutter clean
+rm -rf build
+
+# ============= This is separation line =============
+# 實際 exported subcommand 的 函式區塊。
 
 # ============= This is separation line =============
 # 確認是否要執行 exported subcommand 函式 區塊。
