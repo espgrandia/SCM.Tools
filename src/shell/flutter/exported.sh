@@ -16,8 +16,7 @@
 # ---
 #
 # input 參數說明 :
-#   主要是 對應於 flutter pubspec.yaml 中
-#   version:[BuildName]+[BuildNumber] => e.g. version: 1.0.0+10
+#
 # - $1 : exported_Param_BuildConfigFile="[專案路徑]/[scm]/output/buildConfig.yaml" : 設定編譯的 config 功能檔案 [需帶完整路徑].
 #   - 內容為協議好的格式，只是做成可彈性設定的方式，可選項目，沒有則以基本編譯。
 #
@@ -46,27 +45,75 @@
 #
 # ---
 #
-# build 方式 :
-#  - 經由讀取 build config file 來處理，細部說明可參考 configTools.sh
+# SubcommandInfo :
+# - 規則 :
+#   - [0]: build subcommand name。
+#   - [1]: 是否要執行 (isExcute)。 default : "N"。
 #
-#  - reauired:
-#    - version: [BuildName]+[BuildNumber] => e.g. 1.0.0+10
-#      - android :
-#        - VersionName : [BuildName] => e.g. 1.0.0
-#        - VersionCode : [BuildNumber]  => e.g. 10
+# ---
 #
-#      - iOS :
-#        - BundleShortVersion : [BuildName] => e.g. 1.0.0
-#        - BundleVersion : [BuildName].[BuildNumber] => e.g. 1.0.0.10
+# exported_Config_xxx 說明 :
 #
-#  - optinonal :
-#    - dart-define
-#      - key 設定於 exported_DartDef_Key_GitHash : gitHash
-#        用途 :git commit ID for short hash
-#        對應於 flutter 的使用方式 String.fromEnvironment('gitHash')
-#      - key : 設定於 exported_DartDef_Key_EnvName : envName
-#        用途 : 設定於此次編譯的對應環境
-#        對應於 flutter 的使用方式 String.fromEnvironment('envName')
+# - 來源 : 來自於 build config 轉換成的 shell 內部參數。
+#   經由讀取 build config file (對應於 exported_Param_BuildConfigFile 內容) 來處理，
+#   細部說明可參考 configTools.sh
+#
+# - required :
+#
+#   - exported_Config_required_version=1.0.0+10
+#     flutter 版本。
+#
+#       - android :
+#         - VersionName : [BuildName] => e.g. 1.0.0
+#         - VersionCode : [BuildNumber]  => e.g. 10
+#
+#       - iOS :
+#         - BundleShortVersion : [BuildName] => e.g. 1.0.0
+#         - BundleVersion : [BuildName].[BuildNumber] => e.g. 1.0.0.10
+#
+#   - exported_Config_required_paths_work
+#     flutter project 工作目錄。
+#
+#   - exported_Config_required_paths_output
+#     產出內容的輸出路徑。
+#
+#   - exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
+#     build subcommands，為此次需要編譯的模式為哪一些。
+#
+# - optional :
+#
+#   - dart-define
+#
+#    - exported_Config_optional_dart_define_separator
+#      為要分隔符號
+#      => e.g. "+"
+#
+#    - exported_Config_optional_dart_define_defines
+#      要設定到 dart-define 的內容，為 list 型態。
+#      => e.g. (gitHash+920f6fc envName+dev)
+#
+# ---
+#
+# 程式碼區塊 說明:
+#
+# - 此 shell 主要分四個主要區塊 :
+#
+#   - buildConfig function section :
+#     流程函式，將流程會用到的獨立功能，以函式來呈現，
+#     裡面與此 shell 有高度相依，[preExported_xxx] 是跨函式讀取。
+#
+#   - prcess function section :
+#     流程函式，將流程會用到的獨立功能，以函式來呈現，
+#     裡面與此 shell 有高度相依，[preExported_xxx] 是跨函式讀取。
+#
+#   - prcess function section :
+#     流程函式，將流程會用到的獨立功能，以函式來呈現，
+#     裡面與此 shell 有高度相依，[preExported_xxx] 是跨函式讀取。
+#
+#   - deal prcess step section :
+#     實際跑流程函式的順序，
+#     會依序呼叫 [process_xxx]，
+#     !!! [Waring] 有先後順序影響，不可任意調整呼叫順序，調整時務必想清楚 !!!。
 #
 # ---
 #
@@ -82,16 +129,22 @@
 
 ## ================================== buildConfig function section : Begin ==================================
 # ============= This is separation line =============
-# @brief function : 剖析 required 部分，
+# @brief function : 處理並設定單一的 subcommand info，
 #        如 : version，subcommands
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
-# exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
-# @param $1: aSubcommand
-# @param $2: exported_SubcommandInfo_xxx[0] : info 的 first : 為 subcommand name。
-#   e.g. ${exported_SubcommandInfo_aar[0]} : aar
-# @param $3: 要設定的參數，對應於 Subcommand Info : 是否要執行 (isExcute)。
-#   e.g. exported_SubcommandInfo_aar[1] .
+#
+# @param $1: 需要驗證的 subcommand，內容來自於 build config => e.g. "${aSubcommand}" or "aar" ...
+# @param $2: SubcommandInfo 中的 `name`。 exported_SubcommandInfo_xxx[0]。
+#   => e.g. ${exported_SubcommandInfo_aar[0]} : aar
+# @param $3: 要設定的參數，對應於 SubcommandInfo 中的 `是否要執行 (isExcute)`。 exported_SubcommandInfo_xxx[1]
+#   => e.g. exported_SubcommandInfo_aar[1] .
+#
+# @sa : SubcommandInfo 說明可看 shell 上方的說明區塊。
+#
+# @TODO: 目前 SubcommandInfo 無法用 array 方式帶入，尚未測試成功，所以先分開參數帶入，之後可找時間另外找方法測試可行性。
+#
+# e.g. => dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_aar[0]}" exported_SubcommandInfo_aar[1]
 function dealSumcommandInfo() {
 
     local func_Title_Log="*** function [dealSumcommandInfo] -"
@@ -117,7 +170,6 @@ function dealSumcommandInfo() {
 #        如 : version，subcommands
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
-# exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
 function parseReruiredSection() {
 
     echo
@@ -612,10 +664,16 @@ function process_Deal_ToggleFeature() {
 function process_Init_SubcommandInfo() {
 
     # 設定目前支援的 subcomand
+    # 搭配 flutter build 中的 subcommands，
+    #
+    # 此次需要編譯來源:
     # exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
-    # 規則 :
-    #   [0] : build subcommand name
-    #   [1]: 是否要執行 (isExcute)。
+    #
+    # SubcommandInfo :
+    # - 規則 :
+    #   - [0]: build subcommand name。
+    #   - [1]: 是否要執行 (isExcute)。 default : "N"。
+    #
     # 目前只支援 apk 及 ios，之後視情況新增。
     exported_SubcommandInfo_aar=("aar" "N")
     exported_SubcommandInfo_apk=("apk" "N")
