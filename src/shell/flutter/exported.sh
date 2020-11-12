@@ -606,6 +606,135 @@ function process_Deal_ToggleFeature() {
     echo
 
 }
+
+# ============= This is separation line =============
+# @brief function : [程序] SubcommandInfo 的初始化。
+function process_Init_SubcommandInfo() {
+
+    # 設定目前支援的 subcomand
+    # exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
+    # 規則 :
+    #   [0] : build subcommand name
+    #   [1]: 是否要執行 (isExcute)。
+    # 目前只支援 apk 及 ios，之後視情況新增。
+    exported_SubcommandInfo_aar=("aar" "N")
+    exported_SubcommandInfo_apk=("apk" "N")
+    exported_SubcommandInfo_appbundle=("appbundle" "N")
+    exported_SubcommandInfo_bundle=("bundle" "N")
+    exported_SubcommandInfo_ios=("ios" "N")
+    exported_SubcommandInfo_ios_framework=("ios-framework" "N")
+}
+
+# ============= This is separation line =============
+# @brief function : [程序] 剖析 build config。
+function process_Parse_BuildConfig() {
+
+    # 判斷 build config file
+    # 字串是否不為空。 (a non-empty string)
+    # TODO: flutter build apk --target-platform android-arm,android-arm64
+    # TODO: 之後可調整成函式，並去除判斷是否存在，Build Config File 會變成必要資訊。
+    if [ -n "${exported_Param_BuildConfigFile}" ]; then
+
+        echo
+        echo "${exported_Title_Log} ============= parse build config file : Begin ============="
+
+        # parse build config file
+        echo "${exported_Title_Log} 將剖析 Build Config File 來做細微的設定。"
+
+        create_variables "${exported_Param_BuildConfigFile}" "exported_Config_"
+
+        # 開啟可以抓到此 shell 目前有哪些設定值。
+        if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
+            set >${exported_Param_BuildConfigFile}_BeforeParseConfig.temp
+        fi
+
+        # parse required section
+        parseReruiredSection
+
+        # parse dart define
+        parseDartDefine
+
+        # 開啟可以抓到此 shell 目前有哪些設定值。
+        if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
+            set >${exported_Param_BuildConfigFile}_AfterParseConfig.temp
+        fi
+
+        echo "${exported_Title_Log} ============= parse build config file : End ============="
+        echo
+
+        # FIXME
+        # exit 1
+    fi
+
+}
+
+# ============= This is separation line =============
+# @brief function : [程序] 處理路徑相關 (包含 flutter work path)。
+function process_Deal_Paths() {
+
+    # 切換到 config file 設定的 flutter project work path: 為 flutter 專案的工作目錄 shell 目錄 (之後會切回到原有呼叫的目錄)
+    changeToDirectory "${exported_Title_Log}" "${exported_Config_required_paths_work}"
+    exported_Flutter_WorkPath=$(pwd)
+
+    echo
+    echo "${exported_Title_Log} //========== dump paths : Begin ==========//"
+    echo "${exported_Title_Log} exported_OldPath                      : ${exported_OldPath}"
+    echo "${exported_Title_Log} exported_Shell_WorkPath               : ${exported_Shell_WorkPath}"
+    echo "${exported_Title_Log} exported_Config_required_paths_work   : ${exported_Config_required_paths_work}"
+    echo "${exported_Title_Log} exported_Flutter_WorkPath             : ${exported_Flutter_WorkPath}"
+    echo "${exported_Title_Log} exported_Config_required_paths_output : ${exported_Config_required_paths_output}"
+    echo "${exported_Title_Log} current path                          : $(pwd)"
+    echo "${exported_Title_Log} //========== dump paths : End ==========//"
+}
+
+# ============= This is separation line =============
+# @brief function : [程序] 清除緩存 (之前編譯的暫存檔)。
+function process_Clean_Cache() {
+
+    # 以 exported_Flutter_WorkPath 為工作目錄來執行
+    # 先期準備，刪除舊的資料
+
+    echo "${exported_Title_Log} 刪除 build"
+    find . -d -name "build" | xargs rm -rf
+    flutter clean
+    rm -rf build
+}
+
+# ============= This is separation line =============
+# @brief function : [程序] 執行 build subcommands。
+# @details : 依照 build config 的設定來 執行 build subcommand。
+function process_Excecute_Build_Sumcommands() {
+
+    # 判斷是否要出版 aar
+    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_aar[1]} export_aar
+
+    # 判斷是否要出版 apk
+    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_apk[1]} export_apk
+
+    # 判斷是否要出版 appbundle
+    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_appbundle[1]} export_appbundle
+
+    # 判斷是否要出版 bundle
+    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_bundle[1]} export_bundle
+
+    # 判斷是否要出版 ios
+    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios[1]} export_ios
+
+    # 判斷是否要出版 ios_framework
+    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios_framework[1]} export_ios_framework
+}
+
+# ============= This is separation line =============
+# @brief function : [程序] shell 全部完成需處理的部份.
+function process_Finish() {
+
+    # 全部完成
+    # 切回原有執行目錄.
+    changeToDirectory "${exported_Title_Log}" "${exported_OldPath}"
+
+    echo
+    echo "${exported_Title_Log} ||==========> exported : End <==========|| Elapsed time: ${SECONDS}s"
+}
 ## ================================== prcess function section : End ==================================
 
 ## ================================== deal prcess step section : Begin ==================================
@@ -622,114 +751,30 @@ process_Deal_InputParam "${1}"
 # ============= This is separation line =============
 # call - [程序] Toggle Feature 設定。
 process_Deal_ToggleFeature
+
+# ============= This is separation line =============
+# call - [程序] SubcommandInfo 的初始化。
+process_Init_SubcommandInfo
+
+# ============= This is separation line =============
+# call - [程序] 剖析 build config。
+process_Parse_BuildConfig
+
+# ============= This is separation line =============
+# call - [程序] 處理路徑相關 (包含 flutter work path)。
+process_Deal_Paths
+
+# ============= This is separation line =============
+# call - [程序] 清除緩存 (之前編譯的暫存檔)。
+process_Clean_Cache
+
+# ============= This is separation line =============
+# call - [程序] 執行 build subcommands。
+process_Excecute_Build_Sumcommands
+
+# ============= This is separation line =============
+# call - [程序] shell 全部完成需處理的部份.
+process_Finish
 ## ================================== deal prcess step section : End ==================================
-
-# ============= This is separation line =============
-# 設定目前支援的 subcomand
-# exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
-# 規則 :
-#   [0] : build subcommand name
-#   [1]: 是否要執行 (isExcute)。
-# 目前只支援 apk 及 ios，之後視情況新增。
-exported_SubcommandInfo_aar=("aar" "N")
-exported_SubcommandInfo_apk=("apk" "N")
-exported_SubcommandInfo_appbundle=("appbundle" "N")
-exported_SubcommandInfo_bundle=("bundle" "N")
-exported_SubcommandInfo_ios=("ios" "N")
-exported_SubcommandInfo_ios_framework=("ios-framework" "N")
-
-# ============= This is separation line =============
-# 判斷 build config file
-# 字串是否不為空。 (a non-empty string)
-# TODO: flutter build apk --target-platform android-arm,android-arm64
-# TODO: 之後可調整成函式，並去除判斷是否存在，Build Config File 會變成必要資訊。
-if [ -n "${exported_Param_BuildConfigFile}" ]; then
-
-    echo
-    echo "${exported_Title_Log} ============= parse build config file : Begin ============="
-
-    # parse build config file
-    echo "${exported_Title_Log} 將剖析 Build Config File 來做細微的設定。"
-
-    create_variables "${exported_Param_BuildConfigFile}" "exported_Config_"
-
-    # 開啟可以抓到此 shell 目前有哪些設定值。
-    if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
-        set >${exported_Param_BuildConfigFile}_BeforeParseConfig.temp
-    fi
-
-    # parse required section
-    parseReruiredSection
-
-    # parse dart define
-    parseDartDefine
-
-    # 開啟可以抓到此 shell 目前有哪些設定值。
-    if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
-        set >${exported_Param_BuildConfigFile}_AfterParseConfig.temp
-    fi
-
-    echo "${exported_Title_Log} ============= parse build config file : End ============="
-    echo
-
-    # FIXME
-    # exit 1
-fi
-
-# ============= This is separation line =============
-# 切換到 config file 設定的 flutter project work path: 為 flutter 專案的工作目錄 shell 目錄 (之後會切回到原有呼叫的目錄)
-changeToDirectory "${exported_Title_Log}" "${exported_Config_required_paths_work}"
-exported_Flutter_WorkPath=$(pwd)
-
-echo
-echo "${exported_Title_Log} //========== dump paths : Begin ==========//"
-echo "${exported_Title_Log} exported_OldPath                      : ${exported_OldPath}"
-echo "${exported_Title_Log} exported_Shell_WorkPath               : ${exported_Shell_WorkPath}"
-echo "${exported_Title_Log} exported_Config_required_paths_work   : ${exported_Config_required_paths_work}"
-echo "${exported_Title_Log} exported_Flutter_WorkPath             : ${exported_Flutter_WorkPath}"
-echo "${exported_Title_Log} exported_Config_required_paths_output : ${exported_Config_required_paths_output}"
-echo "${exported_Title_Log} current path                          : $(pwd)"
-echo "${exported_Title_Log} //========== dump paths : End ==========//"
-
-# ============= This is separation line =============
-# 以 exported_Flutter_WorkPath 為工作目錄來執行
-# 先期準備，刪除舊的資料
-
-echo "${exported_Title_Log} 刪除 build"
-find . -d -name "build" | xargs rm -rf
-flutter clean
-rm -rf build
-
-# ============= This is separation line =============
-# 實際 exported subcommand 的 函式區塊。
-
-# ============= This is separation line =============
-# 確認是否要執行 exported subcommand 函式 區塊。
-
-# 判斷是否要出版 aar
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_aar[1]} export_aar
-
-# 判斷是否要出版 apk
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_apk[1]} export_apk
-
-# 判斷是否要出版 appbundle
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_appbundle[1]} export_appbundle
-
-# 判斷是否要出版 bundle
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_bundle[1]} export_bundle
-
-# 判斷是否要出版 ios
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios[1]} export_ios
-
-# 判斷是否要出版 ios_framework
-check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios_framework[1]} export_ios_framework
-
-# ============= This is separation line =============
-# 全部完成
-# 切回原有執行目錄.
-changeToDirectory "${exported_Title_Log}" "${exported_OldPath}"
-
-echo
-echo "${exported_Title_Log} ||==========> exported : End <==========|| Elapsed time: ${SECONDS}s"
 
 exit 0
