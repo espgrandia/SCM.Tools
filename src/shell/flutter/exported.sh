@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # brief : 簡單處理目前的出版 => release for apk and ipa
-#         並不是正式的出版流程，之後需要再分析更好的流程，陸續整理中。
+#         為正式的出版流程，需要再分析更好的流程，陸續整理中。
 # ---
 #
 # Reference :
@@ -248,7 +248,7 @@ function parseDartDefine() {
     if [ -n "${exported_Config_optional_dart_define_defines}" ] && [ -n "${exported_Config_optional_dart_define_separator}" ]; then
 
         echo
-        echo "${exported_Title_Log} ============= parse dart-define : Begin ============="
+        echo "${exported_Title_Log} ============= parse "${configConst_BuildParam_Key_DartDefine}" : Begin ============="
 
         # check input parameters
         checkInputParam "${exported_Title_Log}" exported_Config_optional_dart_define_defines "${exported_Config_optional_dart_define_defines[@]}"
@@ -274,12 +274,12 @@ function parseDartDefine() {
             # 第一次，尚未設定。
             if [ -z "${exported_DartDef_PartOf_Command}" ] && [ -z "${exported_DartDef_PartOf_FileName}" ]; then
 
-                exported_DartDef_PartOf_Command="--dart-define=${aKey}=${aVal}"
+                exported_DartDef_PartOf_Command="--"${configConst_BuildParam_Key_DartDefine}"=${aKey}=${aVal}"
                 exported_DartDef_PartOf_FileName="${aKey}_${aVal}"
 
             else
 
-                exported_DartDef_PartOf_Command="${exported_DartDef_PartOf_Command} --dart-define=${aKey}=${aVal}"
+                exported_DartDef_PartOf_Command="${exported_DartDef_PartOf_Command} --"${configConst_BuildParam_Key_DartDefine}"=${aKey}=${aVal}"
                 exported_DartDef_PartOf_FileName="${exported_DartDef_PartOf_FileName}-${aKey}_${aVal}"
 
             fi
@@ -293,11 +293,12 @@ function parseDartDefine() {
         echo "${exported_Title_Log} exported_DartDef_PartOf_Command  : ${exported_DartDef_PartOf_Command}"
         echo "${exported_Title_Log} exported_DartDef_PartOf_FileName : ${exported_DartDef_PartOf_FileName}"
 
-        echo "${exported_Title_Log} ============= parse dart-define : End ============="
+        echo "${exported_Title_Log} ============= parse "${configConst_BuildParam_Key_DartDefine}" : End ============="
         echo
 
     fi
 }
+
 ## ================================== buildConfig function section : End ==================================
 
 ## ================================== export function section : Begin ==================================
@@ -347,9 +348,6 @@ function export_aar() {
 # @brief exported apk 部分
 function export_apk() {
 
-    # You are building a fat APK that includes binaries for android-arm,android-arm64, android-x64.
-    # 之後要瘦身
-
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
     local func_Subcommand=${exported_SubcommandInfo_apk[0]}
@@ -378,7 +376,12 @@ function export_apk() {
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_Command}" ]; then
-        func_Build_Command="${func_Build_Command} ${exported_DartDef_PartOf_Command}"
+        func_Build_Command="${func_Build_Command} "${exported_DartDef_PartOf_Command}""
+    fi
+
+    # 若有 target-platform
+    if [ -n "${exported_Config_optional_target_platform}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_TargetPlatform} "${exported_Config_optional_target_platform}""
     fi
 
     echo "${exported_Title_Log} flutter ${func_Build_Command}"
@@ -471,7 +474,7 @@ function export_ios() {
     echo "${exported_Title_Log} 開始打包 "${func_Subcommand}""
 
     # ===> value 設定 <===
-    # for android 參數
+    # for iOS 參數
     local func_iOS_BundleShortVersion="${exported_BuildName}"
     local func_iOS_BundleVersion="${func_iOS_BundleShortVersion}.${exported_BuildNumber}"
 
@@ -490,7 +493,7 @@ function export_ios() {
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_Command}" ]; then
-        func_Build_Command="${func_Build_Command} ${exported_DartDef_PartOf_Command}"
+        func_Build_Command="${func_Build_Command} "${exported_DartDef_PartOf_Command}""
     fi
 
     echo "${exported_Title_Log} flutter ${func_Build_Command}"
@@ -596,6 +599,14 @@ function process_Init() {
 
     # import function
     # 因使用 include 檔案的函式，所以在此之前需先確保路經是在此 shell 資料夾中。
+
+    # 不確定是否使用者都有使用 configTools.sh 產生 build config file， 再來呼叫 exported.sh
+    # 保險起見，import configConst.sh
+    # import configConst.sh for configTools.sh using export Environment Variable。
+    echo
+    echo "${exported_Title_Log} - import configConst.sh"
+    . "${func_Shell_WorkPath}"/configConst.sh
+
     # import general function
     echo
     echo "${exported_Title_Log} import general function"
@@ -675,12 +686,12 @@ function process_Init_SubcommandInfo() {
     #   - [1]: 是否要執行 (isExcute)。 default : "N"。
     #
     # 目前只支援 apk 及 ios，之後視情況新增。
-    exported_SubcommandInfo_aar=("aar" "N")
-    exported_SubcommandInfo_apk=("apk" "N")
-    exported_SubcommandInfo_appbundle=("appbundle" "N")
-    exported_SubcommandInfo_bundle=("bundle" "N")
-    exported_SubcommandInfo_ios=("ios" "N")
-    exported_SubcommandInfo_ios_framework=("ios-framework" "N")
+    exported_SubcommandInfo_aar=("${configConst_Subcommand_aar}" "N")
+    exported_SubcommandInfo_apk=("${configConst_Subcommand_apk}" "N")
+    exported_SubcommandInfo_appbundle=("${configConst_Subcommand_appbundle}" "N")
+    exported_SubcommandInfo_bundle=("${configConst_Subcommand_bundle}" "N")
+    exported_SubcommandInfo_ios=("${configConst_Subcommand_ios}" "N")
+    exported_SubcommandInfo_ios_framework=("${configConst_Subcommand_ios_framework}" "N")
 }
 
 # ============= This is separation line =============
@@ -689,8 +700,6 @@ function process_Parse_BuildConfig() {
 
     # 判斷 build config file
     # 字串是否不為空。 (a non-empty string)
-    # TODO: flutter build apk --target-platform android-arm,android-arm64
-    # TODO: 之後可調整成函式，並去除判斷是否存在，Build Config File 會變成必要資訊。
     if [ -n "${exported_Param_BuildConfigFile}" ]; then
 
         echo

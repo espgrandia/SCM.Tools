@@ -5,9 +5,23 @@
 # @details : 放置常用產出部分 build config 內容的工具函式，使用者可以引用此檔案來使用函式.
 # @author : esp
 # @create date : 2020-10-20
-# sample :
+#
+# ---
+#
+# @sa:
+#  與 configConst.sh 有相依性。
+#  需於 import configTools.sh 或呼叫相關函式前，
+#  確保有 import configConst.sh
+#  使用範例可參考下方的 @sample
+#
+# ---
+#
+# @sample :
 #  ``` shell
-#  # include configTools_Gen_Required function
+#  # import configConst.sh for configTools.sh using export Environment Variable。
+#    . flutter/configConst.sh
+#
+#  # import configTools_Gen_Required function
 #  . flutter/configTools.sh
 #
 #  configTools_Gen_Required ... 細節看個函式的說明
@@ -22,7 +36,13 @@
 #  - http://justcode.ikeepstudying.com/2018/10/shell-%e4%bc%a0%e6%95%b0%e7%bb%84%e7%bb%99%e5%87%bd%e6%95%b0-%e5%87%bd%e6%95%b0%e6%8e%a5%e5%8f%97%e6%95%b0%e7%bb%84%e5%8f%82%e6%95%b0passing-array-to-function-of-shell-script/
 #
 # @附註 : 與 exported.sh 的 config 有關的產生函式，
-#    需要獨立可運作，之後要移到與 exported.sh 共用區塊。
+#
+
+## ================================== buildConfig key section : Begin ==================================
+# for config key
+export configTools_Optional="optional"
+
+## ================================== buildConfig key section : End ==================================
 
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Required.
@@ -33,6 +53,7 @@
 # @param ${4} : version : 對應 pubspec.yaml 的版本號碼。=> e.g. 1.0.0+0
 # @param ${!5} : subcommands : 對應 flutter subcommands : (aar apk appbundle bundle ios ios-framework)
 #   => e.g. sample_Subcommands=(apk ios)
+#   => sa 可參考 configCost.sh configConst_Subcommand_xxx 來設定。
 #
 # sample e.g. configTools_Gen_Required "${sample_FilePath}" "${sample_Pubspec_version}" "${sample_WorkPath}" sample_Subcommands[@]
 function configTools_Gen_Required() {
@@ -139,9 +160,6 @@ function configTools_Gen_Optional_Dart_Define() {
     local func_Param_Separator="${2}"
     local func_Param_Defines=("${!3}")
 
-    # for base key，最上層的 key
-    local func_Optional="optional"
-
     # for [optional]
     # [optional] [dart-define] : dart-define 會用到的內容，為 list 型態，{key}{separator}{value}
     local func_Optional_Key_DartDef="dart_define"
@@ -152,9 +170,10 @@ function configTools_Gen_Optional_Dart_Define() {
 
     # for dart-define
     echo "" >>"${func_Param_FilePath}"
-    echo "# ${func_Optional} sction" >>"${func_Param_FilePath}"
-    echo "${func_Optional} :" >>"${func_Param_FilePath}"
-    echo "  # [${func_Optional_Key_DartDef}] : dart-define 會用到的內容，為 list 型態，{key}{separator}{value}" >>"${func_Param_FilePath}"
+    echo "# ${configTools_Optional} [${func_Optional_Key_DartDef}] sction" >>"${func_Param_FilePath}"
+    echo "# - [${func_Optional_Key_DartDef}] : ${configConst_BuildParam_Key_DartDefine} 會用到的內容，為 list 型態，{key}{separator}{value}" >>"${func_Param_FilePath}"
+    echo "# - support subcommands: ${configConst_Subcommand_apk}, ${configConst_Subcommand_appbundle}, ${configConst_Subcommand_ios}, ${configConst_Subcommand_ios_framework}" >>"${func_Param_FilePath}"
+    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
     echo "  ${func_Optional_Key_DartDef} :" >>"${func_Param_FilePath}"
     echo "    ${func_Optional_Key_DartDef_Key_Separator} : ${func_Param_Separator}" >>"${func_Param_FilePath}"
     echo "    ${func_Optional_Key_DartDef_Key_Defines} :" >>"${func_Param_FilePath}"
@@ -195,16 +214,60 @@ function configTools_Gen_Optional_Flavor() {
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
 
+    # for flavor
+    func_Optional_Key_Flavor=flavor
+
+    echo "" >>"${func_Param_FilePath}"
+    echo "# ${configTools_Optional} ${func_Optional_Key_Flavor} sction" >>"${func_Param_FilePath}"
+    echo "# - [${func_Optional_Key_Flavor}] : ${configConst_BuildParam_Key_flavor} 會用到的內容，對應於 flutter build 的 flavor 參數" >>"${func_Param_FilePath}"
+    echo "# - support subcommands: ${configConst_Subcommand_aar}, ${configConst_Subcommand_apk}, ${configConst_Subcommand_appbundle}, ${configConst_Subcommand_bundle}, ${configConst_Subcommand_ios}, ${configConst_Subcommand_ios_framework}" >>"${func_Param_FilePath}"
+    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
+    echo "  ${func_Optional_Key_Flavor} : ${func_Param_Flavor}" >>"${func_Param_FilePath}"
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+
+# ============= This is separation line =============
+# @brief function : configTools_Gen_Optional_Target_Platform.
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @param $1 : file path : 要輸出的檔案位置 (含檔名)
+# @param $2 : platforms : flutter --target-platform 的設定內容 => e.g. "android-arm,android-arm64"
+# TODO: flutter build apk --target-platform android-arm,android-arm64
+#
+# sample e.g. configTools_Gen_Optional_Flavor "${sample_FilePath}" "${sample_Target_Platform}"
+# @sa :
+#      --target-platform                             The target platform for which the project is compiled.
+#                                                  [android-arm (default), android-arm64 (default), android-x86, android-x64 (default)]
+function configTools_Gen_Optional_Target_Platform() {
+
+    local func_Title_Log="*** function [configTools_Gen_Optional_Target_Platform] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} file path : "${1}""
+    echo "${func_Title_Log} flavor : "${2}""
+    echo "${func_Title_Log} Input param : End ***"
+
+    # for local varient
+    local func_Param_FilePath="${1}"
+    local func_Param_Target_Platform="${2}"
+
+    # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
+
     # for base key，最上層的 key
     local func_Optional="optional"
 
-    # for flavor
-    func_Optional_Key_Flavor=flavor
+    # for target-platform
+    func_Optional_Key_TargetPlatform=target_platform
+
     echo "" >>"${func_Param_FilePath}"
-    echo "# ${func_Optional} sction" >>"${func_Param_FilePath}"
-    echo "${func_Optional} :" >>"${func_Param_FilePath}"
-    echo "  # [${func_Optional_Key_Flavor}] : flavor 會用到的內容，對應於 flutter build 的 flavor 參數" >>"${func_Param_FilePath}"
-    echo "  ${func_Optional_Key_Flavor} : ${func_Param_Flavor}" >>"${func_Param_FilePath}"
+    echo "# ${configTools_Optional} [${func_Optional_Key_TargetPlatform}] sction" >>"${func_Param_FilePath}"
+    echo "# - [${func_Optional_Key_TargetPlatform}] : ${configConst_BuildParam_Key_TargetPlatform} 會用到的內容，對應於 flutter build 的 target-platform 參數" >>"${func_Param_FilePath}"
+    echo "# - support subcommands: ${configConst_Subcommand_aar}, ${configConst_Subcommand_apk}, ${configConst_Subcommand_appbundle}, ${configConst_Subcommand_bundle}" >>"${func_Param_FilePath}"
+    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
+    echo "  ${func_Optional_Key_TargetPlatform} : ${func_Param_Target_Platform}" >>"${func_Param_FilePath}"
 
     echo "${func_Title_Log} End ***"
     echo
