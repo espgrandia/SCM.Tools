@@ -42,6 +42,7 @@
 # - exported_ToogleFeature_BuildConfigType=release
 #   - build configutation type : 編譯組態設定，之後視情況是否要開放
 #   - 依據 flutter build version : 有 debug ， profile ， release 三種方式
+#   - 可參考 configTools.sh 中的 configConst_BuildConfigType_xxx。
 #
 # ---
 #
@@ -346,6 +347,7 @@ function export_aar() {
 
 ### ==================== apk : Begin ====================
 # @brief exported apk 部分
+# @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_apk() {
 
     # 暫存此區塊的起始時間。
@@ -354,6 +356,18 @@ function export_apk() {
 
     echo
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
+
+    local func_buildConfigType="${1}"
+
+    # check input parameters
+    checkInputParam "${exported_Title_Log}" func_buildConfigType "${func_buildConfigType}"
+
+    echo
+    echo "${exported_Title_Log} ============= Param : Begin ============="
+    echo "${exported_Title_Log} func_buildConfigType : ${func_buildConfigType}"
+    echo "${exported_Title_Log} ============= Param : End ============="
+    echo
+
     echo "${exported_Title_Log} 開始打包 "${func_Subcommand}""
 
     # ===> value 設定 <===
@@ -369,10 +383,10 @@ function export_apk() {
     echo
 
     # ===> build apk <===
-    echo "${exported_Title_Log} flutter build "${func_Subcommand}" --${exported_ToogleFeature_BuildConfigType} ..."
+    echo "${exported_Title_Log} flutter build "${func_Subcommand}" --${func_buildConfigType} ..."
 
     # 設定基本的 command 內容.
-    local func_Build_Command="build "${func_Subcommand}" --"${exported_ToogleFeature_BuildConfigType}" --build-name "${func_Android_VersionName}" --build-number "${func_Android_VersionCode}""
+    local func_Build_Command="build "${func_Subcommand}" --"${func_buildConfigType}" --build-name "${func_Android_VersionName}" --build-number "${func_Android_VersionCode}""
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_Command}" ]; then
@@ -391,10 +405,10 @@ function export_apk() {
     checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ flutter build "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
 
     # ===> copy apk to destination folder <===
-    echo "${exported_Title_Log} copy ${exported_ToogleFeature_BuildConfigType} "${func_Subcommand}" to output folder"
+    echo "${exported_Title_Log} copy ${func_buildConfigType} "${func_Subcommand}" to output folder"
 
     # 設定基本的輸出檔案格式。
-    local func_Build_FileName="Android-${exported_ToogleFeature_BuildConfigType}-${func_Android_VersionName}-${func_Android_VersionCode}"
+    local func_Build_FileName="Android-${func_buildConfigType}-${func_Android_VersionName}-${func_Android_VersionCode}"
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_FileName}" ]; then
@@ -404,7 +418,7 @@ function export_apk() {
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").apk"
 
-    cp -r build/app/outputs/apk/${exported_ToogleFeature_BuildConfigType}/app-${exported_ToogleFeature_BuildConfigType}.apk "${exported_Config_required_paths_output}"/${func_Build_FileName}
+    cp -r build/app/outputs/apk/${func_buildConfigType}/app-${func_buildConfigType}.apk "${exported_Config_required_paths_output}"/${func_Build_FileName}
 
     # check result - copy apk
     checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
@@ -461,6 +475,7 @@ function export_bundle() {
 
 ### ==================== ios : Begin ====================
 # @brief ios 部分
+# @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_ios() {
 
     local func_Title_Log="*** function [export_ios] -"
@@ -471,6 +486,18 @@ function export_ios() {
 
     echo
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
+
+    local func_buildConfigType="${1}"
+
+    # check input parameters
+    checkInputParam "${exported_Title_Log}" func_buildConfigType "${func_buildConfigType}"
+
+    echo
+    echo "${exported_Title_Log} ============= Param : Begin ============="
+    echo "${exported_Title_Log} func_buildConfigType : ${func_buildConfigType}"
+    echo "${exported_Title_Log} ============= Param : End ============="
+    echo
+
     echo "${exported_Title_Log} 開始打包 "${func_Subcommand}""
 
     # ===> value 設定 <===
@@ -486,10 +513,10 @@ function export_ios() {
     echo
 
     # ===> build ios <===
-    echo "${exported_Title_Log} flutter build "${func_Subcommand}" --${exported_ToogleFeature_BuildConfigType} ..."
+    echo "${exported_Title_Log} flutter build "${func_Subcommand}" --${func_buildConfigType} ..."
 
     # 設定基本的 command 內容.
-    local func_Build_Command="build "${func_Subcommand}" --"${exported_ToogleFeature_BuildConfigType}" --build-name "${func_iOS_BundleShortVersion}" --build-number "${func_iOS_BundleVersion}""
+    local func_Build_Command="build "${func_Subcommand}" --"${func_buildConfigType}" --build-name "${func_iOS_BundleShortVersion}" --build-number "${func_iOS_BundleVersion}""
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_Command}" ]; then
@@ -517,7 +544,7 @@ function export_ios() {
         checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${exported_OldPath}"
 
         # 設定基本的輸出檔案格式。
-        local func_Build_FileName="iOS-${exported_ToogleFeature_BuildConfigType}-${func_iOS_BundleVersion}"
+        local func_Build_FileName="iOS-${func_buildConfigType}-${func_iOS_BundleVersion}"
 
         # 若有 dart-define
         if [ -n "${exported_DartDef_PartOf_FileName}" ]; then
@@ -527,7 +554,7 @@ function export_ios() {
         # 補上結尾
         func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").ipa"
 
-        # zip -r -m iOS-${exported_ToogleFeature_BuildConfigType}-${func_iOS_BundleVersion}-${exported_Param_DartDef_Val_GitHash}-$(date "+%Y%m%d%H%M").ipa Payload
+        # zip -r -m iOS-${func_buildConfigType}-${func_iOS_BundleVersion}-${exported_Param_DartDef_Val_GitHash}-$(date "+%Y%m%d%H%M").ipa Payload
         zip -r -m ${func_Build_FileName} Payload
 
         # check result - zip iOS Payload
@@ -659,7 +686,7 @@ function process_Deal_ToggleFeature() {
 
     # build configutation type : 編譯組態設定，之後視情況是否要開放
     # 依據 flutter build ， 有 debug ， profile ， release
-    exported_ToogleFeature_BuildConfigType=release
+    exported_ToogleFeature_BuildConfigType="${configConst_BuildConfigType_Release}"
 
     echo
     echo "${exported_Title_Log} ============= Toogle Feature : Begin ============="
@@ -776,7 +803,8 @@ function process_Excecute_Build_Sumcommands() {
     check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_aar[1]} export_aar
 
     # 判斷是否要出版 apk
-    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_apk[1]} export_apk
+    local func_CommandParams=("${exported_ToogleFeature_BuildConfigType}")
+    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_apk[1]} export_apk func_CommandParams[@]
 
     # 判斷是否要出版 appbundle
     check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_appbundle[1]} export_appbundle
@@ -785,7 +813,7 @@ function process_Excecute_Build_Sumcommands() {
     check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_bundle[1]} export_bundle
 
     # 判斷是否要出版 ios
-    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios[1]} export_ios
+    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios[1]} export_ios func_CommandParams[@]
 
     # 判斷是否要出版 ios_framework
     check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios_framework[1]} export_ios_framework
