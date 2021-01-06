@@ -19,7 +19,7 @@ export configConst_Subcommand_ios_framework="ios-framework"
 ## ================================== subcommand key section : End ==================================
 
 ## ================================== buildConfigType key section : Begin ==================================
-# subcommand : [apk] [appbundle] [bundle] [ios] 支援。
+# 支援的 subcommand : [apk] [appbundle] [bundle] [ios]。
 # 依據 flutter build ， 有 debug ， profile ， release
 configConst_BuildConfigType_Debug=debug
 configConst_BuildConfigType_Profile=profile
@@ -49,7 +49,7 @@ export configConst_BuildParam_ToggleFeature_NoPub="no-pub"
 export configConst_BuildParam_Key_DartDefine="dart-define"
 
 # [flavor] 依照 flavor 來做編譯，Android 為 flavor， iOS 為 Xcode schemes。
-export configConst_BuildParam_Key_flavor="flavor"
+export configConst_BuildParam_Key_Flavor="flavor"
 
 # [target-platform] 設定 Android 的發佈平台。
 export configConst_BuildParam_Key_TargetPlatform="target-platform"

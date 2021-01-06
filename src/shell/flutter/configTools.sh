@@ -55,7 +55,7 @@ export configTools_Optional="optional"
 #   => e.g. sample_Subcommands=(apk ios)
 #   => sa 可參考 configCost.sh configConst_Subcommand_xxx 來設定。
 #
-# sample e.g. configTools_Gen_Required "${sample_FilePath}" "${sample_Pubspec_version}" "${sample_WorkPath}" sample_Subcommands[@]
+# sample e.g. configTools_Gen_Required "${sample_FilePath}" "${sample_WorkPath}" "${sample_OutputPath}" "${sample_Pubspec_version}" sample_Subcommands[@]
 function configTools_Gen_Required() {
 
     local func_Title_Log="*** function [configTools_Gen_Required] -"
@@ -119,7 +119,7 @@ function configTools_Gen_Required() {
 
     ## for [required] [subcommands]:
     echo "" >>"${func_Param_FilePath}"
-    echo "  # [${func_Required_Key_Subcommands}] : build sumcommand (like as : apk, ios, ...)" >>"${func_Param_FilePath}"
+    echo "  # [${func_Required_Key_Subcommands}] : build sumcommand (like as : ${configConst_Subcommand_apk}, ${configConst_Subcommand_ios}, ...)" >>"${func_Param_FilePath}"
     echo "  ${func_Required_Key_Subcommands} :" >>"${func_Param_FilePath}"
 
     local func_i
@@ -127,6 +127,56 @@ function configTools_Gen_Required() {
 
         local aSubcommand=${func_Param_Subcommands[${func_i}]}
         echo "    - ${aSubcommand}" >>"${func_Param_FilePath}"
+
+    done
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+
+# ============= This is separation line =============
+# @brief function : configTools_Gen_Optional_BuildConfigType.
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @param $1 : file path : 要輸出的檔案位置 (含檔名)
+# @param ${!2} : buildConfigTypes : 對應 flutter build config types : (debug profile release)
+# 依據 flutter build ， 有 debug ， profile ， release
+#   => e.g. sample_BuildConfigTypes=(debug release)
+#   => sa 可參考 configCost.sh configConst_BuildConfigType_xxx 來設定。
+#
+# sample e.g. configTools_Gen_Optional_BuildConfigType "${sample_FilePath}" sample_BuildConfigTypes[@]
+function configTools_Gen_Optional_BuildConfigType() {
+
+    local func_Title_Log="*** function [configTools_Gen_Optional_Dart_Define] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} file path : "${1}""
+    echo "${func_Title_Log} build config types : ("${!2}")"
+    echo "${func_Title_Log} Input param : End ***"
+
+    # for local varient
+    local func_Param_FilePath="${1}"
+    local func_Param_BuildConfigTypes=("${!2}")
+
+    # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
+
+    # for buildConfigTypes
+    local func_Optional_Key_BuildConfigType="buildConfigTypes"
+
+    echo "" >>"${func_Param_FilePath}"
+    echo "# ${configTools_Optional} [${func_Optional_Key_BuildConfigType}] sction" >>"${func_Param_FilePath}"
+    echo "# - [${func_Optional_Key_BuildConfigType}] : build config type (like as : ${configConst_BuildConfigType_Debug}, ${configConst_BuildConfigType_Profile}, ${configConst_BuildConfigType_Release})" >>"${func_Param_FilePath}"
+    echo "# - support subcommands: ${configConst_Subcommand_apk}, ${configConst_Subcommand_appbundle}, ${configConst_Subcommand_bundle}, ${configConst_Subcommand_ios}" >>"${func_Param_FilePath}"
+    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
+
+    echo "  ${func_Optional_Key_BuildConfigType} :" >>"${func_Param_FilePath}"
+
+    local func_i
+    for ((func_i = 0; func_i < ${#func_Param_BuildConfigTypes[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+
+        local aBuildConfigType=${func_Param_BuildConfigTypes[${func_i}]}
+        echo "    - ${aBuildConfigType}" >>"${func_Param_FilePath}"
 
     done
 
@@ -152,7 +202,7 @@ function configTools_Gen_Optional_Dart_Define() {
     echo "${func_Title_Log} Input param : Begin ***"
     echo "${func_Title_Log} file path : "${1}""
     echo "${func_Title_Log} separator : "${2}""
-    echo "${func_Title_Log} defines   : "${!3}""
+    echo "${func_Title_Log} ${configConst_BuildParam_Key_DartDefine} values : ("${!3}")"
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient
@@ -205,7 +255,7 @@ function configTools_Gen_Optional_Flavor() {
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
     echo "${func_Title_Log} file path : "${1}""
-    echo "${func_Title_Log} flavor : "${2}""
+    echo "${func_Title_Log} ${configConst_BuildParam_Key_Flavor} value : "${2}""
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient
@@ -218,7 +268,7 @@ function configTools_Gen_Optional_Flavor() {
     func_Optional_Key_Flavor=flavor
 
     echo "" >>"${func_Param_FilePath}"
-    echo "# ${configTools_Optional} ${func_Optional_Key_Flavor} sction" >>"${func_Param_FilePath}"
+    echo "# ${configTools_Optional} [${func_Optional_Key_Flavor}] sction" >>"${func_Param_FilePath}"
     echo "# - [${func_Optional_Key_Flavor}] : ${configConst_BuildParam_Key_flavor} 會用到的內容，對應於 flutter build 的 flavor 參數" >>"${func_Param_FilePath}"
     echo "# - support subcommands: ${configConst_Subcommand_aar}, ${configConst_Subcommand_apk}, ${configConst_Subcommand_appbundle}, ${configConst_Subcommand_bundle}, ${configConst_Subcommand_ios}, ${configConst_Subcommand_ios_framework}" >>"${func_Param_FilePath}"
     echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
@@ -247,7 +297,7 @@ function configTools_Gen_Optional_Target_Platform() {
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
     echo "${func_Title_Log} file path : "${1}""
-    echo "${func_Title_Log} flavor : "${2}""
+    echo "${func_Title_Log} ${configConst_BuildParam_Key_TargetPlatform} values : "${2}""
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient

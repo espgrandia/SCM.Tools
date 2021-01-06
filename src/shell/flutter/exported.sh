@@ -194,10 +194,10 @@ function parseReruiredSection() {
     # for version
     splitStringToPair "${exported_Title_Log}" "${exported_Config_required_version}" "+" exported_BuildName exported_BuildNumber
 
-    local i
-    for ((i = 0; i < ${#exported_Config_required_subcommands[@]}; i++)); do #請注意 ((   )) 雙層括號
+    local func_i
+    for ((func_i = 0; func_i < ${#exported_Config_required_subcommands[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-        local aSubcommand=${exported_Config_required_subcommands[$i]}
+        local aSubcommand=${exported_Config_required_subcommands[${func_i}]}
 
         # 判斷是否為 aar
         dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_aar[0]}" exported_SubcommandInfo_aar[1]
@@ -237,6 +237,65 @@ function parseReruiredSection() {
     echo "${exported_Title_Log} ============= required section : End ============="
     echo
 
+}
+
+# ============= This is separation line =============
+# @brief function : 是否為合法的 BuildConfigType，
+#        如 : version，subcommands
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
+#   - 只檢查是否為合法設定。
+#
+# @param $1 : build config type : 要驗證的 config type。
+function check_Legal_BuildConfigType() {
+
+    local func_Param_BuildConfigType=${1}
+
+    local func_CheckBuildConfigTypes=("${configConst_BuildConfigType_Debug}" "${configConst_BuildConfigType_Profile}" "${configConst_BuildConfigType_Release}")
+
+    # isLegal 的初始設定。
+    local isLegal="N"
+
+    # 檢查是否合法。
+    local func_i
+    for ((func_i = 0; func_i < ${#func_CheckBuildConfigTypes[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+
+        local aCheckBuildConfigType=${func_CheckBuildConfigTypes[${func_i}]}
+
+        # 判斷是否為 要處理的 command (subcommand name 是否相同) .
+        if [ ${func_Param_BuildConfigType} = ${aCheckBuildConfigType} ]; then
+            isLegal="Y"
+        fi
+
+    done
+
+    # 不合法則中斷程序。
+    if [ ${isLegal} = "N" ]; then
+        checkResultFail_And_ChangeFolder "${exported_Title_Log} [check_Legal_BuildConfigType] -" "10" "!!! ~ OPPS!! Input config type : ${func_Param_BuildConfigType} is not support in (${func_CheckBuildConfigTypes[*]}) => fail ~ !!!" "${exported_OldPath}"
+    fi
+}
+
+# ============= This is separation line =============
+# @brief function : 剖析 BuildConfigType 部分，
+#        如 : version，subcommands
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
+#   - 只檢查是否為合法設定。
+function parseBuildConfigTypeSection() {
+
+    if [ -n "${exported_Config_optional_buildConfigTypes}" ]; then
+
+        local func_i
+
+        for ((func_i = 0; func_i < ${#exported_Config_optional_buildConfigTypes[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+
+            local aBuildConfigType=${exported_Config_optional_buildConfigTypes[${func_i}]}
+
+            check_Legal_BuildConfigType "${aBuildConfigType}"
+
+        done
+
+    fi
 }
 
 # ============= This is separation line =============
@@ -321,7 +380,7 @@ function export_NotyetSupportSubcommand() {
 
     echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} OPPS!! Notyet support this subcommand ( "${func_Subcommand}" ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( "${func_Subcommand}" ).\n    Error !!! ***${func_Color_Off}"
 
-    # checkResultFail_And_ChangeFolder "${exported_Title_Log}" "10" "!!! ~ OPPS!! Not yet support this subcommand:  "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
+    # checkResultFail_And_ChangeFolder "${exported_Title_Log}" "50" "!!! ~ OPPS!! Not yet support this subcommand:  "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
 }
 ### ==================== NotyetSupportSubcommand : End ====================
 
@@ -435,6 +494,7 @@ function export_apk() {
 
 ### ==================== appbundle : Begin ====================
 # @brief exported appbundle 部分
+# @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_appbundle() {
 
     local func_Title_Log="*** function [export_appbundle] -"
@@ -455,6 +515,7 @@ function export_appbundle() {
 
 ### ==================== bundle : Begin ====================
 # @brief exported bundle 部分
+# @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_bundle() {
 
     local func_Title_Log="*** function [export_bundle] -"
@@ -685,7 +746,8 @@ function process_Deal_ToggleFeature() {
     exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
 
     # build configutation type : 編譯組態設定，之後視情況是否要開放
-    # 依據 flutter build ， 有 debug ， profile ， release
+    # 依據 flutter build ， 有 debug ， profile ， release，
+    # 可參考 configConst.sh 中的 configConst_BuildConfigType_xxx
     exported_ToogleFeature_BuildConfigType="${configConst_BuildConfigType_Release}"
 
     echo
@@ -745,7 +807,10 @@ function process_Parse_BuildConfig() {
         # parse required section
         parseReruiredSection
 
-        # parse dart define
+        # parse build config type section
+        parseBuildConfigTypeSection
+
+        # parse dart define section
         parseDartDefine
 
         # 開啟可以抓到此 shell 目前有哪些設定值。
@@ -797,23 +862,40 @@ function process_Clean_Cache() {
 # ============= This is separation line =============
 # @brief function : [程序] 執行 build subcommands。
 # @details : 依照 build config 的設定來 執行 build subcommand。
-function process_Excecute_Build_Sumcommands() {
+function process_Execute_Build_Sumcommands() {
 
     # 判斷是否要出版 aar
     check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_aar[1]} export_aar
 
-    # 判斷是否要出版 apk
-    local func_CommandParams=("${exported_ToogleFeature_BuildConfigType}")
-    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_apk[1]} export_apk func_CommandParams[@]
+    # 處理有 build config type 的 subcommands.
+    # 先設定成 default 的 build config type。
+    local func_BuildConfigTypes=("${exported_ToogleFeature_BuildConfigType}")
 
-    # 判斷是否要出版 appbundle
-    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_appbundle[1]} export_appbundle
+    # 若有 build config types，則以此為主。
+    # 支援的 subcommand : [apk] [appbundle] [bundle] [ios]。
+    if [ -n "${exported_Config_optional_buildConfigTypes}" ]; then
+        func_BuildConfigTypes=("${exported_Config_optional_buildConfigTypes[@]}")
+    fi
 
-    # 判斷是否要出版 bundle
-    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_bundle[1]} export_bundle
+    local func_i
+    for ((func_i = 0; func_i < ${#func_BuildConfigTypes[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-    # 判斷是否要出版 ios
-    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios[1]} export_ios func_CommandParams[@]
+        local aBuildConfigType=${func_BuildConfigTypes[${func_i}]}
+        local func_CommandParams=("${aBuildConfigType}")
+
+        # 判斷是否要出版 apk
+        check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_apk[1]} export_apk func_CommandParams[@]
+
+        # 判斷是否要出版 appbundle
+        check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_appbundle[1]} export_appbundle func_CommandParams[@]
+
+        # 判斷是否要出版 bundle
+        check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_bundle[1]} export_bundle func_CommandParams[@]
+
+        # 判斷是否要出版 ios
+        check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios[1]} export_ios func_CommandParams[@]
+
+    done
 
     # 判斷是否要出版 ios_framework
     check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios_framework[1]} export_ios_framework
@@ -865,7 +947,7 @@ process_Clean_Cache
 
 # ============= This is separation line =============
 # call - [程序] 執行 build subcommands。
-process_Excecute_Build_Sumcommands
+process_Execute_Build_Sumcommands
 
 # ============= This is separation line =============
 # call - [程序] shell 全部完成需處理的部份.
