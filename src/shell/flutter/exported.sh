@@ -39,10 +39,11 @@
 #   - 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
 #   - 上傳版本會是關閉狀態，若需要測試時，自行打開。
 #
-# - exported_ToogleFeature_BuildConfigType=release
+# - exported_ToogleFeature_DefaultBuildConfigType=release
 #   - build configutation type : 編譯組態設定，之後視情況是否要開放
 #   - 依據 flutter build version : 有 debug ， profile ， release 三種方式
 #   - 可參考 configTools.sh 中的 configConst_BuildConfigType_xxx。
+#   - [註] : 若 build config 有設定 [build_config_types] 則會以該設定為主。
 #
 # ---
 #
@@ -81,6 +82,8 @@
 #   - exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
 #     build subcommands，為此次需要編譯的模式為哪一些。
 #
+# ---
+#
 # - optional :
 #
 #   - dart-define
@@ -95,21 +98,30 @@
 #
 # ---
 #
+# - optional :
+#
+#   - build_config_types :
+#     - exported_Config_optional_build_config_types : 
+#       build config type (like as : debug, profile, release)
+#
+# ---
+#
 # 程式碼區塊 說明:
+#
+# - [通用規則] :
+#   函式與此 shell 有高度相依，若要抽離到獨立 shell，需調整之。
+#   其中 [exported_xxx] 是跨函式讀取。
 #
 # - 此 shell 主要分四個主要區塊 :
 #
 #   - buildConfig function section :
-#     流程函式，將流程會用到的獨立功能，以函式來呈現，
-#     裡面與此 shell 有高度相依，[preExported_xxx] 是跨函式讀取。
+#     有關 build config 處理的相關函式。
+#
+#   - export function section :
+#     實際執行 flutter build [subcommand] 的函式。
 #
 #   - prcess function section :
 #     流程函式，將流程會用到的獨立功能，以函式來呈現，
-#     裡面與此 shell 有高度相依，[preExported_xxx] 是跨函式讀取。
-#
-#   - prcess function section :
-#     流程函式，將流程會用到的獨立功能，以函式來呈現，
-#     裡面與此 shell 有高度相依，[preExported_xxx] 是跨函式讀取。
 #
 #   - deal prcess step section :
 #     實際跑流程函式的順序，
@@ -122,10 +134,7 @@
 #  - 只有產出 release (是否足夠)
 #  - apk 未瘦身，不確定是否有擾亂 ?
 #  - flavor 的可行性。
-#  - dart-define 的可行性。
-#    - 設定讀取OK
-#    - 思考是否可改成由外部設定檔案方式來做 list 概念 的批次處理方式。
-#  - flutter 的編譯組態是否要開放?
+#  - 是否要 dump detail log to file。
 #
 
 ## ================================== buildConfig function section : Begin ==================================
@@ -283,13 +292,13 @@ function check_Legal_BuildConfigType() {
 #   - 只檢查是否為合法設定。
 function parseBuildConfigTypeSection() {
 
-    if [ -n "${exported_Config_optional_buildConfigTypes}" ]; then
+    if [ -n "${exported_Config_optional_build_config_types}" ]; then
 
         local func_i
 
-        for ((func_i = 0; func_i < ${#exported_Config_optional_buildConfigTypes[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+        for ((func_i = 0; func_i < ${#exported_Config_optional_build_config_types[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-            local aBuildConfigType=${exported_Config_optional_buildConfigTypes[${func_i}]}
+            local aBuildConfigType=${exported_Config_optional_build_config_types[${func_i}]}
 
             check_Legal_BuildConfigType "${aBuildConfigType}"
 
@@ -743,17 +752,17 @@ function process_Deal_InputParam() {
 function process_Deal_ToggleFeature() {
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
+    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="Y"
 
     # build configutation type : 編譯組態設定，之後視情況是否要開放
     # 依據 flutter build ， 有 debug ， profile ， release，
     # 可參考 configConst.sh 中的 configConst_BuildConfigType_xxx
-    exported_ToogleFeature_BuildConfigType="${configConst_BuildConfigType_Release}"
+    exported_ToogleFeature_DefaultBuildConfigType="${configConst_BuildConfigType_Release}"
 
     echo
     echo "${exported_Title_Log} ============= Toogle Feature : Begin ============="
     echo "${exported_Title_Log} exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile : ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile}"
-    echo "${exported_Title_Log} exported_ToogleFeature_BuildConfigType : ${exported_ToogleFeature_BuildConfigType}"
+    echo "${exported_Title_Log} exported_ToogleFeature_DefaultBuildConfigType : ${exported_ToogleFeature_DefaultBuildConfigType}"
     echo "${exported_Title_Log} ============= Toogle Feature : End ============="
     echo
 
@@ -869,12 +878,12 @@ function process_Execute_Build_Sumcommands() {
 
     # 處理有 build config type 的 subcommands.
     # 先設定成 default 的 build config type。
-    local func_BuildConfigTypes=("${exported_ToogleFeature_BuildConfigType}")
+    local func_BuildConfigTypes=("${exported_ToogleFeature_DefaultBuildConfigType}")
 
     # 若有 build config types，則以此為主。
     # 支援的 subcommand : [apk] [appbundle] [bundle] [ios]。
-    if [ -n "${exported_Config_optional_buildConfigTypes}" ]; then
-        func_BuildConfigTypes=("${exported_Config_optional_buildConfigTypes[@]}")
+    if [ -n "${exported_Config_optional_build_config_types}" ]; then
+        func_BuildConfigTypes=("${exported_Config_optional_build_config_types[@]}")
     fi
 
     local func_i

@@ -146,7 +146,7 @@ function configTools_Gen_Required() {
 # sample e.g. configTools_Gen_Optional_BuildConfigType "${sample_FilePath}" sample_BuildConfigTypes[@]
 function configTools_Gen_Optional_BuildConfigType() {
 
-    local func_Title_Log="*** function [configTools_Gen_Optional_Dart_Define] -"
+    local func_Title_Log="*** function [configTools_Gen_Optional_BuildConfigType] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -162,7 +162,7 @@ function configTools_Gen_Optional_BuildConfigType() {
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
 
     # for buildConfigTypes
-    local func_Optional_Key_BuildConfigType="buildConfigTypes"
+    local func_Optional_Key_BuildConfigType="build_config_types"
 
     echo "" >>"${func_Param_FilePath}"
     echo "# ${configTools_Optional} [${func_Optional_Key_BuildConfigType}] sction" >>"${func_Param_FilePath}"
