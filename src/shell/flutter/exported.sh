@@ -101,7 +101,7 @@
 # - optional :
 #
 #   - build_config_types :
-#     - exported_Config_optional_build_config_types : 
+#     - exported_Config_optional_build_config_types :
 #       build config type (like as : debug, profile, release)
 #
 # ---
@@ -131,10 +131,9 @@
 # ---
 #
 # TODO:
-#  - 只有產出 release (是否足夠)
 #  - apk 未瘦身，不確定是否有擾亂 ?
 #  - flavor 的可行性。
-#  - 是否要 dump detail log to file。
+#  - 是否要 dump detail log to file。 => 改為 report note。
 #
 
 ## ================================== buildConfig function section : Begin ==================================
@@ -450,9 +449,7 @@ function export_apk() {
     echo "${exported_Title_Log} ============= Value : End ============="
     echo
 
-    # ===> build apk <===
-    echo "${exported_Title_Log} flutter build "${func_Subcommand}" --${func_buildConfigType} ..."
-
+    # ===> Command 設定 <===
     # 設定基本的 command 內容.
     local func_Build_Command="build "${func_Subcommand}" --"${func_buildConfigType}" --build-name "${func_Android_VersionName}" --build-number "${func_Android_VersionCode}""
 
@@ -466,15 +463,7 @@ function export_apk() {
         func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_TargetPlatform} "${exported_Config_optional_target_platform}""
     fi
 
-    echo "${exported_Title_Log} flutter ${func_Build_Command}"
-    flutter ${func_Build_Command}
-
-    # check result - build apk
-    checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ flutter build "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
-
-    # ===> copy apk to destination folder <===
-    echo "${exported_Title_Log} copy ${func_buildConfigType} "${func_Subcommand}" to output folder"
-
+    # ===> OutputFile 設定 <===
     # 設定基本的輸出檔案格式。
     local func_Build_FileName="Android-${func_buildConfigType}-${func_Android_VersionName}-${func_Android_VersionCode}"
 
@@ -486,6 +475,30 @@ function export_apk() {
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").apk"
 
+    # ===> report note - init 設定 <===
+    echo >>"${exported_ReportNoteFile}"
+    echo "---" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "## [export_apk] "${func_Build_FileName}"" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "- command line :" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "  \`\`\`shell" >>"${exported_ReportNoteFile}"
+    echo "    flutter ${func_Build_Command}" >>"${exported_ReportNoteFile}"
+    echo "  \`\`\`" >>"${exported_ReportNoteFile}"
+
+    # ===> build apk <===
+    echo "${exported_Title_Log} flutter build "${func_Subcommand}" --${func_buildConfigType} ..."
+
+    echo "${exported_Title_Log} flutter ${func_Build_Command}"
+    flutter ${func_Build_Command}
+
+    # check result - build apk
+    checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ flutter build "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
+
+    # ===> copy apk to destination folder <===
+    echo "${exported_Title_Log} copy ${func_buildConfigType} "${func_Subcommand}" to output folder"
+
     cp -r build/app/outputs/apk/${func_buildConfigType}/app-${func_buildConfigType}.apk "${exported_Config_required_paths_output}"/${func_Build_FileName}
 
     # check result - copy apk
@@ -495,8 +508,15 @@ function export_apk() {
     echo "${exported_Title_Log} output file name : ${func_Build_FileName}"
     say "${exported_Title_Log} 打包 "${func_Subcommand}" 成功"
 
+    # ===> report note - final 設定 <===
+    # ===> 輸出 全部的產出時間統計 <===
+    local func_TotalTime=$((${SECONDS} - ${func_Temp_Seconds}))
+    echo >>"${exported_ReportNoteFile}"
+    echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
+
     echo
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    # echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: ${func_TotalTime}s"
     echo
 }
 ### ==================== apk : End ====================
@@ -582,9 +602,7 @@ function export_ios() {
     echo "${exported_Title_Log} ============= Value : End ============="
     echo
 
-    # ===> build ios <===
-    echo "${exported_Title_Log} flutter build "${func_Subcommand}" --${func_buildConfigType} ..."
-
+    # ===> Command 設定 <===
     # 設定基本的 command 內容.
     local func_Build_Command="build "${func_Subcommand}" --"${func_buildConfigType}" --build-name "${func_iOS_BundleShortVersion}" --build-number "${func_iOS_BundleVersion}""
 
@@ -592,6 +610,33 @@ function export_ios() {
     if [ -n "${exported_DartDef_PartOf_Command}" ]; then
         func_Build_Command="${func_Build_Command} "${exported_DartDef_PartOf_Command}""
     fi
+
+    # ===> OutputFile 設定 <===
+    # 設定基本的輸出檔案格式。
+    local func_Build_FileName="iOS-${func_buildConfigType}-${func_iOS_BundleVersion}"
+
+    # 若有 dart-define
+    if [ -n "${exported_DartDef_PartOf_FileName}" ]; then
+        func_Build_FileName="${func_Build_FileName}-${exported_DartDef_PartOf_FileName}"
+    fi
+
+    # 補上結尾
+    func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").ipa"
+
+    # ===> report note - init 設定 <===
+    echo >>"${exported_ReportNoteFile}"
+    echo "---" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "## [export_ios] "${func_Build_FileName}"" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "- command line :" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "  \`\`\`shell" >>"${exported_ReportNoteFile}"
+    echo "    flutter ${func_Build_Command}" >>"${exported_ReportNoteFile}"
+    echo "  \`\`\`" >>"${exported_ReportNoteFile}"
+
+    # ===> build ios <===
+    echo "${exported_Title_Log} flutter build "${func_Subcommand}" --${func_buildConfigType} ..."
 
     echo "${exported_Title_Log} flutter ${func_Build_Command}"
     flutter ${func_Build_Command}
@@ -613,17 +658,6 @@ function export_ios() {
         # check result - copy iOS Payload
         checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${exported_OldPath}"
 
-        # 設定基本的輸出檔案格式。
-        local func_Build_FileName="iOS-${func_buildConfigType}-${func_iOS_BundleVersion}"
-
-        # 若有 dart-define
-        if [ -n "${exported_DartDef_PartOf_FileName}" ]; then
-            func_Build_FileName="${func_Build_FileName}-${exported_DartDef_PartOf_FileName}"
-        fi
-
-        # 補上結尾
-        func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").ipa"
-
         # zip -r -m iOS-${func_buildConfigType}-${func_iOS_BundleVersion}-${exported_Param_DartDef_Val_GitHash}-$(date "+%Y%m%d%H%M").ipa Payload
         zip -r -m ${func_Build_FileName} Payload
 
@@ -644,6 +678,16 @@ function export_ios() {
         # check result - copy ios
         checkResultFail_And_ChangeFolder "${exported_Title_Log}" "100" "!!! ~ Not found build/ios/iphoneos/Runner.app => fail ~ !!!" "${exported_OldPath}"
     fi
+
+    # ===> report note - final 設定 <===
+    # ===> 輸出 全部的產出時間統計 <===
+    local func_TotalTime=$((${SECONDS} - ${func_Temp_Seconds}))
+    echo >>"${exported_ReportNoteFile}"
+    echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
+
+    echo
+    # echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: ${func_TotalTime}s"
 
     echo
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
@@ -745,6 +789,8 @@ function process_Deal_InputParam() {
     echo "${exported_Title_Log} exported_Param_BuildConfigFile : ${exported_Param_BuildConfigFile}"
     echo "${exported_Title_Log} ============= Param : End ============="
     echo
+
+    exported_ReportNoteFile="${exported_Param_BuildConfigFile}.report.md"
 }
 
 # ============= This is separation line =============
@@ -752,7 +798,7 @@ function process_Deal_InputParam() {
 function process_Deal_ToggleFeature() {
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="Y"
+    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
 
     # build configutation type : 編譯組態設定，之後視情況是否要開放
     # 依據 flutter build ， 有 debug ， profile ， release，
@@ -869,6 +915,23 @@ function process_Clean_Cache() {
 }
 
 # ============= This is separation line =============
+# call - [程序] 建立 report note 初始化部分。
+function process_Create_ReportNote_Init() {
+
+    echo "# Report Note" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "---" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "## Base info" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "- Subject : report info by \`exported.sh\`" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "- BuildConfigFile :" >>"${exported_ReportNoteFile}"
+    echo >>"${exported_ReportNoteFile}"
+    echo "  > ${exported_Param_BuildConfigFile}" >>"${exported_ReportNoteFile}"
+}
+
+# ============= This is separation line =============
 # @brief function : [程序] 執行 build subcommands。
 # @details : 依照 build config 的設定來 執行 build subcommand。
 function process_Execute_Build_Sumcommands() {
@@ -953,6 +1016,10 @@ process_Deal_Paths
 # ============= This is separation line =============
 # call - [程序] 清除緩存 (之前編譯的暫存檔)。
 process_Clean_Cache
+
+# ============= This is separation line =============
+# call - [程序] 建立 report note 初始化部分。
+process_Create_ReportNote_Init
 
 # ============= This is separation line =============
 # call - [程序] 執行 build subcommands。
