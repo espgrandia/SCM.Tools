@@ -86,6 +86,23 @@
 #
 # - optional :
 #
+#   - report_path :
+#     - exported_Config_optional_report_path :
+#       exported.sh 額外會用到的參數，指定 report file path (含檔名)。
+#       為 markdown 語法撰寫，沒設定會有預設檔案名稱。
+#
+# ---
+#
+# - optional :
+#
+#   - build_config_types :
+#     - exported_Config_optional_build_config_types :
+#       build config type (like as : debug, profile, release)
+#
+# ---
+#
+# - optional :
+#
 #   - dart-define
 #
 #    - exported_Config_optional_dart_define_separator
@@ -100,9 +117,9 @@
 #
 # - optional :
 #
-#   - build_config_types :
-#     - exported_Config_optional_build_config_types :
-#       build config type (like as : debug, profile, release)
+#   - target_platform :
+#     - exported_Config_optional_target_platform :
+#       對應於 flutter build 的 target-platform 參數。
 #
 # ---
 #
@@ -133,7 +150,7 @@
 # TODO:
 #  - apk 未瘦身，不確定是否有擾亂 ?
 #  - flavor 的可行性。
-#  - 是否要 dump detail log to file。 => 改為 report note。
+#  - report_path 是否要調整為 required path 中的一環。
 #
 
 ## ================================== buildConfig function section : Begin ==================================
@@ -244,6 +261,23 @@ function parseReruiredSection() {
 
     echo "${exported_Title_Log} ============= required section : End ============="
     echo
+
+}
+
+report_path
+
+# ============= This is separation line =============
+# @brief function : 剖析 BuildConfigType 部分，
+#        如 : version，subcommands
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
+#   - 只檢查是否為合法設定。
+function parseReportPathSection() {
+
+    # build config 有設定則以設定為主。
+    if [ -n "${exported_Config_optional_report_path}" ]; then
+        exported_ReportNoteFile=${exported_Config_optional_report_path}
+    fi
 
 }
 
@@ -515,7 +549,6 @@ function export_apk() {
     echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
 
     echo
-    # echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: ${func_TotalTime}s"
     echo
 }
@@ -684,10 +717,6 @@ function export_ios() {
     local func_TotalTime=$((${SECONDS} - ${func_Temp_Seconds}))
     echo >>"${exported_ReportNoteFile}"
     echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
-
-    echo
-    # echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: ${func_TotalTime}s"
 
     echo
     echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
@@ -861,6 +890,9 @@ function process_Parse_BuildConfig() {
 
         # parse required section
         parseReruiredSection
+
+        # parse report path section
+        parseReportPathSection
 
         # parse build config type section
         parseBuildConfigTypeSection

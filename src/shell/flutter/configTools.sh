@@ -135,6 +135,46 @@ function configTools_Gen_Required() {
 }
 
 # ============= This is separation line =============
+# @brief function : configTools_Gen_Optional_ReportFilePath.
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#  - exported.sh 的 Report File Path 為 markdown 語法撰寫，附檔名請設定為 .md
+#  - 若 build config file 沒有設定 report file，則會以 build config file 加上後綴，"xxx.yaml.report.md"
+# @param $1 : file path : 要輸出的檔案位置 (含檔名)
+# @param $2 : report file path : 指定 exported.sh 的 report file path (含檔名)。
+#
+# sample e.g. configTools_Gen_Optional_ReportFilePath "${sample_FilePath}" "${sample_ReportFilePath}"
+function configTools_Gen_Optional_ReportFilePath() {
+
+    local func_Title_Log="*** function [configTools_Gen_Optional_Dart_Define] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} file path : "${1}""
+    echo "${func_Title_Log} report file path : "${2}""
+    echo "${func_Title_Log} Input param : End ***"
+
+    # for local varient
+    local func_Param_FilePath="${1}"
+    local func_Param_ReportFilePath="${2}"
+
+    # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
+
+    # for flavor
+    func_Optional_Key_ReportFilePath=report_path
+
+    echo "" >>"${func_Param_FilePath}"
+    echo "# ${configTools_Optional} [${func_Optional_Key_ReportFilePath}] sction" >>"${func_Param_FilePath}"
+    echo "# - [${func_Optional_Key_ReportFilePath}] : exported.sh 額外會用到的參數，指定 report file path (含檔名)。" >>"${func_Param_FilePath}"
+    echo "# - 為 markdown 語法撰寫，沒設定會有預設檔案名稱。" >>"${func_Param_FilePath}"    
+    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
+    echo "  ${func_Optional_Key_ReportFilePath} : ${func_Param_ReportFilePath}" >>"${func_Param_FilePath}"
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+
+# ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_BuildConfigType.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
