@@ -282,42 +282,6 @@ function parseReportPathSection() {
 }
 
 # ============= This is separation line =============
-# @brief function : 是否為合法的 BuildConfigType，
-#        如 : version，subcommands
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
-#   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
-#   - 只檢查是否為合法設定。
-#
-# @param $1 : build config type : 要驗證的 config type。
-function check_Legal_BuildConfigType() {
-
-    local func_Param_BuildConfigType=${1}
-
-    local func_CheckBuildConfigTypes=("${configConst_BuildConfigType_Debug}" "${configConst_BuildConfigType_Profile}" "${configConst_BuildConfigType_Release}")
-
-    # isLegal 的初始設定。
-    local isLegal="N"
-
-    # 檢查是否合法。
-    local func_i
-    for ((func_i = 0; func_i < ${#func_CheckBuildConfigTypes[@]}; func_i++)); do #請注意 ((   )) 雙層括號
-
-        local aCheckBuildConfigType=${func_CheckBuildConfigTypes[${func_i}]}
-
-        # 判斷是否為 要處理的 command (subcommand name 是否相同) .
-        if [ ${func_Param_BuildConfigType} = ${aCheckBuildConfigType} ]; then
-            isLegal="Y"
-        fi
-
-    done
-
-    # 不合法則中斷程序。
-    if [ ${isLegal} = "N" ]; then
-        checkResultFail_And_ChangeFolder "${exported_Title_Log} [check_Legal_BuildConfigType] -" "10" "!!! ~ OPPS!! Input config type : ${func_Param_BuildConfigType} is not support in (${func_CheckBuildConfigTypes[*]}) => fail ~ !!!" "${exported_OldPath}"
-    fi
-}
-
-# ============= This is separation line =============
 # @brief function : 剖析 BuildConfigType 部分，
 #        如 : version，subcommands
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
@@ -327,13 +291,16 @@ function parseBuildConfigTypeSection() {
 
     if [ -n "${exported_Config_optional_build_config_types}" ]; then
 
+        local func_SrcList=("${configConst_BuildConfigType_Debug}" "${configConst_BuildConfigType_Profile}" "${configConst_BuildConfigType_Release}")
+
         local func_i
 
         for ((func_i = 0; func_i < ${#exported_Config_optional_build_config_types[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-            local aBuildConfigType=${exported_Config_optional_build_config_types[${func_i}]}
+            local func_Check_Value="${exported_Config_optional_build_config_types[${func_i}]}"
 
-            check_Legal_BuildConfigType "${aBuildConfigType}"
+            check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${exported_Title_Log}" \
+                "${func_Check_Value}" func_SrcList[@] "${exported_OldPath}"
 
         done
 
