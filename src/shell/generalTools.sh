@@ -15,7 +15,7 @@
 #
 # ---
 #
-# Reference : 
+# Reference :
 # - title: bash - How to change the output color of echo in Linux - Stack Overflow
 #   - website : https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 #
@@ -201,6 +201,103 @@ function checkResultFail_And_ChangeFolder() {
 }
 
 # ============= This is separation line =============
+# @brief function : 驗證 input value 是否在 input list 中。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 只檢查是否為合法設定。
+#   - value 有在 list 中，則回傳 0。
+#   - value 不在 list 中，則回傳 99。
+#   - 呼叫完此函式，可使用 "$?" 來取得回傳值。
+#
+# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${2} : check value : 要驗證的 value。
+# @param ${!3} : source list : 要驗證的 array。
+#
+# sample e.g. check_Legal_Val_In_List "${sample_Title_Log}" "${sample_Val}" sample_List[@]
+# @retrun 0: 成功， 99: 失敗。
+function check_Legal_Val_In_List() {
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} TitleLog: ${1}"
+    echo "${func_Title_Log} check value: ${2}"
+    echo "${func_Title_Log} source list: ("${!3}")"
+    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_Title_Log} End ***"
+    echo
+
+    local func_Param_TitleLog="${1}"
+    local func_Param_CheckVal="${2}"
+    local func_Param_SrcList=("${!3}")
+
+    checkInputParam "${func_Title_Log}" func_Param_TitleLog "${func_Param_TitleLog}"
+    checkInputParam "${func_Title_Log}" func_Param_CheckVal "${func_Param_CheckVal}"
+    checkInputParam "${func_Title_Log}" func_Param_SrcList "${func_Param_SrcList[@]}"
+
+    # reVal 的初始設定。
+    local reVal=99
+
+    # 檢查是否合法。
+    local func_i
+    for ((func_i = 0; func_i < ${#func_Param_SrcList[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+
+        local aCheckVal=${func_Param_SrcList[${func_i}]}
+
+        # 判斷是否為 要處理的 command (subcommand name 是否相同) .
+        if [ ${func_Param_CheckVal} = ${aCheckVal} ]; then
+            reVal=0
+            break
+        fi
+
+    done
+
+    return "${reVal}"
+}
+
+# ============= This is separation line =============
+# @brief function : 驗證 input value 是否在 input list 中，沒找到會切換路徑並中斷程式。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 會呼叫 [check_Legal_Val_In_List] 來驗證 value 是否有在 inpput list。
+#   - 若 value 不在 list 中，
+#     - dump 錯誤訊息。 (含以及 error code : 99 失敗)。
+#     - 則切換指定的資料夾路徑
+#     - 離開中斷 shell。
+#
+# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${2} : check value : 要驗證的 value。
+# @param ${!3} : source list : 要驗證的 array。
+# @param ${4}: 切換回去的的 folder path"
+# sample e.g. check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${sample_Title_Log}" "${sample_Val}" sample_List[@] "${sample_ChangeFolder}"
+function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} TitleLog: ${1}"
+    echo "${func_Title_Log} check value: ${2}"
+    echo "${func_Title_Log} source list: ("${!3}")"
+    echo "${func_Title_Log} change folder: ${4}"
+    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_Title_Log} End ***"
+    echo
+
+    local func_Param_TitleLog="${1}"
+    local func_Param_CheckVal="${2}"
+    local func_Param_SrcList=("${!3}")
+    local func_Param_ChangeFolder="${4}"
+
+    check_Legal_Val_In_List "${func_Param_TitleLog}" "${func_Param_CheckVal}" func_Param_SrcList[@]
+
+    # 呼叫驗證，帶入回傳值，不合法則中斷程序。
+    checkResultFail_And_ChangeFolder "${func_Title_Log} ${func_Param_TitleLog}" "$?" \
+        "\r\n!!! ~ OPPS!! Input val : ${func_Param_CheckVal} not found in (${func_Param_SrcList[*]}) => fail ~ !!!" "${func_Param_ChangeFolder}"
+}
+
+# ============= This is separation line =============
 # @brief function : split string to a pair .
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #   - 依據輸入的字串，分隔符號，以及要寫入的參入名稱。
@@ -245,7 +342,7 @@ function splitStringToPair() {
 # @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. sample_Command
 # @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
 #   - 為 option，有才會帶入到 command 後面。
-#   - array : 第 0 個為 command line， 
+#   - array : 第 0 個為 command line，
 #   - array : 第 1 個 (含 1) 後面為依序要輸入的參數
 #
 # ---
@@ -260,7 +357,7 @@ function splitStringToPair() {
 #
 # ---
 #
-# @reference : 
+# @reference :
 #   - title: shell script - How to add/remove an element to/from the array in bash? - Unix & Linux Stack Exchange
 #     - website: https://unix.stackexchange.com/questions/328882/how-to-add-remove-an-element-to-from-the-array-in-bash
 #   - title : Bash if..else Statement | Linuxize
@@ -270,7 +367,7 @@ function splitStringToPair() {
 #  原先想採用只輸入一個 array，的方式，然後用 arry2=(arr1[@]:1) 的方式來設定，
 #  不過若某個 value 是有含空白，在 array copy 時會被視為不同的內容，也就是數量會長大。
 #  導致要用別的方式處理，後來改成直接輸入兩個參數 (command , command prarms) 來判斷比較簡單。
-#  
+#
 function check_OK_Then_Excute_Command() {
 
     # 驗證成功再處理後續。
