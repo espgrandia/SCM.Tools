@@ -173,7 +173,7 @@
 # e.g. => dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_aar[0]}" exported_SubcommandInfo_aar[1]
 function dealSumcommandInfo() {
 
-    local func_Title_Log="*** function [dealSumcommandInfo] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
     local func_A_Subcommand=$1
     local func_SumcommandInfo_Name=$2
 
@@ -294,7 +294,6 @@ function parseBuildConfigTypeSection() {
         local func_SrcList=("${configConst_BuildConfigType_Debug}" "${configConst_BuildConfigType_Profile}" "${configConst_BuildConfigType_Release}")
 
         local func_i
-
         for ((func_i = 0; func_i < ${#exported_Config_optional_build_config_types[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
             local func_Check_Value="${exported_Config_optional_build_config_types[${func_i}]}"
@@ -376,7 +375,7 @@ function parseDartDefine() {
 # @param $1 : command name
 function export_NotyetSupportSubcommand() {
 
-    local func_Title_Log="*** function [export_NotyetSupportSubcommand] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     # for echo color
     local func_Bold_Black='\033[1;30m'
@@ -397,7 +396,7 @@ function export_NotyetSupportSubcommand() {
 # @brief exported aar 部分
 function export_aar() {
 
-    local func_Title_Log="*** function [export_aar] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -526,7 +525,7 @@ function export_apk() {
 # @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_appbundle() {
 
-    local func_Title_Log="*** function [export_appbundle] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -547,7 +546,7 @@ function export_appbundle() {
 # @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_bundle() {
 
-    local func_Title_Log="*** function [export_bundle] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -568,7 +567,7 @@ function export_bundle() {
 # @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_ios() {
 
-    local func_Title_Log="*** function [export_ios] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -695,7 +694,7 @@ function export_ios() {
 # @brief exported ios_framework 部分
 function export_ios_framework() {
 
-    local func_Title_Log="*** function [export_ios_framework] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}

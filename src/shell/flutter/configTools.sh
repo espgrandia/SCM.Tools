@@ -58,7 +58,7 @@ export configTools_Optional="optional"
 # sample e.g. configTools_Gen_Required "${sample_FilePath}" "${sample_WorkPath}" "${sample_OutputPath}" "${sample_Pubspec_version}" sample_Subcommands[@]
 function configTools_Gen_Required() {
 
-    local func_Title_Log="*** function [configTools_Gen_Required] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -145,7 +145,7 @@ function configTools_Gen_Required() {
 # sample e.g. configTools_Gen_Optional_ReportFilePath "${sample_FilePath}" "${sample_ReportFilePath}"
 function configTools_Gen_Optional_ReportFilePath() {
 
-    local func_Title_Log="*** function [configTools_Gen_Optional_Dart_Define] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -186,7 +186,7 @@ function configTools_Gen_Optional_ReportFilePath() {
 # sample e.g. configTools_Gen_Optional_BuildConfigType "${sample_FilePath}" sample_BuildConfigTypes[@]
 function configTools_Gen_Optional_BuildConfigType() {
 
-    local func_Title_Log="*** function [configTools_Gen_Optional_BuildConfigType] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -235,7 +235,7 @@ function configTools_Gen_Optional_BuildConfigType() {
 # sample e.g. configTools_Gen_Optional_Dart_Define "${sample_FilePath}" "${sample_Separator}" sample_DartDefines[@]
 function configTools_Gen_Optional_Dart_Define() {
 
-    local func_Title_Log="*** function [configTools_Gen_Optional_Dart_Define] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -289,7 +289,7 @@ function configTools_Gen_Optional_Dart_Define() {
 # sample e.g. configTools_Gen_Optional_Flavor "${sample_FilePath}" "${sample_Flavor}"
 function configTools_Gen_Optional_Flavor() {
 
-    local func_Title_Log="*** function [configTools_Gen_Optional_Dart_Define] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -331,7 +331,7 @@ function configTools_Gen_Optional_Flavor() {
 #                                                  [android-arm (default), android-arm64 (default), android-x86, android-x64 (default)]
 function configTools_Gen_Optional_Target_Platform() {
 
-    local func_Title_Log="*** function [configTools_Gen_Optional_Target_Platform] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"

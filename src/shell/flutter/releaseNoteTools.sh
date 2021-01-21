@@ -26,7 +26,7 @@
 # @param ${6} : 若失敗要切換的路徑，change folder path : e.g. "${sample_OldPath}"
 function releastNoteTools_Gen_Init() {
 
-    local func_Title_Log="*** function [releastNoteTools_Gen_Init] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -112,7 +112,7 @@ function releastNoteTools_Gen_Init() {
 # @param ${1} : release note file path: 檔名含路徑 e.g. "${sample_ReleaseNote_File}"
 function releastNoteTools_Gen_Exported_Title() {
 
-    local func_Title_Log="*** function [releastNoteTools_Gen_Exported_Title] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -140,7 +140,7 @@ function releastNoteTools_Gen_Exported_Title() {
 # @param ${2} : Elapsed time (單位 : 秒): 整個 shell 的執行時間 e.g. "${SECONDS}" or "${sample_TotalTime}"
 function releastNoteTools_Gen_Final() {
 
-    local func_Title_Log="*** function [releastNoteTools_Gen_Final] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"

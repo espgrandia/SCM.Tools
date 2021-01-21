@@ -28,7 +28,7 @@
 # @param ${2}: 要設定 git hash 的參數: e.g. sample_Shell_GitHash_Short .
 function getGitShortHash() {
 
-    local func_Title_Log="*** function [getGitShortHash] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -61,7 +61,7 @@ function getGitShortHash() {
 # @param ${2}: 要處理的目標資料夾(含路徑) : e.g. "${sample_Shell_DestFolder}" .
 function remvoe_And_Makedir() {
 
-    local func_Title_Log="*** function [remvoe_And_Makedir] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -99,7 +99,7 @@ function remvoe_And_Makedir() {
 # @param ${2}: 切換的目的資料夾: e.g. "${sample_Shell_WorkPath}"，$(dirname $0)，etc ...
 function changeToDirectory() {
 
-    local func_Title_Log="*** function [changeToDirectory] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -135,7 +135,7 @@ function checkInputParam() {
         local func_Color_Off='\033[0m'
 
         # fail 再秀 log.
-        local func_Title_Log="*** function [checkInputParam] -"
+        local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
         echo
         echo "${func_Title_Log} Begin ***"
@@ -173,7 +173,7 @@ function checkResultFail_And_ChangeFolder() {
         local func_Color_Off='\033[0m'
 
         # fail 再秀 log.
-        local func_Title_Log="*** function [checkResultFail_And_ChangeFolder] -"
+        local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
         echo
         echo "${func_Title_Log} Begin ***"
@@ -247,6 +247,7 @@ function check_Legal_Val_In_List() {
 
         # 判斷是否為 要處理的 command (subcommand name 是否相同) .
         if [ ${func_Param_CheckVal} = ${aCheckVal} ]; then
+            echo "${func_Title_Log} Find aCheckVal : ${aCheckVal} in (${func_Param_SrcList[*]}) ***"
             reVal=0
             break
         fi
@@ -309,7 +310,7 @@ function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
 # @param ${5}: 要設定的第一個參數，拆解後取第二位的內容來設定。 e.g. sample_Shell_Split_Second .
 function splitStringToPair() {
 
-    local func_Title_Log="*** function [splitStringToPair] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -373,7 +374,7 @@ function check_OK_Then_Excute_Command() {
     # 驗證成功再處理後續。
     if [ ${2} = "Y" ]; then
 
-        local func_Title_Log="*** function [check_OK_Then_Excute_Command] -"
+        local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
         echo
         echo "${func_Title_Log} Begin ***"
