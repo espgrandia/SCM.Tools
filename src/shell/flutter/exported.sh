@@ -264,8 +264,6 @@ function parseReruiredSection() {
 
 }
 
-report_path
-
 # ============= This is separation line =============
 # @brief function : 剖析 BuildConfigType 部分，
 #        如 : version，subcommands
@@ -453,6 +451,11 @@ function export_apk() {
     # 設定基本的 command 內容.
     local func_Build_Command="build "${func_Subcommand}" --"${func_buildConfigType}" --build-name "${func_Android_VersionName}" --build-number "${func_Android_VersionCode}""
 
+    # 若有 flavor
+    if [ -n "${exported_Config_optional_flavor}" ]; then
+        func_Build_Command="${func_Build_Command} --"${configConst_BuildParam_Key_Flavor}"="${exported_Config_optional_flavor}""
+    fi
+
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_Command}" ]; then
         func_Build_Command="${func_Build_Command} "${exported_DartDef_PartOf_Command}""
@@ -465,7 +468,17 @@ function export_apk() {
 
     # ===> OutputFile 設定 <===
     # 設定基本的輸出檔案格式。
-    local func_Build_FileName="Android-${func_buildConfigType}-${func_Android_VersionName}-${func_Android_VersionCode}"
+    local func_Build_FileName
+
+    # 若有 flavor
+    if [ -n "${exported_Config_optional_flavor}" ]; then
+        func_Build_FileName="${exported_Config_optional_flavor}-${func_buildConfigType}"
+    else
+        func_Build_FileName="${func_buildConfigType}"
+    fi
+
+    # 加上 version
+    func_Build_FileName="${func_Build_FileName}-${func_Android_VersionName}-${func_Android_VersionCode}"
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_FileName}" ]; then
@@ -474,6 +487,19 @@ function export_apk() {
 
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").apk"
+
+    # ===> Origin build output 設定 <===
+    local func_Origin_Build_FileName="build/app/outputs/apk"
+
+    # 若有 flavor
+    if [ -n "${exported_Config_optional_flavor}" ]; then
+        func_Origin_Build_FileName="${func_Origin_Build_FileName}/${exported_Config_optional_flavor}/${func_buildConfigType}/app-${exported_Config_optional_flavor}"
+    else
+        func_Origin_Build_FileName="${func_Origin_Build_FileName}/${func_buildConfigType}/app"
+    fi
+
+    # build type
+    func_Origin_Build_FileName="${func_Origin_Build_FileName}-${func_buildConfigType}.apk"
 
     # ===> report note - init 設定 <===
     echo >>"${exported_ReportNoteFile}"
@@ -499,7 +525,7 @@ function export_apk() {
     # ===> copy apk to destination folder <===
     echo "${exported_Title_Log} copy ${func_buildConfigType} "${func_Subcommand}" to output folder"
 
-    cp -r build/app/outputs/apk/${func_buildConfigType}/app-${func_buildConfigType}.apk "${exported_Config_required_paths_output}"/${func_Build_FileName}
+    cp -r "${func_Origin_Build_FileName}" "${exported_Config_required_paths_output}"/${func_Build_FileName}
 
     # check result - copy apk
     checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
@@ -605,6 +631,11 @@ function export_ios() {
     # 設定基本的 command 內容.
     local func_Build_Command="build "${func_Subcommand}" --"${func_buildConfigType}" --build-name "${func_iOS_BundleShortVersion}" --build-number "${func_iOS_BundleVersion}""
 
+    # 若有 flavor
+    if [ -n "${exported_Config_optional_flavor}" ]; then
+        func_Build_Command="${func_Build_Command} --"${configConst_BuildParam_Key_Flavor}"="${exported_Config_optional_flavor}""
+    fi
+
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_Command}" ]; then
         func_Build_Command="${func_Build_Command} "${exported_DartDef_PartOf_Command}""
@@ -612,7 +643,17 @@ function export_ios() {
 
     # ===> OutputFile 設定 <===
     # 設定基本的輸出檔案格式。
-    local func_Build_FileName="iOS-${func_buildConfigType}-${func_iOS_BundleVersion}"
+    local func_Build_FileName
+
+    # 若有 flavor
+    if [ -n "${exported_Config_optional_flavor}" ]; then
+        func_Build_FileName="${exported_Config_optional_flavor}-${func_buildConfigType}"
+    else
+        func_Build_FileName="${func_buildConfigType}"
+    fi
+
+    # 加上 version
+    func_Build_FileName="${func_Build_FileName}-${func_iOS_BundleVersion}"
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_FileName}" ]; then
@@ -621,6 +662,16 @@ function export_ios() {
 
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").ipa"
+
+    # ===> Origin build output 設定 <===
+    local func_Origin_Build_AppFolder="build/ios/iphoneos"
+
+    # 若有 flavor
+    if [ -n "${exported_Config_optional_flavor}" ]; then
+        func_Origin_Build_AppFolder="${func_Origin_Build_AppFolder}/${exported_Config_optional_flavor}.app"
+    else
+        func_Origin_Build_AppFolder="${func_Origin_Build_AppFolder}/Runner.app"
+    fi
 
     # ===> report note - init 設定 <===
     echo >>"${exported_ReportNoteFile}"
@@ -644,7 +695,7 @@ function export_ios() {
     checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ flutter build ios => fail ~ !!!" "${exported_OldPath}"
 
     # ===> zip Payload to destination folder <===
-    if [ -d build/ios/iphoneos/Runner.app ]; then
+    if [ -d ${func_Origin_Build_AppFolder} ]; then
 
         # 切換到 輸出目錄，再打包才不會包到不該包的資料夾。
         changeToDirectory "${exported_Title_Log}" "${exported_Config_required_paths_output}"
@@ -652,7 +703,7 @@ function export_ios() {
         # 打包 ipa 的固定資料夾名稱。
         mkdir Payload
 
-        cp -r "${exported_Flutter_WorkPath}"/build/ios/iphoneos/Runner.app "${exported_Config_required_paths_output}"/Payload
+        cp -r ""${exported_Flutter_WorkPath}"/"${func_Origin_Build_AppFolder}"" "${exported_Config_required_paths_output}/Payload"
 
         # check result - copy iOS Payload
         checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${exported_OldPath}"
@@ -675,7 +726,7 @@ function export_ios() {
         say "${exported_Title_Log} 打包 "${func_Subcommand}" 失敗"
 
         # check result - copy ios
-        checkResultFail_And_ChangeFolder "${exported_Title_Log}" "100" "!!! ~ Not found build/ios/iphoneos/Runner.app => fail ~ !!!" "${exported_OldPath}"
+        checkResultFail_And_ChangeFolder "${exported_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${exported_OldPath}"
     fi
 
     # ===> report note - final 設定 <===
