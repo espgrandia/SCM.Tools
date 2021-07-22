@@ -388,7 +388,7 @@ function check_OK_Then_Excute_Command() {
         echo "${func_Title_Log} ${1} ============= excute command - Begin ============="
 
         # for local varient
-        local func_Command=("${3}")
+        local func_Command="${3}"
         local func_CommandParams=("${!4}")
 
         # 若有 func_CommandParams
