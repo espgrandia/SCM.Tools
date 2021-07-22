@@ -43,9 +43,9 @@ function getGitShortHash() {
     eval ${2}=$(git show -s --format=%h)
 
     echo
-    echo "${func_Title_Log} "${1}" ============= git hash - Begin ============="
-    echo "${func_Title_Log} "${1}" ${2} : $(eval echo \$${2})"
-    echo "${func_Title_Log} "${1}" ============= git hash - End ============="
+    echo "${func_Title_Log} ${1} ============= git hash - Begin ============="
+    echo "${func_Title_Log} ${1} ${2} : $(eval echo \$${2})"
+    echo "${func_Title_Log} ${1} ============= git hash - End ============="
     echo
 
     echo "${func_Title_Log} End ***"
@@ -67,25 +67,25 @@ function remvoe_And_Makedir() {
     echo "${func_Title_Log} Begin ***"
     echo
     echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} TitleLog : "${1}""
+    echo "${func_Title_Log} TitleLog : ${1}"
     echo "${func_Title_Log} Dest Folder path : "${2}""
     echo "${func_Title_Log} Input param : End ***"
 
     echo
-    echo "${func_Title_Log} "${1}" ============= rm & mkdir folder - Begin ============="
+    echo "${func_Title_Log} ${1} ============= rm & mkdir folder - Begin ============="
 
     # 設定輸出資料夾
     func_DestFolder="${2}"
 
     # 刪除輸出資料夾.
-    echo "${func_Title_Log} "${1}" rm -rf "${func_DestFolder}""
+    echo "${func_Title_Log} ${1} rm -rf "${func_DestFolder}""
     rm -rf "${func_DestFolder}"
 
     # 建立輸出目錄
-    echo "${func_Title_Log} "${1}" mkdir -p "${func_DestFolder}""
+    echo "${func_Title_Log} ${1} mkdir -p "${func_DestFolder}""
     mkdir -p "${func_DestFolder}"
 
-    echo "${func_Title_Log} "${1}" ============= rm & mkdir folder - End ============="
+    echo "${func_Title_Log} ${1} ============= rm & mkdir folder - End ============="
     echo
 
     echo "${func_Title_Log} End ***"
@@ -379,13 +379,13 @@ function check_OK_Then_Excute_Command() {
         echo
         echo "${func_Title_Log} Begin ***"
         echo "${func_Title_Log} Input param : Begin ***"
-        echo "${func_Title_Log} TitleLog : "${1}""
+        echo "${func_Title_Log} TitleLog : ${1}"
         echo "${func_Title_Log} command : "${3}""
         echo "${func_Title_Log} command params : "${!4}""
         echo "${func_Title_Log} Input param : End ***"
 
         echo
-        echo "${func_Title_Log} "${1}" ============= excute command - Begin ============="
+        echo "${func_Title_Log} ${1} ============= excute command - Begin ============="
 
         # for local varient
         local func_Command=("${3}")
@@ -394,21 +394,21 @@ function check_OK_Then_Excute_Command() {
         # 若有 func_CommandParams
         if [ -n "${func_CommandParams}" ]; then
 
-            echo "${func_Title_Log} "${1}" func_CommandParams : ${func_CommandParams[@]}"
-            echo "${func_Title_Log} "${1}" func_CommandParams count : ${#func_CommandParams[@]}"
-            echo "${func_Title_Log} "${1}" will excute command : "${func_Command}" "${func_CommandParams[@]}""
+            echo "${func_Title_Log} ${1} func_CommandParams : ${func_CommandParams[@]}"
+            echo "${func_Title_Log} ${1} func_CommandParams count : ${#func_CommandParams[@]}"
+            echo "${func_Title_Log} ${1} will excute command : "${func_Command}" "${func_CommandParams[@]}""
 
             ${func_Command} "${func_CommandParams[@]}"
 
         else
 
-            echo "${func_Title_Log} "${1}" will excute command : "${func_Command}""
+            echo "${func_Title_Log} ${1} will excute command : "${func_Command}""
 
             ${func_Command}
 
         fi
 
-        echo "${func_Title_Log} "${1}" ============= excute command - End ============="
+        echo "${func_Title_Log} ${1} ============= excute command - End ============="
         echo
 
         echo "${func_Title_Log} End ***"
