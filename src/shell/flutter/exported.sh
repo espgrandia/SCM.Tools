@@ -375,9 +375,9 @@ function export_NotyetSupportSubcommand() {
     # 暫存此區塊的起始時間。
     local func_Subcommand=${1}
 
-    echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} OPPS!! Notyet support this subcommand ( "${func_Subcommand}" ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( "${func_Subcommand}" ).\n    Error !!! ***${func_Color_Off}"
+    echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***${func_Color_Off}"
 
-    # checkResultFail_And_ChangeFolder "${exported_Title_Log}" "50" "!!! ~ OPPS!! Not yet support this subcommand:  "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
+    # checkResultFail_And_ChangeFolder "${exported_Title_Log}" "50" "!!! ~ OPPS!! Not yet support this subcommand:  ${func_Subcommand} => fail ~ !!!" "${exported_OldPath}"
 }
 ### ==================== NotyetSupportSubcommand : End ====================
 
@@ -392,11 +392,11 @@ function export_aar() {
     local func_Subcommand=${exported_SubcommandInfo_aar[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     export_NotyetSupportSubcommand ${func_Subcommand}
 
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
 ### ==================== aar : End ====================
@@ -411,7 +411,7 @@ function export_apk() {
     local func_Subcommand=${exported_SubcommandInfo_apk[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     local func_buildConfigType="${1}"
 
@@ -424,7 +424,7 @@ function export_apk() {
     echo "${exported_Title_Log} ============= Param : End ============="
     echo
 
-    echo "${exported_Title_Log} 開始打包 "${func_Subcommand}""
+    echo "${exported_Title_Log} 開始打包 ${func_Subcommand}"
 
     # ===> Command 設定 <===
     # 設定基本的 command 內容. [subcommand] [config type]
@@ -514,25 +514,25 @@ function export_apk() {
     echo "  \`\`\`" >>"${exported_ReportNoteFile}"
 
     # ===> build apk <===
-    echo "${exported_Title_Log} flutter build "${func_Subcommand}" --${func_buildConfigType} ..."
+    echo "${exported_Title_Log} flutter build ${func_Subcommand} --${func_buildConfigType} ..."
 
     echo "${exported_Title_Log} flutter ${func_Build_Command}"
     flutter ${func_Build_Command}
 
     # check result - build apk
-    checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ flutter build "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
+    checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ flutter build ${func_Subcommand} => fail ~ !!!" "${exported_OldPath}"
 
     # ===> copy apk to destination folder <===
-    echo "${exported_Title_Log} copy ${func_buildConfigType} "${func_Subcommand}" to output folder"
+    echo "${exported_Title_Log} copy ${func_buildConfigType} ${func_Subcommand} to output folder"
 
     cp -r "${func_Origin_Build_FileName}" "${exported_Config_required_paths_output}"/${func_Build_FileName}
 
     # check result - copy apk
-    checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy "${func_Subcommand}" => fail ~ !!!" "${exported_OldPath}"
+    checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy ${func_Subcommand} => fail ~ !!!" "${exported_OldPath}"
 
-    echo "${exported_Title_Log} 打包 "${func_Subcommand}" 已經完成"
+    echo "${exported_Title_Log} 打包 ${func_Subcommand} 已經完成"
     echo "${exported_Title_Log} output file name : ${func_Build_FileName}"
-    say "${exported_Title_Log} 打包 "${func_Subcommand}" 成功"
+    say "${exported_Title_Log} 打包 ${func_Subcommand} 成功"
 
     # ===> report note - final 設定 <===
     # ===> 輸出 全部的產出時間統計 <===
@@ -541,7 +541,7 @@ function export_apk() {
     echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
 
     echo
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: ${func_TotalTime}s"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: ${func_TotalTime}s"
     echo
 }
 ### ==================== apk : End ====================
@@ -558,11 +558,11 @@ function export_appbundle() {
     local func_Subcommand=${exported_SubcommandInfo_appbundle[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     export_NotyetSupportSubcommand ${func_Subcommand}
 
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
 ### ==================== appbundle : End ====================
@@ -579,11 +579,11 @@ function export_bundle() {
     local func_Subcommand=${exported_SubcommandInfo_bundle[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     export_NotyetSupportSubcommand ${func_Subcommand}
 
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
 ### ==================== bundle : End ====================
@@ -600,7 +600,7 @@ function export_ios() {
     local func_Subcommand=${exported_SubcommandInfo_ios[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     local func_buildConfigType="${1}"
 
@@ -613,7 +613,7 @@ function export_ios() {
     echo "${exported_Title_Log} ============= Param : End ============="
     echo
 
-    echo "${exported_Title_Log} 開始打包 "${func_Subcommand}""
+    echo "${exported_Title_Log} 開始打包 ${func_Subcommand}"
 
     # ===> Command 設定 <===
     # 設定基本的 command 內容.
@@ -691,7 +691,7 @@ function export_ios() {
     echo "  \`\`\`" >>"${exported_ReportNoteFile}"
 
     # ===> build ios <===
-    echo "${exported_Title_Log} flutter build "${func_Subcommand}" --${func_buildConfigType} ..."
+    echo "${exported_Title_Log} flutter build ${func_Subcommand} --${func_buildConfigType} ..."
 
     echo "${exported_Title_Log} flutter ${func_Build_Command}"
     flutter ${func_Build_Command}
@@ -722,13 +722,13 @@ function export_ios() {
         # 切換到 flutter work path
         changeToDirectory "${exported_Title_Log}" "${exported_Flutter_WorkPath}"
 
-        echo "${exported_Title_Log} 打包 "${func_Subcommand}" 很順利 😄"
-        say "${exported_Title_Log} 打包 "${func_Subcommand}" 成功"
+        echo "${exported_Title_Log} 打包 ${func_Subcommand} 很順利 😄"
+        say "${exported_Title_Log} 打包 ${func_Subcommand} 成功"
 
     else
 
         echo "${exported_Title_Log} 遇到報錯了 😭, 打開 Xcode 查找錯誤原因"
-        say "${exported_Title_Log} 打包 "${func_Subcommand}" 失敗"
+        say "${exported_Title_Log} 打包 ${func_Subcommand} 失敗"
 
         # check result - copy ios
         checkResultFail_And_ChangeFolder "${exported_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${exported_OldPath}"
@@ -741,7 +741,7 @@ function export_ios() {
     echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
 
     echo
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
 ### ==================== ios : End ====================
@@ -757,11 +757,11 @@ function export_ios_framework() {
     local func_Subcommand=${exported_SubcommandInfo_ios_framework[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : Begin <==========||"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     export_NotyetSupportSubcommand ${func_Subcommand}
 
-    echo "${exported_Title_Log} ||==========> "${func_Subcommand}" : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
 ### ==================== ios_framework : End ====================
@@ -849,7 +849,7 @@ function process_Deal_InputParam() {
 function process_Deal_ToggleFeature() {
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="Y"
+    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
 
     # build configutation type : 編譯組態設定，之後視情況是否要開放
     # 依據 flutter build ， 有 debug ， profile ， release，
