@@ -105,13 +105,13 @@ function changeToDirectory() {
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
     echo "${func_Title_Log} TitleLog: ${1}"
-    echo "${func_Title_Log} ChangeDestFolder: "${2}""
+    echo "${func_Title_Log} ChangeDestFolder: ${2}"
     echo "${func_Title_Log} Input param : End ***"
     echo "${func_Title_Log} ${1} current path: $(pwd) ***"
 
     cd "${2}"
 
-    echo "${func_Title_Log} ${1} change dir to "${2}" ***"
+    echo "${func_Title_Log} ${1} change dir to ${2} ***"
     echo "${func_Title_Log} ${1} current path: $(pwd) ***"
     echo "${func_Title_Log} End ***"
     echo
@@ -280,7 +280,7 @@ function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
     echo "${func_Title_Log} Input param : Begin ***"
     echo "${func_Title_Log} TitleLog: ${1}"
     echo "${func_Title_Log} check value: ${2}"
-    echo "${func_Title_Log} source list: ("${!3}")"
+    echo "${func_Title_Log} source list: (${!3})"
     echo "${func_Title_Log} change folder: ${4}"
     echo "${func_Title_Log} Input param : End ***"
     echo "${func_Title_Log} End ***"
@@ -380,8 +380,8 @@ function check_OK_Then_Excute_Command() {
         echo "${func_Title_Log} Begin ***"
         echo "${func_Title_Log} Input param : Begin ***"
         echo "${func_Title_Log} TitleLog : ${1}"
-        echo "${func_Title_Log} command : "${3}""
-        echo "${func_Title_Log} command params : "${!4}""
+        echo "${func_Title_Log} command : ${3}"
+        echo "${func_Title_Log} command params : ${!4}"
         echo "${func_Title_Log} Input param : End ***"
 
         echo
@@ -396,13 +396,13 @@ function check_OK_Then_Excute_Command() {
 
             echo "${func_Title_Log} ${1} func_CommandParams : ${func_CommandParams[@]}"
             echo "${func_Title_Log} ${1} func_CommandParams count : ${#func_CommandParams[@]}"
-            echo "${func_Title_Log} ${1} will excute command : "${func_Command}" "${func_CommandParams[@]}""
+            echo "${func_Title_Log} ${1} will excute command : ${func_Command} ${func_CommandParams[@]}"
 
             ${func_Command} "${func_CommandParams[@]}"
 
         else
 
-            echo "${func_Title_Log} ${1} will excute command : "${func_Command}""
+            echo "${func_Title_Log} ${1} will excute command : ${func_Command}"
 
             ${func_Command}
 

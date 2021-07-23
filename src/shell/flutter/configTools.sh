@@ -63,11 +63,11 @@ function configTools_Gen_Required() {
     echo
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : "${1}""
-    echo "${func_Title_Log} project work path : "${2}""
-    echo "${func_Title_Log} output path : "${3}""
-    echo "${func_Title_Log} version : "${4}""
-    echo "${func_Title_Log} subcommands : ("${!5}")"
+    echo "${func_Title_Log} file path : ${1}"
+    echo "${func_Title_Log} project work path : ${2}"
+    echo "${func_Title_Log} output path : ${3}"
+    echo "${func_Title_Log} version : ${4}"
+    echo "${func_Title_Log} subcommands : (${!5})"
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient
@@ -105,12 +105,12 @@ function configTools_Gen_Required() {
 
     ### for [required] [paths] [work]:
     echo "    # [${func_Required_Key_Paths_Work}] : flutter 專案目錄的路徑 : 一般與 flutter pubspec.yaml 同一個資料夾路徑" >>"${func_Param_FilePath}"
-    echo "    ${func_Required_Key_Paths_Work} : "${func_Param_WorkPath}"" >>"${func_Param_FilePath}"
+    echo "    ${func_Required_Key_Paths_Work} : ${func_Param_WorkPath}" >>"${func_Param_FilePath}"
 
     ### for [required] [paths] [output]:
     echo "" >>"${func_Param_FilePath}"
     echo "    # [${func_Required_Key_Paths_Output}] : 輸出資料夾 [需帶完整路徑] : apk，ipa 等輸出的資料夾位置 => e.g. [專案路徑]/[scm]/output" >>"${func_Param_FilePath}"
-    echo "    ${func_Required_Key_Paths_Output} : "${func_Param_OutputPath}"" >>"${func_Param_FilePath}"
+    echo "    ${func_Required_Key_Paths_Output} : ${func_Param_OutputPath}" >>"${func_Param_FilePath}"
 
     ## for [required] [version]:
     echo "" >>"${func_Param_FilePath}"
@@ -150,8 +150,8 @@ function configTools_Gen_Optional_ReportFilePath() {
     echo
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : "${1}""
-    echo "${func_Title_Log} report file path : "${2}""
+    echo "${func_Title_Log} file path : ${1}"
+    echo "${func_Title_Log} report file path : ${2}"
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient
@@ -191,8 +191,9 @@ function configTools_Gen_Optional_BuildConfigType() {
     echo
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : "${1}""
-    echo "${func_Title_Log} build config types : ("${!2}")"
+    echo "${func_Title_Log} file path : ${1}"
+    # echo "${func_Title_Log} build config types : ("${!2}")"
+    echo "${func_Title_Log} build config types : (${!2})"
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient
@@ -240,9 +241,10 @@ function configTools_Gen_Optional_Dart_Define() {
     echo
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : "${1}""
-    echo "${func_Title_Log} separator : "${2}""
-    echo "${func_Title_Log} ${configConst_BuildParam_Key_DartDefine} values : ("${!3}")"
+    echo "${func_Title_Log} file path : ${1}"
+    echo "${func_Title_Log} separator : ${2}"
+    # echo "${func_Title_Log} ${configConst_BuildParam_Key_DartDefine} values : ("${!3}")"
+    echo "${func_Title_Log} ${configConst_BuildParam_Key_DartDefine} values : (${!3})"
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient
@@ -294,8 +296,8 @@ function configTools_Gen_Optional_Flavor() {
     echo
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : "${1}""
-    echo "${func_Title_Log} ${configConst_BuildParam_Key_Flavor} value : "${2}""
+    echo "${func_Title_Log} file path : ${1}"
+    echo "${func_Title_Log} ${configConst_BuildParam_Key_Flavor} value : ${2}"
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient
@@ -336,7 +338,7 @@ function configTools_Gen_Optional_Target_Platform() {
     echo
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : "${1}""
+    echo "${func_Title_Log} file path : ${1}"
     echo "${func_Title_Log} ${configConst_BuildParam_Key_TargetPlatform} values : "${2}""
     echo "${func_Title_Log} Input param : End ***"
 
