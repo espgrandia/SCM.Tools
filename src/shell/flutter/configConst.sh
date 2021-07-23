@@ -45,6 +45,20 @@ export configConst_BuildParam_ToggleFeature_NoPub="no-pub"
 #  - confitTools.sh 會用到此區塊的 key，使用者只需要呼叫對應的函式即可。
 #  - exported.sh 會依照 build config 的相關設定來處理。
 
+# [build-name] 指定編譯的 build name。
+#   - flutter pubspec.yaml 中 version : [Build_Name]+[Build_Number]。
+#     一般對應於上面的 [Build_Name]，有設定則會當作產出的檔案名稱一環。
+#   - 預設 : 沒指定時，flutter build 會預設為下面的 [Build_Name]
+#     pubspec.yaml 的 version : [Build_Name]+[Build_Number]，但檔案名稱沒有對應內容。
+export configConst_BuildParam_Key_BuildName="build-name"
+
+# [build-number] 指定編譯的 build number。
+#   - flutter pubspec.yaml 中 version : [Build_Name]+[Build_Number]。
+#     一般對應於上面的 [Build_Number]，有設定則會當作產出的檔案名稱一環。
+#   - 預設 : 沒指定時，flutter build 會預設為下面的 [Build_Number]
+#     pubspec.yaml 的 version : [Build_Name]+[Build_Number]，但檔案名稱沒有對應內容。
+export configConst_BuildParam_Key_BuildNumber="build-number"
+
 # [dart-define] 設定 dart 的環境變數，可於 dart 層取得。
 export configConst_BuildParam_Key_DartDefine="dart-define"
 

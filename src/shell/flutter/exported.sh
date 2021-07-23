@@ -62,17 +62,6 @@
 #
 # - required :
 #
-#   - exported_Config_required_version=1.0.0+10
-#     flutter 版本。
-#
-#       - android :
-#         - VersionName : [BuildName] => e.g. 1.0.0
-#         - VersionCode : [BuildNumber]  => e.g. 10
-#
-#       - iOS :
-#         - BundleShortVersion : [BuildName] => e.g. 1.0.0
-#         - BundleVersion : [BuildName].[BuildNumber] => e.g. 1.0.0.10
-#
 #   - exported_Config_required_paths_work
 #     flutter project 工作目錄。
 #
@@ -90,6 +79,20 @@
 #     - exported_Config_optional_report_path :
 #       exported.sh 額外會用到的參數，指定 report file path (含檔名)。
 #       為 markdown 語法撰寫，沒設定會有預設檔案名稱。
+#
+# - optional :
+#
+#   - build_name :
+#     - exported_Config_optional_build_name :
+#       - [build_name] : build-name 會用到的內容，對應於 flutter build 的 build-name 參數
+#       - support subcommands: apk， appbundle， ios
+#
+# - optional :
+#
+#   - build_number :
+#     - exported_Config_optional_build_number :
+#       - [build_number] : build-number 會用到的內容，對應於 flutter build 的 build-number 參數
+#       - support subcommands: aar， apk， appbundle， bundle， ios
 #
 # ---
 #
@@ -202,22 +205,17 @@ function parseReruiredSection() {
     echo "${exported_Title_Log} ============= parse required section : Begin ============="
 
     # check input parameters
-    checkInputParam "${exported_Title_Log}" exported_Config_required_version "${exported_Config_required_version}"
     checkInputParam "${exported_Title_Log}" exported_Config_required_paths_work "${exported_Config_required_paths_work}"
     checkInputParam "${exported_Title_Log}" exported_Config_required_paths_output "${exported_Config_required_paths_output}"
     checkInputParam "${exported_Title_Log}" exported_Config_required_subcommands "${exported_Config_required_subcommands[@]}"
 
     echo
     echo "${exported_Title_Log} ============= Param : Begin ============="
-    echo "${exported_Title_Log} exported_Config_required_version : ${exported_Config_required_version}"
     echo "${exported_Title_Log} exported_Config_required_paths_work : ${exported_Config_required_paths_work}"
     echo "${exported_Title_Log} exported_Config_required_paths_output : ${exported_Config_required_paths_output}"
     echo "${exported_Title_Log} exported_Config_required_subcommands : ${exported_Config_required_subcommands[@]}"
     echo "${exported_Title_Log} ============= Param : End ============="
     echo
-
-    # for version
-    splitStringToPair "${exported_Title_Log}" "${exported_Config_required_version}" "+" exported_BuildName exported_BuildNumber
 
     local func_i
     for ((func_i = 0; func_i < ${#exported_Config_required_subcommands[@]}; func_i++)); do #請注意 ((   )) 雙層括號
@@ -243,13 +241,6 @@ function parseReruiredSection() {
         dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_ios_framework[0]}" exported_SubcommandInfo_ios_framework[1]
 
     done
-
-    # check input parameters
-    checkInputParam "${exported_Title_Log}" exported_BuildName "${exported_BuildName}"
-    checkInputParam "${exported_Title_Log}" exported_BuildNumber "${exported_BuildNumber}"
-
-    echo "${exported_Title_Log} exported_BuildName  : ${exported_BuildName}"
-    echo "${exported_Title_Log} exported_BuildNumber : ${exported_BuildNumber}"
 
     # dump support sumcommand info
     echo "${exported_Title_Log} exported_SubcommandInfo_aar           : ${exported_SubcommandInfo_aar[@]}"
@@ -435,21 +426,19 @@ function export_apk() {
 
     echo "${exported_Title_Log} 開始打包 "${func_Subcommand}""
 
-    # ===> value 設定 <===
-    # for android 參數
-    local func_Android_VersionName="${exported_BuildName}"
-    local func_Android_VersionCode="${exported_BuildNumber}"
-
-    echo
-    echo "${exported_Title_Log} ============= Value : Begin ============="
-    echo "${exported_Title_Log} func_Android_VersionName : ${func_Android_VersionName}"
-    echo "${exported_Title_Log} func_Android_VersionCode : ${func_Android_VersionCode}"
-    echo "${exported_Title_Log} ============= Value : End ============="
-    echo
-
     # ===> Command 設定 <===
-    # 設定基本的 command 內容.
-    local func_Build_Command="build "${func_Subcommand}" --"${func_buildConfigType}" --build-name "${func_Android_VersionName}" --build-number "${func_Android_VersionCode}""
+    # 設定基本的 command 內容. [subcommand] [config type]
+    local func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+
+    # 若有 build_name
+    if [ -n "${exported_Config_optional_build_name}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildName} ${exported_Config_optional_build_name}"
+    fi
+
+    # 若有 build_number
+    if [ -n "${exported_Config_optional_build_number}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildNumber} ${exported_Config_optional_build_number}"
+    fi
 
     # 若有 flavor
     if [ -n "${exported_Config_optional_flavor}" ]; then
@@ -477,8 +466,19 @@ function export_apk() {
         func_Build_FileName="${func_buildConfigType}"
     fi
 
+    # Fixed ME
     # 加上 version
-    func_Build_FileName="${func_Build_FileName}-${func_Android_VersionName}-${func_Android_VersionCode}"
+    # func_Build_FileName="${func_Build_FileName}-${func_Android_VersionName}-${func_Android_VersionCode}"
+
+    # 若有 build_name
+    if [ -n "${exported_Config_optional_build_name}" ]; then
+        func_Build_FileName="${func_Build_FileName}-${exported_Config_optional_build_name}"
+    fi
+
+    # 若有 build_number
+    if [ -n "${exported_Config_optional_build_number}" ]; then
+        func_Build_FileName="${func_Build_FileName}-${exported_Config_optional_build_number}"
+    fi
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_FileName}" ]; then
@@ -615,21 +615,19 @@ function export_ios() {
 
     echo "${exported_Title_Log} 開始打包 "${func_Subcommand}""
 
-    # ===> value 設定 <===
-    # for iOS 參數
-    local func_iOS_BundleShortVersion="${exported_BuildName}"
-    local func_iOS_BundleVersion="${func_iOS_BundleShortVersion}.${exported_BuildNumber}"
-
-    echo
-    echo "${exported_Title_Log} ============= Value : Begin ============="
-    echo "${exported_Title_Log} func_iOS_BundleShortVersion : ${func_iOS_BundleShortVersion}"
-    echo "${exported_Title_Log} func_iOS_BundleVersion      : ${func_iOS_BundleVersion}"
-    echo "${exported_Title_Log} ============= Value : End ============="
-    echo
-
     # ===> Command 設定 <===
     # 設定基本的 command 內容.
-    local func_Build_Command="build "${func_Subcommand}" --"${func_buildConfigType}" --build-name "${func_iOS_BundleShortVersion}" --build-number "${func_iOS_BundleVersion}""
+    local func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+
+    # 若有 build_name
+    if [ -n "${exported_Config_optional_build_name}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildName} ${exported_Config_optional_build_name}"
+    fi
+
+    # 若有 build_number
+    if [ -n "${exported_Config_optional_build_number}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildNumber} ${exported_Config_optional_build_number}"
+    fi
 
     # 若有 flavor
     if [ -n "${exported_Config_optional_flavor}" ]; then
@@ -652,8 +650,15 @@ function export_ios() {
         func_Build_FileName="${func_buildConfigType}"
     fi
 
-    # 加上 version
-    func_Build_FileName="${func_Build_FileName}-${func_iOS_BundleVersion}"
+    # 若有 build_name
+    if [ -n "${exported_Config_optional_build_name}" ]; then
+        func_Build_FileName="${func_Build_FileName}-${exported_Config_optional_build_name}"
+    fi
+
+    # 若有 build_number
+    if [ -n "${exported_Config_optional_build_number}" ]; then
+        func_Build_FileName="${func_Build_FileName}-${exported_Config_optional_build_number}"
+    fi
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_FileName}" ]; then
@@ -844,7 +849,7 @@ function process_Deal_InputParam() {
 function process_Deal_ToggleFeature() {
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
+    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="Y"
 
     # build configutation type : 編譯組態設定，之後視情況是否要開放
     # 依據 flutter build ， 有 debug ， profile ， release，
@@ -902,7 +907,7 @@ function process_Parse_BuildConfig() {
 
         # 開啟可以抓到此 shell 目前有哪些設定值。
         if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
-            set >${exported_Param_BuildConfigFile}_BeforeParseConfig.temp
+            set >${exported_Param_BuildConfigFile}_BeforeParseConfig.temp.log
         fi
 
         # parse required section
@@ -919,7 +924,7 @@ function process_Parse_BuildConfig() {
 
         # 開啟可以抓到此 shell 目前有哪些設定值。
         if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
-            set >${exported_Param_BuildConfigFile}_AfterParseConfig.temp
+            set >${exported_Param_BuildConfigFile}_AfterParseConfig.temp.log
         fi
 
         echo "${exported_Title_Log} ============= parse build config file : End ============="
