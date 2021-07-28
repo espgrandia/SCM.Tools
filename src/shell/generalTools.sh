@@ -10,7 +10,7 @@
 #  # include changeToDirectory function
 #  . src/generalTools.sh
 #
-#  changeToDirectory "${sample_Title_Log}" "${sample_Shell_WorkPath}"
+#  changeToDirectory "${sample_Title_Log}" "${sample_WorkPath}"
 #  ```
 #
 # ---
@@ -24,8 +24,9 @@
 # @brief function : 取得 git short hash .
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #   - 設定 git short hash 到輸入的參數 ${2}。
-# @param ${1}: 要輸出的 title log : e.g. "${exported_Title_Log}" .
-# @param ${2}: 要設定 git hash 的參數: e.g. sample_Shell_GitHash_Short .
+#
+# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${2}: 要設定 git hash 的參數: e.g. sample_GitHash_Short .
 function getGitShortHash() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
@@ -57,8 +58,9 @@ function getGitShortHash() {
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #   - 刪除只會刪除 folder path 此層資料夾的所有資料
 #   - folder path (${2}) 階層中沒有的資料夾會全部建立。
-# @param ${1}: 要輸出的 title log : e.g. "${exported_Title_Log}" .
-# @param ${2}: 要處理的目標資料夾(含路徑) : e.g. "${sample_Shell_DestFolder}" .
+#
+# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${2}: 要處理的目標資料夾(含路徑) : e.g. "${sample_DestFolder}" .
 function remvoe_And_Makedir() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
@@ -95,8 +97,9 @@ function remvoe_And_Makedir() {
 # ============= This is separation line =============
 # @brief function : change to directory .
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
+#
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @param ${2}: 切換的目的資料夾: e.g. "${sample_Shell_WorkPath}"，$(dirname $0)，etc ...
+# @param ${2}: 切換的目的資料夾: e.g. "${sample_WorkPath}"，$(dirname $0)，etc ...
 function changeToDirectory() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
@@ -121,6 +124,7 @@ function changeToDirectory() {
 # @brief function : check input param is illegal.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #   - 判斷輸入參數的合法性，失敗會直接 return.
+#
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @param ${2}: input param name: e.g. "sample_Param_ProjectRelativePath" .
 # @param ${3}: input param value: e.g. "${sample_Param_ProjectRelativePath}" .
@@ -158,6 +162,7 @@ function checkInputParam() {
 #   - 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #   - 檢查輸入 result 是否失敗 (0: 成功，非0: 失敗)，失敗則切換目錄，並直接 return : exit result code .
 #   - 一般為呼叫完某個 command line，判斷其回傳值是否成功，失敗則離開此 shell .
+#
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @param ${2}: 要驗證的 result value: e.g. $? : 非0為失敗 ..
 # @param ${3}: 要 dump log" .
@@ -213,6 +218,7 @@ function checkResultFail_And_ChangeFolder() {
 # @param ${!3} : source list : 要驗證的 array。
 #
 # sample e.g. check_Legal_Val_In_List "${sample_Title_Log}" "${sample_Val}" sample_List[@]
+#
 # @retrun 0: 成功， 99: 失敗。
 function check_Legal_Val_In_List() {
 
@@ -270,6 +276,7 @@ function check_Legal_Val_In_List() {
 # @param ${2} : check value : 要驗證的 value。
 # @param ${!3} : source list : 要驗證的 array。
 # @param ${4}: 切換回去的的 folder path"
+#
 # sample e.g. check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${sample_Title_Log}" "${sample_Val}" sample_List[@] "${sample_ChangeFolder}"
 function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
 
@@ -303,11 +310,14 @@ function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #   - 依據輸入的字串，分隔符號，以及要寫入的參入名稱。
 #   - 剖析後，會取分隔後前兩筆寫入對應的參數。
-# @param ${1}: 要輸出的 title log : e.g. "${exported_Title_Log}" .
+#
+# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @param ${2}: 要分析的字串: e.g. "1.0.0+2" .
 # @param ${3}: separator 的字串: e.g. "+" .
-# @param ${4}: 要設定的第一個參數，拆解後取第一位的內容來設定。 e.g. sample_Shell_Split_First .
-# @param ${5}: 要設定的第一個參數，拆解後取第二位的內容來設定。 e.g. sample_Shell_Split_Second .
+# @param ${4}: 要設定的第一個參數，拆解後取第一位的內容來設定。 e.g. sample_Split_First .
+# @param ${5}: 要設定的第一個參數，拆解後取第二位的內容來設定。 e.g. sample_Split_Second .
+#
+# sample e.g. splitStringToPair "${sample_Title_Log}" "${sample_SourceString}" "${sample_Separator}" sample_Split_First sample_Split_Second
 function splitStringToPair() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
@@ -336,8 +346,69 @@ function splitStringToPair() {
 }
 
 # ============= This is separation line =============
+# @brief function : append destString from sourceString with separator .
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
+#   - 依據輸入的字串，分隔符號，以及要寫入的參入名稱。
+#   - append string 概念 :
+#     判斷 source string 是否有值，
+#     - 有值則會在判斷 dest string 是否有值，。
+#       - 有值則會 append source string 到 dest string 後面，且中間以 separator 來當分隔符號。
+#       - 空值則會 設定 source string 給 dest string。
+#
+# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${2}: 要設定的目標的字串，為實際會設定的參數， (有可能為空，需判斷): e.g. sample_DestString ("abc" or "") .
+# @param ${3}: 要 append 的來源的字串參數，要 dump log，所以也是用參數帶入 (有可能為空，需判斷): e.g. sample_SourceString ("App_1.0.1" or "") .
+# @param ${4}: separator 的字串 (要 append 時的分隔字串，允許為空字串): e.g. "-" .
+#
+# sample e.g. append_DestString_From_SourceString_With_Separator "${sample_Title_Log}" sample_DestString sample_SourceString "${sample_Separator}"
+function append_DestString_From_SourceString_With_Separator() {
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} TitleLog : ${1}"
+    echo "${func_Title_Log} dest string : ${2}"
+    echo "${func_Title_Log} source string : ${3}"
+    echo "${func_Title_Log} separator string : ${4}"
+    echo "${func_Title_Log} Input param : End ***"
+    echo
+
+    local func_Param_DestStringValue=$(eval echo \$${2})
+    local func_Param_SourceStringValue=$(eval echo \$${3})
+    local func_Param_Separator=${4}
+
+    echo "${func_Title_Log} ${1} ${2} (dest string value)   : $(eval echo \$${2}) ***"
+    echo "${func_Title_Log} ${1} ${3} (source string value) : $(eval echo \$${3}) ***"
+    echo
+    echo "${func_Title_Log} ${1} execute append - [Begin] ***"
+
+    # 若有 Source String Value
+    if [ -n "${func_Param_SourceStringValue}" ]; then
+
+        # 若有 Dest String Value
+        if [ -n "${func_Param_DestStringValue}" ]; then
+            eval ${2}="${func_Param_DestStringValue}${func_Param_Separator}${func_Param_SourceStringValue}"
+        else
+            eval ${2}="${func_Param_SourceStringValue}"
+        fi
+
+    fi
+
+    echo "${func_Title_Log} ${1} ${2} (dest string value)   : $(eval echo \$${2}) ***"
+    echo "${func_Title_Log} ${1} ${3} (source string value) : $(eval echo \$${3}) ***"
+    echo "${func_Title_Log} ${1} execute append - [End] ***"
+    echo
+    echo "${func_Title_Log} End ***"
+    echo
+}
+
+# ============= This is separation line =============
 # @brief function : 確認成功，則執行 command.
 # @details : 要執行 command 前會判斷是否要帶入其對應參數 (commandParams)
+#
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. ${sample_IsExcute}
 # @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. sample_Command
