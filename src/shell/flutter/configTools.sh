@@ -110,11 +110,6 @@ function configTools_Gen_Required() {
     echo "    # [${func_Required_Key_Paths_Output}] : 輸出資料夾 [需帶完整路徑] : apk，ipa 等輸出的資料夾位置 => e.g. [專案路徑]/[scm]/output" >>"${func_Param_FilePath}"
     echo "    ${func_Required_Key_Paths_Output} : ${func_Param_OutputPath}" >>"${func_Param_FilePath}"
 
-    # ## for [required] [version]:
-    # echo "" >>"${func_Param_FilePath}"
-    # echo "  # [${func_Required_Key_Version}] : 版本資訊 : 一般對應於 flutter pubspec.yaml 中的 version" >>"${func_Param_FilePath}"
-    # echo "  ${func_Required_Key_Version} : ${func_Param_Version}" >>"${func_Param_FilePath}"
-
     ## for [required] [subcommands]:
     echo "" >>"${func_Param_FilePath}"
     echo "  # [${func_Required_Key_Subcommands}] : build sumcommand (like as : ${configConst_Subcommand_aar}，${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_bundle}，${configConst_Subcommand_ios}，${configConst_Subcommand_ios_framework})" >>"${func_Param_FilePath}"
@@ -176,6 +171,47 @@ function configTools_Gen_Optional_ReportFilePath() {
 }
 
 # ============= This is separation line =============
+# @brief function : configTools_Gen_Optional_Prefix_File_Name.
+#
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 產出的檔案名稱，加上 前綴字 (prefix)。
+#
+# @param $1 : file path : 要輸出的檔案位置 (含檔名)
+# @param $2 : prefix file name : 輸出檔案的前贅字 => e.g. "[AppName].[version]"
+#
+# sample e.g. configTools_Gen_Optional_Build_Name "${sample_FilePath}" "${sample_Prefix_FileName}"
+function configTools_Gen_Optional_Prefix_File_Name() {
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} file path : ${1}"
+    echo "${func_Title_Log} ${configConst_ConfigKey_Prefix_FileName} value : ${2}"
+    echo "${func_Title_Log} Input param : End ***"
+
+    # for local varient
+    local func_Param_FilePath="${1}"
+    local func_Param_KeyFeature_Value="${2}"
+
+    # for [optional]
+    # for (keyFeature) : [build_name]
+    local func_Optional_Key_For_KeyFeature="${configConst_ConfigKey_Prefix_FileName}"
+
+    # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
+    echo "" >>"${func_Param_FilePath}"
+    echo "# ${configTools_Optional} [${func_Optional_Key_For_KeyFeature}] sction" >>"${func_Param_FilePath}"
+    echo "# - [${func_Optional_Key_For_KeyFeature}] : exported.sh 額外會用到的參數，產出的檔案名稱，加上 前綴字 (prefix)。" >>"${func_Param_FilePath}"
+    echo "# - 原則上 exported.sh 有實作的 subcommands，都會支援才是。" >>"${func_Param_FilePath}"
+    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
+    echo "  ${func_Optional_Key_For_KeyFeature} : ${func_Param_KeyFeature_Value}" >>"${func_Param_FilePath}"
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+
+# ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_Build_Name.
 #
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
@@ -185,7 +221,7 @@ function configTools_Gen_Optional_ReportFilePath() {
 #     pubspec.yaml 的 version : [Build_Name]+[Build_Number]，但檔案名稱沒有對應內容。
 #
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
-# @param $2 : platforms : flutter --build-name 的設定內容 => e.g. "0.1.1"
+# @param $2 : build name : flutter --build-name 的設定內容 => e.g. "0.1.1"
 #
 # sample e.g. configTools_Gen_Optional_Build_Name "${sample_FilePath}" "${sample_Build_Name}"
 function configTools_Gen_Optional_Build_Name() {
@@ -196,7 +232,7 @@ function configTools_Gen_Optional_Build_Name() {
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
     echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} ${configConst_BuildParam_Key_BuildName} values : ${2}"
+    echo "${func_Title_Log} ${configConst_BuildParam_Key_BuildName} value : ${2}"
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient
@@ -233,7 +269,7 @@ function configTools_Gen_Optional_Build_Name() {
 #     pubspec.yaml 的 version : [Build_Name]+[Build_Number]，但檔案名稱沒有對應內容。
 #
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
-# @param $2 : platforms : flutter --build-number 的設定內容 => e.g. "0.1.1.4" or "12" [需看 subcommands 實際支援度]
+# @param $2 : build number : flutter --build-number 的設定內容 => e.g. "0.1.1.4" or "12" [需看 subcommands 實際支援度]
 #
 # sample e.g. configTools_Gen_Optional_Build_Number "${sample_FilePath}" "${sample_Build_Number}"
 function configTools_Gen_Optional_Build_Number() {
@@ -244,7 +280,7 @@ function configTools_Gen_Optional_Build_Number() {
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
     echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} ${configConst_BuildParam_Key_BuildNumber} values : ${2}"
+    echo "${func_Title_Log} ${configConst_BuildParam_Key_BuildNumber} value : ${2}"
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient
@@ -433,7 +469,7 @@ function configTools_Gen_Optional_Target_Platform() {
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
     echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} ${configConst_BuildParam_Key_TargetPlatform} values : ${2}"
+    echo "${func_Title_Log} ${configConst_BuildParam_Key_TargetPlatform} value : ${2}"
     echo "${func_Title_Log} Input param : End ***"
 
     # for local varient

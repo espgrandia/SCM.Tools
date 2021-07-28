@@ -406,6 +406,9 @@ function export_aar() {
 # @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_apk() {
 
+    local func_Name=${FUNCNAME[0]}
+    local func_Title_Log="${exported_Title_Log} *** function [${func_Name}] -"
+
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
     local func_Subcommand=${exported_SubcommandInfo_apk[0]}
@@ -459,31 +462,31 @@ function export_apk() {
     # 設定基本的輸出檔案格式。
     local func_Build_FileName
 
-    # 若有 flavor
-    if [ -n "${exported_Config_optional_flavor}" ]; then
-        func_Build_FileName="${exported_Config_optional_flavor}-${func_buildConfigType}"
-    else
-        func_Build_FileName="${func_buildConfigType}"
-    fi
+    local func_Seperator="-"
 
-    # Fixed ME
-    # 加上 version
-    # func_Build_FileName="${func_Build_FileName}-${func_Android_VersionName}-${func_Android_VersionCode}"
+    # 若有 prefix file name
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName exported_Config_optional_prefix_file_name "${func_Seperator}"
+
+    # 若有 flavor
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName exported_Config_optional_flavor "${func_Seperator}"
+
+    # 若有 config type
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName func_buildConfigType "${func_Seperator}"
 
     # 若有 build_name
-    if [ -n "${exported_Config_optional_build_name}" ]; then
-        func_Build_FileName="${func_Build_FileName}-${exported_Config_optional_build_name}"
-    fi
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName exported_Config_optional_build_name "${func_Seperator}"
 
     # 若有 build_number
-    if [ -n "${exported_Config_optional_build_number}" ]; then
-        func_Build_FileName="${func_Build_FileName}-${exported_Config_optional_build_number}"
-    fi
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName exported_Config_optional_build_number "${func_Seperator}"
 
     # 若有 dart-define
-    if [ -n "${exported_DartDef_PartOf_FileName}" ]; then
-        func_Build_FileName="${func_Build_FileName}-${exported_DartDef_PartOf_FileName}"
-    fi
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName exported_DartDef_PartOf_FileName "${func_Seperator}"
 
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").apk"
@@ -505,7 +508,7 @@ function export_apk() {
     echo >>"${exported_ReportNoteFile}"
     echo "---" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
-    echo "## [export_apk] "${func_Build_FileName}"" >>"${exported_ReportNoteFile}"
+    echo "## [${func_Name}] "${func_Build_FileName}"" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
     echo "- command line :" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
@@ -593,7 +596,8 @@ function export_bundle() {
 # @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_ios() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_Name=${FUNCNAME[0]}
+    local func_Title_Log="${exported_Title_Log} *** function [${func_Name}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -643,27 +647,31 @@ function export_ios() {
     # 設定基本的輸出檔案格式。
     local func_Build_FileName
 
+    local func_Seperator="-"
+
+    # 若有 prefix file name
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName exported_Config_optional_prefix_file_name "${func_Seperator}"
+
     # 若有 flavor
-    if [ -n "${exported_Config_optional_flavor}" ]; then
-        func_Build_FileName="${exported_Config_optional_flavor}-${func_buildConfigType}"
-    else
-        func_Build_FileName="${func_buildConfigType}"
-    fi
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName exported_Config_optional_flavor "${func_Seperator}"
+
+    # 若有 config type
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName func_buildConfigType "${func_Seperator}"
 
     # 若有 build_name
-    if [ -n "${exported_Config_optional_build_name}" ]; then
-        func_Build_FileName="${func_Build_FileName}-${exported_Config_optional_build_name}"
-    fi
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName exported_Config_optional_build_name "${func_Seperator}"
 
     # 若有 build_number
-    if [ -n "${exported_Config_optional_build_number}" ]; then
-        func_Build_FileName="${func_Build_FileName}-${exported_Config_optional_build_number}"
-    fi
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName exported_Config_optional_build_number "${func_Seperator}"
 
     # 若有 dart-define
-    if [ -n "${exported_DartDef_PartOf_FileName}" ]; then
-        func_Build_FileName="${func_Build_FileName}-${exported_DartDef_PartOf_FileName}"
-    fi
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FileName exported_DartDef_PartOf_FileName "${func_Seperator}"
 
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").ipa"
@@ -682,7 +690,7 @@ function export_ios() {
     echo >>"${exported_ReportNoteFile}"
     echo "---" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
-    echo "## [export_ios] "${func_Build_FileName}"" >>"${exported_ReportNoteFile}"
+    echo "## [${func_Name}] "${func_Build_FileName}"" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
     echo "- command line :" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"

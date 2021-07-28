@@ -75,4 +75,15 @@ export configConst_BuildParam_TargetPlatform_x86="android-x86"
 export configConst_BuildParam_TargetPlatform_x64="android-x64"
 ## ================================== Parm that needed contains value section : End ==================================
 
+## ================================== config (yaml) key that needed contains value section : Begin ==================================
+# @brief 針對 config file (yaml) 會用到的 key，於此定義。
+# @detail 首先會用到的是 confitTools.sh，其餘的 exported.sh 看看是否能使用。
+
+# for config key。
+export configConst_ConfigKey_Optional="optional"
+
+# 產出的檔案名稱，加上 前綴字 (prefix)。
+export configConst_ConfigKey_Prefix_FileName="prefix_file_name"
+
+## ================================== config key (yaml) that needed contains value section : End ==================================
 
