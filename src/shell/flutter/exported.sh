@@ -10,15 +10,13 @@
 #
 # ---
 #
-# 目前支援 :
-# - version 管理 : 與 pubspec.yaml 的 version 來做結合，由參數帶入。
-#
-# ---
-#
 # input 參數說明 :
 #
 # - $1 : exported_Param_BuildConfigFile="[專案路徑]/[scm]/output/buildConfig.yaml" : 設定編譯的 config 功能檔案 [需帶完整路徑].
+#
 #   - 內容為協議好的格式，只是做成可彈性設定的方式，可選項目，沒有則以基本編譯。
+#
+#   - 目前 exported.sh 支援的功能，在 configTools.sh 會有對應函式可以設定到 buildConfig.yaml 中。
 #
 #   - sample file : buildConfig.yaml
 #
@@ -152,8 +150,6 @@
 #
 # TODO:
 #  - apk 未瘦身，不確定是否有擾亂 ?
-#  - flavor 的可行性。
-#  - report_path 是否要調整為 required path 中的一環。
 #
 
 ## ================================== buildConfig function section : Begin ==================================
@@ -445,48 +441,48 @@ function export_apk() {
 
     # 若有 flavor
     if [ -n "${exported_Config_optional_flavor}" ]; then
-        func_Build_Command="${func_Build_Command} --"${configConst_BuildParam_Key_Flavor}"="${exported_Config_optional_flavor}""
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_Flavor}=${exported_Config_optional_flavor}"
     fi
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_Command}" ]; then
-        func_Build_Command="${func_Build_Command} "${exported_DartDef_PartOf_Command}""
+        func_Build_Command="${func_Build_Command} ${exported_DartDef_PartOf_Command}"
     fi
 
     # 若有 target-platform
     if [ -n "${exported_Config_optional_target_platform}" ]; then
-        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_TargetPlatform} "${exported_Config_optional_target_platform}""
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_TargetPlatform} ${exported_Config_optional_target_platform}"
     fi
 
     # ===> OutputFile 設定 <===
     # 設定基本的輸出檔案格式。
     local func_Build_FileName
 
-    local func_Seperator="-"
+    local func_Build_Seperator="-"
 
     # 若有 prefix file name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_prefix_file_name "${func_Seperator}"
+        func_Build_FileName exported_Config_optional_prefix_file_name "${func_Build_Seperator}"
 
     # 若有 flavor
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_flavor "${func_Seperator}"
+        func_Build_FileName exported_Config_optional_flavor "${func_Build_Seperator}"
 
     # 若有 config type
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName func_buildConfigType "${func_Seperator}"
+        func_Build_FileName func_buildConfigType "${func_Build_Seperator}"
 
     # 若有 build_name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_build_name "${func_Seperator}"
+        func_Build_FileName exported_Config_optional_build_name "${func_Build_Seperator}"
 
     # 若有 build_number
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_build_number "${func_Seperator}"
+        func_Build_FileName exported_Config_optional_build_number "${func_Build_Seperator}"
 
     # 若有 dart-define
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_DartDef_PartOf_FileName "${func_Seperator}"
+        func_Build_FileName exported_DartDef_PartOf_FileName "${func_Build_Seperator}"
 
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").apk"
@@ -508,7 +504,7 @@ function export_apk() {
     echo >>"${exported_ReportNoteFile}"
     echo "---" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
-    echo "## [${func_Name}] "${func_Build_FileName}"" >>"${exported_ReportNoteFile}"
+    echo "## [${func_Name}] ${func_Build_FileName}" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
     echo "- command line :" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
@@ -528,7 +524,7 @@ function export_apk() {
     # ===> copy apk to destination folder <===
     echo "${exported_Title_Log} copy ${func_buildConfigType} ${func_Subcommand} to output folder"
 
-    cp -r "${func_Origin_Build_FileName}" "${exported_Config_required_paths_output}"/${func_Build_FileName}
+    cp -r "${func_Origin_Build_FileName}" "${exported_Config_required_paths_output}/${func_Build_FileName}"
 
     # check result - copy apk
     checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy ${func_Subcommand} => fail ~ !!!" "${exported_OldPath}"
@@ -635,43 +631,43 @@ function export_ios() {
 
     # 若有 flavor
     if [ -n "${exported_Config_optional_flavor}" ]; then
-        func_Build_Command="${func_Build_Command} --"${configConst_BuildParam_Key_Flavor}"="${exported_Config_optional_flavor}""
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_Flavor}=${exported_Config_optional_flavor}"
     fi
 
     # 若有 dart-define
     if [ -n "${exported_DartDef_PartOf_Command}" ]; then
-        func_Build_Command="${func_Build_Command} "${exported_DartDef_PartOf_Command}""
+        func_Build_Command="${func_Build_Command} ${exported_DartDef_PartOf_Command}"
     fi
 
     # ===> OutputFile 設定 <===
     # 設定基本的輸出檔案格式。
     local func_Build_FileName
 
-    local func_Seperator="-"
+    local func_Build_Seperator="-"
 
     # 若有 prefix file name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_prefix_file_name "${func_Seperator}"
+        func_Build_FileName exported_Config_optional_prefix_file_name "${func_Build_Seperator}"
 
     # 若有 flavor
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_flavor "${func_Seperator}"
+        func_Build_FileName exported_Config_optional_flavor "${func_Build_Seperator}"
 
     # 若有 config type
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName func_buildConfigType "${func_Seperator}"
+        func_Build_FileName func_buildConfigType "${func_Build_Seperator}"
 
     # 若有 build_name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_build_name "${func_Seperator}"
+        func_Build_FileName exported_Config_optional_build_name "${func_Build_Seperator}"
 
     # 若有 build_number
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_build_number "${func_Seperator}"
+        func_Build_FileName exported_Config_optional_build_number "${func_Build_Seperator}"
 
     # 若有 dart-define
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_DartDef_PartOf_FileName "${func_Seperator}"
+        func_Build_FileName exported_DartDef_PartOf_FileName "${func_Build_Seperator}"
 
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").ipa"
@@ -690,7 +686,7 @@ function export_ios() {
     echo >>"${exported_ReportNoteFile}"
     echo "---" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
-    echo "## [${func_Name}] "${func_Build_FileName}"" >>"${exported_ReportNoteFile}"
+    echo "## [${func_Name}] ${func_Build_FileName}" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
     echo "- command line :" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
@@ -716,7 +712,7 @@ function export_ios() {
         # 打包 ipa 的固定資料夾名稱。
         mkdir Payload
 
-        cp -r ""${exported_Flutter_WorkPath}"/"${func_Origin_Build_AppFolder}"" "${exported_Config_required_paths_output}/Payload"
+        cp -r "${exported_Flutter_WorkPath}/${func_Origin_Build_AppFolder}" "${exported_Config_required_paths_output}/Payload"
 
         # check result - copy iOS Payload
         checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${exported_OldPath}"
@@ -749,7 +745,7 @@ function export_ios() {
     echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
 
     echo
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: ${func_TotalTime}s"
     echo
 }
 ### ==================== ios : End ====================
@@ -804,7 +800,7 @@ function process_Init() {
     # 保險起見，import configConst.sh
     # import configConst.sh for configTools.sh using export Environment Variable。
     echo
-    echo "${exported_Title_Log} - import configConst.sh"
+    echo "${exported_Title_Log} import configConst.sh"
     . "${func_Shell_WorkPath}"/configConst.sh
 
     # import general function
@@ -828,8 +824,8 @@ function process_Init() {
     # 設定成完整路徑。
     exported_Shell_WorkPath=$(pwd)
 
-    echo "${exported_Title_Log} exported_OldPath : "${exported_OldPath}""
-    echo "${exported_Title_Log} exported_Shell_WorkPath : "${exported_Shell_WorkPath}""
+    echo "${exported_Title_Log} exported_OldPath : ${exported_OldPath}"
+    echo "${exported_Title_Log} exported_Shell_WorkPath : ${exported_Shell_WorkPath}"
     echo
 }
 

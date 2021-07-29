@@ -31,12 +31,12 @@ function releastNoteTools_Gen_Init() {
     echo
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} TitleLog: "${1}""
-    echo "${func_Title_Log} release note file path: "${2}""
-    echo "${func_Title_Log} name : "${3}""
-    echo "${func_Title_Log} version : "${4}""
-    echo "${func_Title_Log} gitCommmit : "${5}""
-    echo "${func_Title_Log} change folder path : "${6}""
+    echo "${func_Title_Log} TitleLog: ${1}"
+    echo "${func_Title_Log} release note file path: ${2}"
+    echo "${func_Title_Log} name : ${3}"
+    echo "${func_Title_Log} version : ${4}"
+    echo "${func_Title_Log} gitCommmit : ${5}"
+    echo "${func_Title_Log} change folder path : ${6}"
     echo "${func_Title_Log} Input param : End ***"
 
     local func_Param_ReleaseNote_File="$2"
@@ -46,16 +46,16 @@ function releastNoteTools_Gen_Init() {
     local func_Param_ChangeFolderPath="$5"
 
     echo
-    echo "${func_Title_Log} "${1}" ============= Release Note Init Info - Begin ============="
+    echo "${func_Title_Log} ${1} ============= Release Note Init Info - Begin ============="
 
-    echo "${func_Title_Log} "${1}" ReleaseNote_File in ${func_Param_ReleaseNote_File}"
+    echo "${func_Title_Log} ${1} ReleaseNote_File in ${func_Param_ReleaseNote_File}"
 
     echo "# Release Note" >>"${func_Param_ReleaseNote_File}"
 
     echo >>"${func_Param_ReleaseNote_File}"
     echo "---" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
-    echo "## Project info" >>"${func_Param_ReleaseNote_File}"
+    echo "## Project Info" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
     echo "- name : ${func_Param_Name}" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
@@ -66,9 +66,9 @@ function releastNoteTools_Gen_Init() {
     # 執行 flutter pub get 會以 pubspec.lock 為主要優先插件版本的參考檔案
     # 若是沒有 pubspec.lock 則才會以 pubspec.yaml 為主下載插件資源
 
-    echo "${func_Title_Log} "${1}" ============= flutter pub get - Begin ============="
+    echo "${func_Title_Log} ${1} ============= flutter pub get - Begin ============="
 
-    echo "${func_Title_Log} "${1}" 開始更新 packages 插件資源 => flutter pub get"
+    echo "${func_Title_Log} ${1} 開始更新 packages 插件資源 => flutter pub get"
     flutter pub get
     checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ flutter pub get => fail ~ !!!" "${func_Param_ChangeFolderPath}"
 
@@ -76,13 +76,14 @@ function releastNoteTools_Gen_Init() {
     echo
 
     # ===> flutter doctor <===
-    echo "${func_Title_Log} "${1}" flutter doctor >> ${func_Param_ReleaseNote_File}"
+    echo "${func_Title_Log} ${1} flutter doctor >> ${func_Param_ReleaseNote_File}"
 
     echo >>"${func_Param_ReleaseNote_File}"
     echo "---" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
     echo "## flutter doctor -v" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
+
     flutter doctor -v >>"${func_Param_ReleaseNote_File}"
     checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ flutter doctor -v => fail ~ !!!" "${func_Param_ChangeFolderPath}"
 
@@ -94,6 +95,7 @@ function releastNoteTools_Gen_Init() {
     echo >>"${func_Param_ReleaseNote_File}"
     echo "## flutter pub deps" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
+
     flutter pub deps >>"${func_Param_ReleaseNote_File}"
     checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ flutter pub deps => fail ~ !!!" "${func_Param_ChangeFolderPath}"
 
@@ -117,14 +119,13 @@ function releastNoteTools_Gen_Exported_Title() {
     echo
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} release note file path: "${1}""
+    echo "${func_Title_Log} release note file path: ${1}"
     echo "${func_Title_Log} Input param : End ***"
 
     local func_Param_ReleaseNote_File="$1"
 
     echo >>"${func_Param_ReleaseNote_File}"
     echo "---" >>"${func_Param_ReleaseNote_File}"
-
     echo >>"${func_Param_ReleaseNote_File}"
     echo "## Exported Info" >>"${func_Param_ReleaseNote_File}"
 
@@ -145,8 +146,8 @@ function releastNoteTools_Gen_Final() {
     echo
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} release note file path: "${1}""
-    echo "${func_Title_Log} Elapsed time: "${2}""
+    echo "${func_Title_Log} release note file path: ${1}"
+    echo "${func_Title_Log} Elapsed time: ${2}"
     echo "${func_Title_Log} Input param : End ***"
 
     local func_Param_ReleaseNote_File="$1"
