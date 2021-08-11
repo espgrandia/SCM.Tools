@@ -242,8 +242,8 @@ function check_Legal_Val_In_List() {
     checkInputParam "${func_Title_Log}" func_Param_CheckVal "${func_Param_CheckVal}"
     checkInputParam "${func_Title_Log}" func_Param_SrcList "${func_Param_SrcList[@]}"
 
-    # reVal 的初始設定。
-    local reVal=99
+    # func_ReVal 的初始設定。
+    local func_ReVal=99
 
     # 檢查是否合法。
     local func_i
@@ -254,13 +254,13 @@ function check_Legal_Val_In_List() {
         # 判斷是否為 要處理的 command (subcommand name 是否相同) .
         if [ ${func_Param_CheckVal} = ${aCheckVal} ]; then
             echo "${func_Title_Log} Find aCheckVal : ${aCheckVal} in (${func_Param_SrcList[*]}) ***"
-            reVal=0
+            func_ReVal=0
             break
         fi
 
     done
 
-    return "${reVal}"
+    return "${func_ReVal}"
 }
 
 # ============= This is separation line =============
@@ -417,6 +417,11 @@ function append_DestString_From_SourceString_With_Separator() {
 #   - array : 第 0 個為 command line，
 #   - array : 第 1 個 (含 1) 後面為依序要輸入的參數
 #
+# @return : 回傳值 (execute command 結果回傳)。
+#  符合一般的 shell 或 command line 回傳 result code 原則。
+#  - 0 : 成功 (包括不需要 execute command)
+#  - 其他 : 都視為失敗。
+#
 # ---
 #
 # @sample
@@ -441,6 +446,8 @@ function append_DestString_From_SourceString_With_Separator() {
 #  導致要用別的方式處理，後來改成直接輸入兩個參數 (command , command prarms) 來判斷比較簡單。
 #
 function check_OK_Then_Excute_Command() {
+
+  local func_ReVal=0
 
     # 驗證成功再處理後續。
     if [ ${2} = "Y" ]; then
@@ -471,11 +478,17 @@ function check_OK_Then_Excute_Command() {
 
             ${func_Command} "${func_CommandParams[@]}"
 
+            func_ReVal=$?
+            echo "${func_Title_Log} ${1} excute command result code: ${func_ReVal}"
+
         else
 
             echo "${func_Title_Log} ${1} will excute command : ${func_Command}"
 
             ${func_Command}
+
+            func_ReVal=$?
+            echo "${func_Title_Log} ${1} excute command result code: ${func_ReVal}"
 
         fi
 
@@ -485,4 +498,51 @@ function check_OK_Then_Excute_Command() {
         echo "${func_Title_Log} End ***"
         echo
     fi
+
+    return "${func_ReVal}"
 }
+
+# ============= This is separation line =============
+# @brief function : 轉呼叫 [check_OK_Then_Excute_Command]，回傳值若非成功 (0)，則切換路徑並中斷程式。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 主要參數及使用方式，請參考 [check_OK_Then_Excute_Command] 說明。
+#
+# @Params :
+# === copy from [check_OK_Then_Excute_Command] - Begin
+# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. ${sample_IsExcute}
+# @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. sample_Command
+# @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
+# === copy from [check_OK_Then_Excute_Command] - End
+#
+# @param ${5}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
+#
+# sample e.g. check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder [check_OK_Then_Excute_Command Param_1 ... Param_4] "${sample_ChangeFolder}"
+function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() 
+{
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} TitleLog : ${1}"
+    echo "${func_Title_Log} isExcute : ${2}"
+    echo "${func_Title_Log} command : ${3}"
+    echo "${func_Title_Log} command params : ${!4}"
+    echo "${func_Title_Log} change folder: ${5}"
+    echo "${func_Title_Log} Input param : End ***"
+
+    local func_Param_TitleLog="${1}"
+    local func_Param_IsExcute="${2}"
+    local func_Param_CoommandName="${3}"
+    local func_Param_CoommandParams=("${!4}")
+    local func_Param_ChangeFolder="${5}"
+
+    check_OK_Then_Excute_Command "${func_Param_TitleLog}" "${func_Param_IsExcute}" "${func_Param_CoommandName}" func_Param_CoommandParams[@]
+
+    # 呼叫驗證，帶入回傳值，不合法則中斷程序。
+    checkResultFail_And_ChangeFolder "${func_Param_TitleLog}" "$?" \
+        "\r\n!!! ~ OPPS!! Execute Command Fail. \r\n- Command Name : ${func_Param_CoommandName}\r\n- Command Params: $(echo ${func_Param_CoommandParams[@]}) \r\n => fail ~ !!!" "${func_Param_ChangeFolder}"
+}
+
