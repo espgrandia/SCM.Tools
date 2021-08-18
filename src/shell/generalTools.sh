@@ -5,6 +5,7 @@
 # @details : 放置常用工具函式，使用者可以引用此檔案來使用函式.
 # @author : esp
 # @create date : 2020-09-01
+#
 # sample :
 #  ``` shell
 #  # include changeToDirectory function
@@ -12,6 +13,14 @@
 #
 #  changeToDirectory "${sample_Title_Log}" "${sample_WorkPath}"
 #  ```
+#
+# ---
+#
+# 注意事項:
+# - 使用此通用函式，有相依於 scm.tools/src/shell/generalConst.sh
+#   - 其中有使用到 checkResultFail_And_ChangeFolder
+#   - 需自行 include generalConst.sh
+#   - 再 include generalTools.sh
 #
 # ---
 #
@@ -449,8 +458,10 @@ function check_OK_Then_Excute_Command() {
 
   local func_ReVal=0
 
+    echo "check_OK_Then_Excute_Command - generalConst_Enable_Flag : ${generalConst_Enable_Flag} ***"
+
     # 驗證成功再處理後續。
-    if [ ${2} = "Y" ]; then
+    if [ ${2} = "${generalConst_Enable_Flag}" ]; then
 
         local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -497,6 +508,7 @@ function check_OK_Then_Excute_Command() {
 
         echo "${func_Title_Log} End ***"
         echo
+
     fi
 
     return "${func_ReVal}"

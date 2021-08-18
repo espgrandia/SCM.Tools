@@ -11,6 +11,7 @@
 # 注意事項:
 # - 使用此通用函式，有相依於 scm.tools/src/shell/generalTools.sh
 #   - 其中有使用到 checkResultFail_And_ChangeFolder
+#   - 需自行 include generalConst.sh
 #   - 需自行 include generalTools.sh
 #   - 再 include releaseNoteTools.sh
 #

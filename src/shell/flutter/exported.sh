@@ -806,6 +806,7 @@ function process_Init() {
     # import general function
     echo
     echo "${exported_Title_Log} import general function"
+    . "${func_Shell_WorkPath}"/../generalConst.sh
     . "${func_Shell_WorkPath}"/../generalTools.sh
 
     # import parse_yaml function
