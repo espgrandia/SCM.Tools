@@ -360,7 +360,7 @@ function parseDartDefine() {
 # @param $1 : command name
 function export_NotyetSupportSubcommand() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="${exported_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # for echo color
     local func_Bold_Black='\033[1;30m'
@@ -373,7 +373,7 @@ function export_NotyetSupportSubcommand() {
 
     echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***${func_Color_Off}"
 
-    # checkResultFail_And_ChangeFolder "${exported_Title_Log}" "50" "!!! ~ OPPS!! Not yet support this subcommand:  ${func_Subcommand} => fail ~ !!!" "${exported_OldPath}"
+    # checkResultFail_And_ChangeFolder "${func_Title_Log}" "50" "!!! ~ OPPS!! Not yet support this subcommand:  ${func_Subcommand} => fail ~ !!!" "${exported_OldPath}"
 }
 ### ==================== NotyetSupportSubcommand : End ====================
 
@@ -381,7 +381,7 @@ function export_NotyetSupportSubcommand() {
 # @brief exported aar 部分
 function export_aar() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="${exported_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -563,7 +563,7 @@ function export_apk() {
 # @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_appbundle() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="${exported_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -584,18 +584,18 @@ function export_appbundle() {
 # @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_bundle() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="${exported_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
     local func_Subcommand=${exported_SubcommandInfo_bundle[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     export_NotyetSupportSubcommand ${func_Subcommand}
 
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
 ### ==================== bundle : End ====================
@@ -771,7 +771,7 @@ function export_ios() {
     echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
 
     echo
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: ${func_TotalTime}s"
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: ${func_TotalTime}s"
     echo
 }
 ### ==================== ios : End ====================
@@ -780,18 +780,18 @@ function export_ios() {
 # @brief exported ios_framework 部分
 function export_ios_framework() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="${exported_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
     local func_Subcommand=${exported_SubcommandInfo_ios_framework[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     export_NotyetSupportSubcommand ${func_Subcommand}
 
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
 ### ==================== ios_framework : End ====================
