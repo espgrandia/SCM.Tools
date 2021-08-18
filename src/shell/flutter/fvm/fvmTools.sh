@@ -12,6 +12,7 @@
 # 注意事項:
 # - 使用此通用函式，有相依於 scm.tools/src/shell/generalTools.sh
 #   - 其中有使用到 checkResultFail_And_ChangeFolder
+#   - 需自行 include generalConst.sh
 #   - 需自行 include generalTools.sh
 #
 # - 另一個 剖析 json file 中的某 key 對應的 value to console. (parse_JsonFile_With_Key_To_Console.py)
