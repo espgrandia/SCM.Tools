@@ -410,25 +410,39 @@ function export_apk() {
     local func_Subcommand=${exported_SubcommandInfo_apk[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     local func_buildConfigType="${1}"
 
     # check input parameters
-    checkInputParam "${exported_Title_Log}" func_buildConfigType "${func_buildConfigType}"
+    checkInputParam "${func_Title_Log}" func_buildConfigType "${func_buildConfigType}"
 
     echo
-    echo "${exported_Title_Log} ============= Param : Begin ============="
-    echo "${exported_Title_Log} func_buildConfigType : ${func_buildConfigType}"
-    echo "${exported_Title_Log} ============= Param : End ============="
+    echo "${func_Title_Log} ============= Param : Begin ============="
+    echo "${func_Title_Log} func_buildConfigType : ${func_buildConfigType}"
+    echo "${func_Title_Log} ============= Param : End ============="
     echo
 
-    echo "${exported_Title_Log} 開始打包 ${func_Subcommand}"
+    echo "${func_Title_Log} 開始打包 ${func_Subcommand}"
 
     # ===> Command 設定 <===
     # 設定基本的 command 內容. [subcommand] [config type]
-    local func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+    local func_Build_Command_Name
+    local func_Build_Command
 
+	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
+	if [ ${exported_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
+
+		func_Build_Command_Name="${configConst_CommandName_Fvm}"
+		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_buildConfigType}"
+
+	else
+
+		func_Build_Command_Name="${configConst_CommandName_Flutter}"
+		func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+
+	fi
+   
     # 若有 build_name
     if [ -n "${exported_Config_optional_build_name}" ]; then
         func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildName} ${exported_Config_optional_build_name}"
@@ -509,29 +523,28 @@ function export_apk() {
     echo "- command line :" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
     echo "  \`\`\`shell" >>"${exported_ReportNoteFile}"
-    echo "    flutter ${func_Build_Command}" >>"${exported_ReportNoteFile}"
+    echo "    ${func_Build_Command_Name} ${func_Build_Command}" >>"${exported_ReportNoteFile}"
     echo "  \`\`\`" >>"${exported_ReportNoteFile}"
 
     # ===> build apk <===
-    echo "${exported_Title_Log} flutter build ${func_Subcommand} --${func_buildConfigType} ..."
-
-    echo "${exported_Title_Log} flutter ${func_Build_Command}"
-    flutter ${func_Build_Command}
+    echo "${func_Title_Log} ===> build ${func_Subcommand} <==="
+    echo "${func_Title_Log} ${func_Build_Command_Name} ${func_Build_Command}"
+    ${func_Build_Command_Name} ${func_Build_Command}
 
     # check result - build apk
-    checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ flutter build ${func_Subcommand} => fail ~ !!!" "${exported_OldPath}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${exported_OldPath}"
 
     # ===> copy apk to destination folder <===
-    echo "${exported_Title_Log} copy ${func_buildConfigType} ${func_Subcommand} to output folder"
+    echo "${func_Title_Log} ===> copy ${func_buildConfigType} ${func_Subcommand} to output folder <==="
 
     cp -r "${func_Origin_Build_FileName}" "${exported_Config_required_paths_output}/${func_Build_FileName}"
 
     # check result - copy apk
-    checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy ${func_Subcommand} => fail ~ !!!" "${exported_OldPath}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy ${func_buildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${exported_OldPath}"
 
-    echo "${exported_Title_Log} 打包 ${func_Subcommand} 已經完成"
-    echo "${exported_Title_Log} output file name : ${func_Build_FileName}"
-    say "${exported_Title_Log} 打包 ${func_Subcommand} 成功"
+    echo "${func_Title_Log} 打包 ${func_Subcommand} 已經完成"
+    echo "${func_Title_Log} output file name : ${func_Build_FileName}"
+    say "${func_Title_Log} 打包 ${func_Subcommand} 成功"
 
     # ===> report note - final 設定 <===
     # ===> 輸出 全部的產出時間統計 <===
@@ -540,7 +553,7 @@ function export_apk() {
     echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
 
     echo
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: ${func_TotalTime}s"
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: ${func_TotalTime}s"
     echo
 }
 ### ==================== apk : End ====================
@@ -600,24 +613,38 @@ function export_ios() {
     local func_Subcommand=${exported_SubcommandInfo_ios[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     local func_buildConfigType="${1}"
 
     # check input parameters
-    checkInputParam "${exported_Title_Log}" func_buildConfigType "${func_buildConfigType}"
+    checkInputParam "${func_Title_Log}" func_buildConfigType "${func_buildConfigType}"
 
     echo
-    echo "${exported_Title_Log} ============= Param : Begin ============="
-    echo "${exported_Title_Log} func_buildConfigType : ${func_buildConfigType}"
-    echo "${exported_Title_Log} ============= Param : End ============="
+    echo "${func_Title_Log} ============= Param : Begin ============="
+    echo "${func_Title_Log} func_buildConfigType : ${func_buildConfigType}"
+    echo "${func_Title_Log} ============= Param : End ============="
     echo
 
-    echo "${exported_Title_Log} 開始打包 ${func_Subcommand}"
+    echo "${func_Title_Log} 開始打包 ${func_Subcommand}"
 
     # ===> Command 設定 <===
-    # 設定基本的 command 內容.
-    local func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+    # 設定基本的 command 內容. [subcommand] [config type]
+    local func_Build_Command_Name
+    local func_Build_Command
+
+	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
+	if [ ${exported_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
+
+		func_Build_Command_Name="${configConst_CommandName_Fvm}"
+		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_buildConfigType}"
+
+	else
+
+		func_Build_Command_Name="${configConst_CommandName_Flutter}"
+		func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+
+	fi
 
     # 若有 build_name
     if [ -n "${exported_Config_optional_build_name}" ]; then
@@ -691,23 +718,22 @@ function export_ios() {
     echo "- command line :" >>"${exported_ReportNoteFile}"
     echo >>"${exported_ReportNoteFile}"
     echo "  \`\`\`shell" >>"${exported_ReportNoteFile}"
-    echo "    flutter ${func_Build_Command}" >>"${exported_ReportNoteFile}"
+    echo "    ${func_Build_Command_Name} ${func_Build_Command}" >>"${exported_ReportNoteFile}"
     echo "  \`\`\`" >>"${exported_ReportNoteFile}"
 
     # ===> build ios <===
-    echo "${exported_Title_Log} flutter build ${func_Subcommand} --${func_buildConfigType} ..."
-
-    echo "${exported_Title_Log} flutter ${func_Build_Command}"
-    flutter ${func_Build_Command}
+    echo "${func_Title_Log} ===> build ${func_Subcommand} <==="
+    echo "${func_Title_Log} ${func_Build_Command_Name} ${func_Build_Command}"
+    ${func_Build_Command_Name} ${func_Build_Command}
 
     # check result - build ios
-    checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ flutter build ios => fail ~ !!!" "${exported_OldPath}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${exported_OldPath}"
 
     # ===> zip Payload to destination folder <===
     if [ -d ${func_Origin_Build_AppFolder} ]; then
 
         # 切換到 輸出目錄，再打包才不會包到不該包的資料夾。
-        changeToDirectory "${exported_Title_Log}" "${exported_Config_required_paths_output}"
+        changeToDirectory "${func_Title_Log}" "${exported_Config_required_paths_output}"
 
         # 打包 ipa 的固定資料夾名稱。
         mkdir Payload
@@ -715,27 +741,27 @@ function export_ios() {
         cp -r "${exported_Flutter_WorkPath}/${func_Origin_Build_AppFolder}" "${exported_Config_required_paths_output}/Payload"
 
         # check result - copy iOS Payload
-        checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${exported_OldPath}"
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${exported_OldPath}"
 
         # zip -r -m iOS-${func_buildConfigType}-${func_iOS_BundleVersion}-${exported_Param_DartDef_Val_GitHash}-$(date "+%Y%m%d%H%M").ipa Payload
         zip -r -m ${func_Build_FileName} Payload
 
         # check result - zip iOS Payload
-        checkResultFail_And_ChangeFolder "${exported_Title_Log}" "$?" "!!! ~ zip iOS Payload => fail ~ !!!" "${exported_OldPath}"
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ zip iOS Payload => fail ~ !!!" "${exported_OldPath}"
 
         # 切換到 flutter work path
-        changeToDirectory "${exported_Title_Log}" "${exported_Flutter_WorkPath}"
+        changeToDirectory "${func_Title_Log}" "${exported_Flutter_WorkPath}"
 
-        echo "${exported_Title_Log} 打包 ${func_Subcommand} 很順利 😄"
-        say "${exported_Title_Log} 打包 ${func_Subcommand} 成功"
+        echo "${func_Title_Log} 打包 ${func_Subcommand} 很順利 😄"
+        say "${func_Title_Log} 打包 ${func_Subcommand} 成功"
 
     else
 
-        echo "${exported_Title_Log} 遇到報錯了 😭, 打開 Xcode 查找錯誤原因"
-        say "${exported_Title_Log} 打包 ${func_Subcommand} 失敗"
+        echo "${func_Title_Log} 遇到報錯了 😭, 打開 Xcode 查找錯誤原因"
+        say "${func_Title_Log} 打包 ${func_Subcommand} 失敗"
 
         # check result - copy ios
-        checkResultFail_And_ChangeFolder "${exported_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${exported_OldPath}"
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${exported_OldPath}"
     fi
 
     # ===> report note - final 設定 <===
@@ -797,21 +823,21 @@ function process_Init() {
     # 因使用 include 檔案的函式，所以在此之前需先確保路經是在此 shell 資料夾中。
 
     # 不確定是否使用者都有使用 configTools.sh 產生 build config file， 再來呼叫 exported.sh
-    # 保險起見，import configConst.sh
-    # import configConst.sh for configTools.sh using export Environment Variable。
+    # 保險起見， include configConst.sh
+    # include configConst.sh for configTools.sh using export Environment Variable。
     echo
-    echo "${exported_Title_Log} import configConst.sh"
+    echo "${exported_Title_Log} include configConst.sh"
     . "${func_Shell_WorkPath}"/configConst.sh
 
-    # import general function
+    # include general function
     echo
-    echo "${exported_Title_Log} import general function"
+    echo "${exported_Title_Log} include general function"
     . "${func_Shell_WorkPath}"/../generalConst.sh
     . "${func_Shell_WorkPath}"/../generalTools.sh
 
-    # import parse_yaml function
+    # include parse_yaml function
     echo
-    echo "${exported_Title_Log} import parse_yaml function"
+    echo "${exported_Title_Log} include parse_yaml function"
 
     # 同樣在 scm.tools 專案下的相對路徑。
     . "${func_Shell_WorkPath}"/../../../submodules/bash-yaml/script/yaml.sh
@@ -969,7 +995,11 @@ function process_Clean_Cache() {
 
     echo "${exported_Title_Log} 刪除 build"
     find . -d -name "build" | xargs rm -rf
-    flutter clean
+
+    echo "${exported_Title_Log} ${configConst_CommandName_Flutter} clean"
+    ${configConst_CommandName_Flutter} clean
+
+    # TODO: Check 是否有必要，上面好像已經有刪除了 ?
     rm -rf build
 }
 

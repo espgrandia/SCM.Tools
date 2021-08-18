@@ -5,7 +5,17 @@
 # 部分內容會給使用 exported.sh 參考使用
 #
 
-## ================================== subcommand key section : Begin ==================================
+## ================================== buildConfig Required section : Begin ==================================
+
+### ---------------------------------- flutter command section : Begin ----------------------------------
+# @brief : 透過 flutter 通用的。
+
+# flutter 的 command name
+configConst_CommandName_Flutter="flutter"
+
+### ---------------------------------- flutter command section : End ----------------------------------
+
+### ---------------------------------- subcommand key section : Begin ----------------------------------
 # @brief for flutter subcommand
 # @sa
 #   - configTools.sh 中 configTools_Gen_Required 參數可參考此區塊來設定
@@ -16,18 +26,42 @@ export configConst_Subcommand_appbundle="appbundle"
 export configConst_Subcommand_bundle="bundle"
 export configConst_Subcommand_ios="ios"
 export configConst_Subcommand_ios_framework="ios-framework"
-## ================================== subcommand key section : End ==================================
+### ---------------------------------- subcommand key section : End ----------------------------------
 
-## ================================== buildConfigType key section : Begin ==================================
+## ================================== buildConfig Required section : End ==================================
+
+
+## ================================== buildConfig Optional section : Begin ==================================
+
+### ---------------------------------- fvm mode section : Begin ----------------------------------
+# @brief : 透過 fvm (Flutter Version Management) 用來管理 Flutter Version 切換功能。
+# @details : exported.sh 目前主要是支援 fvm 來呼叫 flutter 命令。
+#  有使用 fvm 功能時，則會以該專案的 local active 設定為主來執行 flutter 版本。
+#  - e.g. 實際使用方式 :
+#    > fvm flutter build ...
+# @author : esp
+# @create date : 2021-08-16
+# @sa FVM website : https://fvm.app/
+#
+
+# config file 中， Optional 關於 
+export configConst_ConfigKey_Fvm_Is_Enable_Fvm_Mode="is_enable_fvm_mode"
+
+# fvm 的 command line 的名稱。
+export configConst_CommandName_Fvm="fvm"
+
+### ---------------------------------- fvm mode section : End ----------------------------------
+
+### ---------------------------------- buildConfigType key section : Begin ----------------------------------
 # 支援的 subcommand : [apk] [appbundle] [bundle] [ios]。
 # 依據 flutter build ， 有 debug ， profile ， release
-configConst_BuildConfigType_Debug=debug
-configConst_BuildConfigType_Profile=profile
-configConst_BuildConfigType_Release=release
+export configConst_BuildConfigType_Debug="debug"
+export configConst_BuildConfigType_Profile="profile"
+export configConst_BuildConfigType_Release="release"
 
-## ================================== buildConfigType key section : End ==================================
+### ---------------------------------- buildConfigType key section : End ----------------------------------
 
-## ================================== ToogleFeature key section : Begin ==================================
+### ---------------------------------- ToogleFeature key section : Begin ----------------------------------
 # @brief 針對 flutter build [subcommand] 的後續參數，屬於開關性質的設定。
 # @details 
 #  - optional 的功能。
@@ -36,9 +70,9 @@ configConst_BuildConfigType_Release=release
 
 # 不更新 pub。
 export configConst_BuildParam_ToggleFeature_NoPub="no-pub"
-## ================================== ToogleFeature key section : End ==================================
+### ================================== ToogleFeature key section : End ==================================
 
-## ================================== Parm that needed contains value section : Begin ==================================
+### ---------------------------------- Parm that needed contains value section : Begin ----------------------------------
 # @brief 針對 flutter build [subcommand] 的後續參數，屬於需要額外帶入內容的項目。
 # @details 
 #  - optional 的功能。
@@ -73,9 +107,9 @@ export configConst_BuildParam_TargetPlatform_arm="android-arm"
 export configConst_BuildParam_TargetPlatform_arm64="android-arm64"
 export configConst_BuildParam_TargetPlatform_x86="android-x86"
 export configConst_BuildParam_TargetPlatform_x64="android-x64"
-## ================================== Parm that needed contains value section : End ==================================
+### ---------------------------------- Parm that needed contains value section : End ----------------------------------
 
-## ================================== config (yaml) key that needed contains value section : Begin ==================================
+### ---------------------------------- config (yaml) key that needed contains value section : Begin ----------------------------------
 # @brief 針對 config file (yaml) 會用到的 key，於此定義。
 # @detail 首先會用到的是 confitTools.sh，其餘的 exported.sh 看看是否能使用。
 
@@ -85,5 +119,6 @@ export configConst_ConfigKey_Optional="optional"
 # 產出的檔案名稱，加上 前綴字 (prefix)。
 export configConst_ConfigKey_Prefix_FileName="prefix_file_name"
 
-## ================================== config key (yaml) that needed contains value section : End ==================================
+### ---------------------------------- config key (yaml) that needed contains value section : End ----------------------------------
 
+## ================================== buildConfig Optional section : End ==================================

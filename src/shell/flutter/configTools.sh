@@ -8,6 +8,15 @@
 #
 # ---
 #
+# 注意事項:
+# - 使用此通用函式，有相依 include 檔案於
+#   - scm.tools/src/shell/generalConst.sh
+#   - configConst.sh
+#   - include 方式 :
+#     - 需自行 include generalConst.sh
+#     - 需自行 include configTools.sh
+#     - 再 include releaseNoteTools.sh
+#
 # @sa:
 #  與 configConst.sh 有相依性。
 #  需於 import configTools.sh 或呼叫相關函式前，
@@ -169,6 +178,51 @@ function configTools_Gen_Optional_ReportFilePath() {
     echo "${func_Title_Log} End ***"
     echo
 }
+
+# ============= This is separation line =============
+# @brief function : configTools_Gen_Optional_Enable_FVM_Mode.
+#
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 呼叫此函式則表示要開啟 FVM Mode，預設沒有開啟。
+#     > fvm flutter build ...
+#
+# @param $1 : file path : 要輸出的檔案位置 (含檔名)
+#
+# sample e.g. configTools_Gen_Optional_Enable_FVM_Mode "${sample_FilePath}"
+function configTools_Gen_Optional_Enable_FVM_Mode() {
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} file path : ${1}"
+    echo "${func_Title_Log} Input param : End ***"
+
+    # for local varient
+    local func_Param_FilePath="${1}"
+
+    # 呼叫此函式，一定是開啟，找不到或非 Y 都是關閉。。
+    local func_Param_KeyFeature_Value="${generalConst_Enable_Flag}"
+
+    # for [optional]
+    # for (keyFeature) : [build_name]
+    local func_Optional_Key_For_KeyFeature="${configConst_ConfigKey_Fvm_Is_Enable_Fvm_Mode}"
+
+    # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
+    echo "" >>"${func_Param_FilePath}"
+    echo "# ${configTools_Optional} [${func_Optional_Key_For_KeyFeature}] sction" >>"${func_Param_FilePath}"
+    echo "# - [${func_Optional_Key_For_KeyFeature}] : 呼叫此函式則表示要開啟 FVM Mode，預設沒有開啟。" >>"${func_Param_FilePath}"
+    echo "# - e.g. 實際執行類似 下列方式 :" >>"${func_Param_FilePath}"
+    echo "#   > ${configConst_CommandName_Fvm} flutter build ..." >>"${func_Param_FilePath}"
+    echo "# - 原則上 exported.sh 有實作的 subcommands，都會支援才是。" >>"${func_Param_FilePath}"
+    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
+    echo "  ${func_Optional_Key_For_KeyFeature} : ${func_Param_KeyFeature_Value}" >>"${func_Param_FilePath}"
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+
 
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_Prefix_File_Name.
@@ -455,9 +509,12 @@ function configTools_Gen_Optional_Flavor() {
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : platforms : flutter --target-platform 的設定內容 => e.g. "android-arm,android-arm64"
-# TODO: flutter build apk --target-platform android-arm,android-arm64
 #
 # sample e.g. configTools_Gen_Optional_Target_Platform "${sample_FilePath}" "${sample_Target_Platform}"
+#
+# - flutter command line sample :
+#   > flutter build apk --target-platform android-arm,android-arm64
+#
 # @sa :
 #      --target-platform                             The target platform for which the project is compiled.
 #                                                  [android-arm (default), android-arm64 (default), android-x86, android-x64 (default)]

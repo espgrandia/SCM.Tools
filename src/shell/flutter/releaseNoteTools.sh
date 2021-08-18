@@ -9,11 +9,16 @@
 # ---
 #
 # 注意事項:
-# - 使用此通用函式，有相依於 scm.tools/src/shell/generalTools.sh
-#   - 其中有使用到 checkResultFail_And_ChangeFolder
-#   - 需自行 include generalConst.sh
-#   - 需自行 include generalTools.sh
-#   - 再 include releaseNoteTools.sh
+# - 使用此通用函式，有相依 include 檔案於
+#   - scm.tools/src/shell/generalConst.sh
+#     > func => checkResultFail_And_ChangeFolder ...
+#   - configConst.sh
+#     > export 參數 => configConst_CommandName_Fvm ...
+#   - include 方式 :
+#     - 需自行 include generalConst.sh
+#     - 需自行 include generalTools.sh
+#     - 需自行 include configTools.sh
+#     - 再 include releaseNoteTools.sh
 #
 
 # ============= This is separation line =============
@@ -25,6 +30,7 @@
 # @param ${4} : version : 一般為對應 pubspec.yaml 的版本號碼。=> e.g. 1.0.0+0 e.g.
 # @param ${5} : gitCommit : e.g. "cd8a0dc" ， "${sample_GitCommitHash}"
 # @param ${6} : 若失敗要切換的路徑，change folder path : e.g. "${sample_OldPath}"
+# @param ${7} : is enable fvm mode : "Y" 或 "N" : e.g. $"{sample_Is_Enable_FVM_Mode}"
 function releastNoteTools_Gen_Init() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
@@ -38,13 +44,15 @@ function releastNoteTools_Gen_Init() {
     echo "${func_Title_Log} version : ${4}"
     echo "${func_Title_Log} gitCommmit : ${5}"
     echo "${func_Title_Log} change folder path : ${6}"
+    echo "${func_Title_Log} is enable fvm mode : ${7}"
     echo "${func_Title_Log} Input param : End ***"
 
     local func_Param_ReleaseNote_File="$2"
     local func_Param_Name="$3"
     local func_Param_Version="$4"
     local func_Param_GitCommit="$5"
-    local func_Param_ChangeFolderPath="$5"
+    local func_Param_ChangeFolderPath="$6"
+    local func_Param_Is_Enable_FVM_Mode="$7"
 
     echo
     echo "${func_Title_Log} ${1} ============= Release Note Init Info - Begin ============="
@@ -58,47 +66,115 @@ function releastNoteTools_Gen_Init() {
     echo >>"${func_Param_ReleaseNote_File}"
     echo "## Project Info" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
-    echo "- name : ${func_Param_Name}" >>"${func_Param_ReleaseNote_File}"
+    echo "- Name : ${func_Param_Name}" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
-    echo "- version : ${func_Param_Version}" >>"${func_Param_ReleaseNote_File}"
+    echo "- Version : ${func_Param_Version}" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
-    echo "- git Commit ID : ${func_Param_GitCommit}" >>"${func_Param_ReleaseNote_File}"
+    echo "- Git Commit ID : ${func_Param_GitCommit}" >>"${func_Param_ReleaseNote_File}"
+    echo >>"${func_Param_ReleaseNote_File}"
+    echo "- Is Enable FVM Mode : ${func_Param_Is_Enable_FVM_Mode}" >>"${func_Param_ReleaseNote_File}"
+    echo >>"${func_Param_ReleaseNote_File}"
+    echo "  > 只有為 ${generalConst_Enable_Flag} 才會使用 ${configConst_CommandName_Fvm} 功能呼叫 ${configConst_CommandName_Flutter} 。">>"${func_Param_ReleaseNote_File}"
 
     # 執行 flutter pub get 會以 pubspec.lock 為主要優先插件版本的參考檔案
     # 若是沒有 pubspec.lock 則才會以 pubspec.yaml 為主下載插件資源
 
-    echo "${func_Title_Log} ${1} ============= flutter pub get - Begin ============="
+    # command 初始設定
+    local func_Execute_Command_Name
+    local func_Execute_Command_Content
 
-    echo "${func_Title_Log} ${1} 開始更新 packages 插件資源 => flutter pub get"
-    flutter pub get
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ flutter pub get => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+	# 判斷 func_Param_Is_Enable_FVM_Mode
+	if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
 
-    echo "${func_Title_Log} ============= flutter pub get - End ============="
+		func_Execute_Command_Name="${configConst_CommandName_Fvm}"
+
+	else
+
+		func_Execute_Command_Name="${configConst_CommandName_Flutter}"
+
+	fi
+
+    # flutter pub get
+    echo "${func_Title_Log} ${1} ============= ${configConst_CommandName_Flutter} pub get - Begin ============="
+    echo "${func_Title_Log} ${1} 開始更新 packages 插件資源 => ${configConst_CommandName_Flutter} pub get"
+
+	# 判斷 func_Param_Is_Enable_FVM_Mode
+	if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
+
+        func_Execute_Command_Content="${configConst_CommandName_Flutter} pub get"
+
+	else
+
+        func_Execute_Command_Content="pub get"
+
+	fi
+
+    echo "${func_Title_Log} ${1} ${func_Execute_Command_Name} ${func_Execute_Command_Content}"
+    ${func_Execute_Command_Name} ${func_Execute_Command_Content}
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Execute_Command_Name} ${func_Execute_Command_Content} => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+
+    echo "${func_Title_Log} ============= ${configConst_CommandName_Flutter} pub get - End ============="
     echo
 
     # ===> flutter doctor <===
-    echo "${func_Title_Log} ${1} flutter doctor >> ${func_Param_ReleaseNote_File}"
+    echo "${func_Title_Log} ${1} ============= ${configConst_CommandName_Flutter} doctor - Begin ============="
 
+	# 判斷 func_Param_Is_Enable_FVM_Mode
+	if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
+
+        func_Execute_Command_Content="${configConst_CommandName_Flutter} doctor -v"
+
+	else
+
+        func_Execute_Command_Content="doctor -v"
+
+	fi
+
+    # for ReleaseNote
     echo >>"${func_Param_ReleaseNote_File}"
     echo "---" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
-    echo "## flutter doctor -v" >>"${func_Param_ReleaseNote_File}"
+    echo "## ${func_Execute_Command_Name} ${func_Execute_Command_Content}" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
 
-    flutter doctor -v >>"${func_Param_ReleaseNote_File}"
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ flutter doctor -v => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+    # execute command
+    echo "${func_Title_Log} ${1} ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_ReleaseNote_File}"
+    ${func_Execute_Command_Name} ${func_Execute_Command_Content}>>"${func_Param_ReleaseNote_File}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Execute_Command_Name} ${func_Execute_Command_Content} => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+
+
+    echo "${func_Title_Log} ${1} ============= ${configConst_CommandName_Flutter} doctor - End ============="
+    echo
 
     # ===> flutter pub deps <===
-    echo "${func_Title_Log} flutter pub deps >> ${func_Param_ReleaseNote_File}"
+    echo "${func_Title_Log} ${1} ============= ${configConst_CommandName_Flutter} deps - Begin ============="
 
+	# 判斷 func_Param_Is_Enable_FVM_Mode
+	if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
+
+        func_Execute_Command_Content="${configConst_CommandName_Flutter} pub deps"
+
+	else
+
+        func_Execute_Command_Content="pub deps"
+
+	fi
+
+    # for ReleaseNote
     echo >>"${func_Param_ReleaseNote_File}"
     echo "---" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
-    echo "## flutter pub deps" >>"${func_Param_ReleaseNote_File}"
+    echo "## ${func_Execute_Command_Name} ${func_Execute_Command_Content}" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
 
-    flutter pub deps >>"${func_Param_ReleaseNote_File}"
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ flutter pub deps => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+    # execute command
+    echo "${func_Title_Log} ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_ReleaseNote_File}"
+    ${func_Execute_Command_Name} ${func_Execute_Command_Content}>>"${func_Param_ReleaseNote_File}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Execute_Command_Name} ${func_Execute_Command_Content} => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+
+   
+    echo "${func_Title_Log} ${1} ============= ${configConst_CommandName_Flutter} deps - End ============="
+    echo
 
     echo "${func_Title_Log} ============= Release Note Init Info - End ============="
     echo
