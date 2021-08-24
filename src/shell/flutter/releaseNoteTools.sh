@@ -84,6 +84,12 @@ function releastNoteTools_Gen_Init() {
     _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_Param_Is_Enable_FVM_Mode}" "pub get" \
         "${func_Param_ChangeFolderPath}"
 
+        flutter --version --machine
+
+    # ===> flutter --version --machine <===
+    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_Param_Is_Enable_FVM_Mode}" "--version --machine" \
+        "${func_Param_ChangeFolderPath}" "${func_Param_ReleaseNote_File}"
+
     # ===> flutter doctor <===
     _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_Param_Is_Enable_FVM_Mode}" "doctor -v" \
         "${func_Param_ChangeFolderPath}" "${func_Param_ReleaseNote_File}"
