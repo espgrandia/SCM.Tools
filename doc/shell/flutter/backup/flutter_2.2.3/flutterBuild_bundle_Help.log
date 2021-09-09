@@ -1,0 +1,38 @@
+Build the Flutter assets directory from your app.
+
+Global options:
+-h, --help                  Print this usage information.
+-v, --verbose               Noisy logging, including all shell commands executed.
+                            If used with "--help", shows hidden options. If used with "flutter doctor", shows additional diagnostic information. (Use "-vv" to force verbose logging in those cases.)
+-d, --device-id             Target device id or name (prefixes allowed).
+    --version               Reports the version of this tool.
+    --suppress-analytics    Suppress analytics reporting when this command runs.
+
+Usage: flutter build bundle [arguments]
+-h, --help                          Print this usage information.
+    --[no-]tree-shake-icons         Tree shake icon fonts so that only glyphs used by the application remain.
+                                    (defaults to on)
+-t, --target=<path>                 The main entry-point file of the application, as run on the device.
+                                    If the "--target" option is omitted, but a file name is provided on the command line, then that is used instead.
+                                    (defaults to "lib/main.dart")
+    --build-number                  An identifier used as an internal version number.
+                                    Each build must have a unique identifier to differentiate it from previous builds.
+                                    It is used to determine whether one build is more recent than another, with higher numbers indicating more recent build.
+                                    On Android it is used as "versionCode".
+                                    On Xcode builds it is used as "CFBundleVersion".
+    --debug                         Build a debug version of your app (default mode).
+    --profile                       Build a version of your app specialized for performance profiling.
+    --release                       Build a release version of your app.
+    --depfile                       A file path where a depfile will be written. This contains all build inputs and outputs in a Make-style syntax.
+                                    (defaults to "build/snapshot_blob.bin.d")
+    --target-platform               The architecture for which to build the application.
+                                    [android-arm (default), android-arm64, android-x86, android-x64, ios, darwin-x64, linux-x64, linux-arm64, windows-x64]
+    --asset-dir                     The output directory for the kernel_blob.bin file, the native snapshet, the assets, etc. Can be used to redirect the output when driving the Flutter toolchain from another build system.
+                                    (defaults to "build/flutter_assets")
+    --[no-]pub                      Whether to run "flutter pub get" before executing this command.
+                                    (defaults to on)
+    --[no-]track-widget-creation    Track widget creation locations. This enables features such as the widget inspector. This parameter is only functional in debug mode (i.e. when compiling JIT, not AOT).
+                                    (defaults to on)
+
+Run "flutter help" to see global options.
+The Flutter assets directory contains your application code and resources; they are used by some Flutter Android and iOS runtimes.
