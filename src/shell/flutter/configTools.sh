@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # ============= This is separation line =============
-# @brief : flutter exported.sh 會用到的 build config 工具.
-# @details : 放置常用產出部分 build config 內容的工具函式，使用者可以引用此檔案來使用函式.
+# @brief : flutter exported.sh 會用到的 build config 工具。
+# @details : 放置常用產出部分 build config 內容的工具函式，使用者可以引用此檔案來使用函式。
 # @author : esp
 # @create date : 2020-10-20
 #
@@ -44,7 +44,7 @@
 # - title: Shell: 传数组给函数, 函数接受数组参数,Passing array to function of shell script - Just Code
 #  - http://justcode.ikeepstudying.com/2018/10/shell-%e4%bc%a0%e6%95%b0%e7%bb%84%e7%bb%99%e5%87%bd%e6%95%b0-%e5%87%bd%e6%95%b0%e6%8e%a5%e5%8f%97%e6%95%b0%e7%bb%84%e5%8f%82%e6%95%b0passing-array-to-function-of-shell-script/
 #
-# @附註 : 與 exported.sh 的 config 有關的產生函式，
+# @附註 : 與 exported.sh 的 config 有關的產生函式。
 #
 
 ## ================================== buildConfig key section : Begin ==================================

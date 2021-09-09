@@ -2,8 +2,9 @@
 
 # ============= This is separation line =============
 # @brief : flutter 的擴展工具函式。
-# @details : 放置常用與 flutter 有關的輔助工具函式，使用者可以引用此檔案來使用函式.
+# @details : 放置常用與 flutter 有關的輔助工具函式，使用者可以引用此檔案來使用函式。
 #  - 可供外部使用的函式，請看 [Public Function Section] 區塊。
+#
 # @author : esp
 # @create date : 2021-08-25
 #

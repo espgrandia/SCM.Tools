@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# brief : 簡單處理目前的出版 => release for apk and ipa
-#         為正式的出版流程，需要再分析更好的流程，陸續整理中。
+# @brief : 簡單處理目前的出版 => release for apk and ipa。
+#          為正式的出版流程，需要再分析更好的流程，陸續整理中。
+#
 # ---
 #
 # Reference :

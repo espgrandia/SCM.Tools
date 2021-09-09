@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # ============= This is separation line =============
-# @brief : flutter project 中，exporte 相關 shell ，會用到的 release note 工具.
-# @details : 放置常用產出部分 release 內容的工具函式，使用者可以引用此檔案來使用函式.
+# @brief : flutter project 中，exporte 相關 shell ，會用到的 release note 工具。
+# @details : 放置常用產出部分 release 內容的工具函式，使用者可以引用此檔案來使用函式。
 #  - 可供外部使用的函式，請看 [Public Function Section] 區塊。
+#
 # @author : esp
 # @create date : 2020-10-22
 #

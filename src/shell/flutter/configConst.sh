@@ -1,8 +1,15 @@
 #!/bin/bash
 
-# brief : 宣告 exported.sh 會使用到的 config file 常數
-# 主要是給 configTools.sh 以及 exported.sh 使用
-# 部分內容會給使用 exported.sh 參考使用
+# @brief : 宣告 flutter 輔助工具會用到的 const value。
+#  - 初期是給 exported.sh 以及實作曾專案的使用，後來有擴大使用範圍。
+#
+# @details :
+#  - 目前會使用到的 shell
+#    - configTools.sh
+#    - exported.sh
+#    - flutterExtensionTools.sh
+#    - releaseNoteTools.sh
+#  - 部分內容會給使用 exported.sh 參考使用。
 #
 
 ## ================================== buildConfig Required section : Begin ==================================
