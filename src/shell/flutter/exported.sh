@@ -13,7 +13,7 @@
 #
 # input 參數說明 :
 #
-# - $1 : exported_Param_BuildConfigFile="[專案路徑]/[scm]/output/buildConfig.yaml" : 設定編譯的 config 功能檔案 [需帶完整路徑].
+# - $1 : thisShell_Param_BuildConfigFile="[專案路徑]/[scm]/output/buildConfig.yaml" : 設定編譯的 config 功能檔案 [需帶完整路徑].
 #
 #   - 內容為協議好的格式，只是做成可彈性設定的方式，可選項目，沒有則以基本編譯。
 #
@@ -34,11 +34,11 @@
 #
 # Toggle Feature (切換功能) 說明:
 #
-# - exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="Y" => e.g. "Y" 或 "N"
+# - thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="Y" => e.g. "Y" 或 "N"
 #   - 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
 #   - 上傳版本會是關閉狀態，若需要測試時，自行打開。
 #
-# - exported_ToogleFeature_DefaultBuildConfigType=release
+# - thisShell_ToogleFeature_DefaultBuildConfigType=release
 #   - build configutation type : 編譯組態設定，之後視情況是否要開放
 #   - 依據 flutter build version : 有 debug ， profile ， release 三種方式
 #   - 可參考 configTools.sh 中的 configConst_BuildConfigType_xxx。
@@ -53,21 +53,21 @@
 #
 # ---
 #
-# exported_Config_xxx 說明 :
+# thisShell_Config_xxx 說明 :
 #
 # - 來源 : 來自於 build config 轉換成的 shell 內部參數。
-#   經由讀取 build config file (對應於 exported_Param_BuildConfigFile 內容) 來處理，
+#   經由讀取 build config file (對應於 thisShell_Param_BuildConfigFile 內容) 來處理，
 #   細部說明可參考 configTools.sh
 #
 # - required :
 #
-#   - exported_Config_required_paths_work
+#   - thisShell_Config_required_paths_work
 #     flutter project 工作目錄。
 #
-#   - exported_Config_required_paths_output
+#   - thisShell_Config_required_paths_output
 #     產出內容的輸出路徑。
 #
-#   - exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
+#   - thisShell_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
 #     build subcommands，為此次需要編譯的模式為哪一些。
 #
 # ---
@@ -75,21 +75,21 @@
 # - optional :
 #
 #   - report_path :
-#     - exported_Config_optional_report_path :
+#     - thisShell_Config_optional_report_path :
 #       exported.sh 額外會用到的參數，指定 report file path (含檔名)。
 #       為 markdown 語法撰寫，沒設定會有預設檔案名稱。
 #
 # - optional :
 #
 #   - build_name :
-#     - exported_Config_optional_build_name :
+#     - thisShell_Config_optional_build_name :
 #       - [build_name] : build-name 會用到的內容，對應於 flutter build 的 build-name 參數
 #       - support subcommands: apk， appbundle， ios
 #
 # - optional :
 #
 #   - build_number :
-#     - exported_Config_optional_build_number :
+#     - thisShell_Config_optional_build_number :
 #       - [build_number] : build-number 會用到的內容，對應於 flutter build 的 build-number 參數
 #       - support subcommands: aar， apk， appbundle， bundle， ios
 #
@@ -98,7 +98,7 @@
 # - optional :
 #
 #   - build_config_types :
-#     - exported_Config_optional_build_config_types :
+#     - thisShell_Config_optional_build_config_types :
 #       build config type (like as : debug, profile, release)
 #
 # ---
@@ -107,11 +107,11 @@
 #
 #   - dart-define
 #
-#    - exported_Config_optional_dart_define_separator
+#    - thisShell_Config_optional_dart_define_separator
 #      為要分隔符號
 #      => e.g. "+"
 #
-#    - exported_Config_optional_dart_define_defines
+#    - thisShell_Config_optional_dart_define_defines
 #      要設定到 dart-define 的內容，為 list 型態。
 #      => e.g. (gitHash+920f6fc envName+dev)
 #
@@ -120,7 +120,7 @@
 # - optional :
 #
 #   - target_platform :
-#     - exported_Config_optional_target_platform :
+#     - thisShell_Config_optional_target_platform :
 #       對應於 flutter build 的 target-platform 參數。
 #
 # ---
@@ -129,7 +129,7 @@
 #
 # - [通用規則] :
 #   函式與此 shell 有高度相依，若要抽離到獨立 shell，需調整之。
-#   其中 [exported_xxx] 是跨函式讀取。
+#   其中 [thisShell_xxx] 是跨函式讀取。
 #
 # - 此 shell 主要分四個主要區塊 :
 #
@@ -161,16 +161,16 @@
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
 #
 # @param $1: 需要驗證的 subcommand，內容來自於 build config => e.g. "${aSubcommand}" or "aar" ...
-# @param $2: SubcommandInfo 中的 `name`。 exported_SubcommandInfo_xxx[0]。
-#   => e.g. ${exported_SubcommandInfo_aar[0]} : aar
-# @param $3: 要設定的參數，對應於 SubcommandInfo 中的 `是否要執行 (isExcute)`。 exported_SubcommandInfo_xxx[1]
-#   => e.g. exported_SubcommandInfo_aar[1] .
+# @param $2: SubcommandInfo 中的 `name`。 thisShell_SubcommandInfo_xxx[0]。
+#   => e.g. ${thisShell_SubcommandInfo_aar[0]} : aar
+# @param $3: 要設定的參數，對應於 SubcommandInfo 中的 `是否要執行 (isExcute)`。 thisShell_SubcommandInfo_xxx[1]
+#   => e.g. thisShell_SubcommandInfo_aar[1] .
 #
 # @sa : SubcommandInfo 說明可看 shell 上方的說明區塊。
 #
 # @TODO: 目前 SubcommandInfo 無法用 array 方式帶入，尚未測試成功，所以先分開參數帶入，之後可找時間另外找方法測試可行性。
 #
-# e.g. => dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_aar[0]}" exported_SubcommandInfo_aar[1]
+# e.g. => dealSumcommandInfo "${aSubcommand}" "${thisShell_SubcommandInfo_aar[0]}" thisShell_SubcommandInfo_aar[1]
 function dealSumcommandInfo() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
@@ -199,55 +199,55 @@ function dealSumcommandInfo() {
 function parseReruiredSection() {
 
     echo
-    echo "${exported_Title_Log} ============= parse required section : Begin ============="
+    echo "${thisShell_Title_Log} ============= parse required section : Begin ============="
 
     # check input parameters
-    checkInputParam "${exported_Title_Log}" exported_Config_required_paths_work "${exported_Config_required_paths_work}"
-    checkInputParam "${exported_Title_Log}" exported_Config_required_paths_output "${exported_Config_required_paths_output}"
-    checkInputParam "${exported_Title_Log}" exported_Config_required_subcommands "${exported_Config_required_subcommands[@]}"
+    checkInputParam "${thisShell_Title_Log}" thisShell_Config_required_paths_work "${thisShell_Config_required_paths_work}"
+    checkInputParam "${thisShell_Title_Log}" thisShell_Config_required_paths_output "${thisShell_Config_required_paths_output}"
+    checkInputParam "${thisShell_Title_Log}" thisShell_Config_required_subcommands "${thisShell_Config_required_subcommands[@]}"
 
     echo
-    echo "${exported_Title_Log} ============= Param : Begin ============="
-    echo "${exported_Title_Log} exported_Config_required_paths_work : ${exported_Config_required_paths_work}"
-    echo "${exported_Title_Log} exported_Config_required_paths_output : ${exported_Config_required_paths_output}"
-    echo "${exported_Title_Log} exported_Config_required_subcommands : ${exported_Config_required_subcommands[@]}"
-    echo "${exported_Title_Log} ============= Param : End ============="
+    echo "${thisShell_Title_Log} ============= Param : Begin ============="
+    echo "${thisShell_Title_Log} thisShell_Config_required_paths_work : ${thisShell_Config_required_paths_work}"
+    echo "${thisShell_Title_Log} thisShell_Config_required_paths_output : ${thisShell_Config_required_paths_output}"
+    echo "${thisShell_Title_Log} thisShell_Config_required_subcommands : ${thisShell_Config_required_subcommands[@]}"
+    echo "${thisShell_Title_Log} ============= Param : End ============="
     echo
 
     local func_i
-    for ((func_i = 0; func_i < ${#exported_Config_required_subcommands[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+    for ((func_i = 0; func_i < ${#thisShell_Config_required_subcommands[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-        local aSubcommand=${exported_Config_required_subcommands[${func_i}]}
+        local aSubcommand=${thisShell_Config_required_subcommands[${func_i}]}
 
         # 判斷是否為 aar
-        dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_aar[0]}" exported_SubcommandInfo_aar[1]
+        dealSumcommandInfo "${aSubcommand}" "${thisShell_SubcommandInfo_aar[0]}" thisShell_SubcommandInfo_aar[1]
 
         # 判斷是否為 apk
-        dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_apk[0]}" exported_SubcommandInfo_apk[1]
+        dealSumcommandInfo "${aSubcommand}" "${thisShell_SubcommandInfo_apk[0]}" thisShell_SubcommandInfo_apk[1]
 
         # 判斷是否為 appbundle
-        dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_appbundle[0]}" exported_SubcommandInfo_appbundle[1]
+        dealSumcommandInfo "${aSubcommand}" "${thisShell_SubcommandInfo_appbundle[0]}" thisShell_SubcommandInfo_appbundle[1]
 
         # 判斷是否為 bundle
-        dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_bundle[0]}" exported_SubcommandInfo_bundle[1]
+        dealSumcommandInfo "${aSubcommand}" "${thisShell_SubcommandInfo_bundle[0]}" thisShell_SubcommandInfo_bundle[1]
 
         # 判斷是否為 ios
-        dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_ios[0]}" exported_SubcommandInfo_ios[1]
+        dealSumcommandInfo "${aSubcommand}" "${thisShell_SubcommandInfo_ios[0]}" thisShell_SubcommandInfo_ios[1]
 
         # 判斷是否為 ios_framework
-        dealSumcommandInfo "${aSubcommand}" "${exported_SubcommandInfo_ios_framework[0]}" exported_SubcommandInfo_ios_framework[1]
+        dealSumcommandInfo "${aSubcommand}" "${thisShell_SubcommandInfo_ios_framework[0]}" thisShell_SubcommandInfo_ios_framework[1]
 
     done
 
     # dump support sumcommand info
-    echo "${exported_Title_Log} exported_SubcommandInfo_aar           : ${exported_SubcommandInfo_aar[@]}"
-    echo "${exported_Title_Log} exported_SubcommandInfo_apk           : ${exported_SubcommandInfo_apk[@]}"
-    echo "${exported_Title_Log} exported_SubcommandInfo_appbundle     : ${exported_SubcommandInfo_appbundle[@]}"
-    echo "${exported_Title_Log} exported_SubcommandInfo_bundle        : ${exported_SubcommandInfo_bundle[@]}"
-    echo "${exported_Title_Log} exported_SubcommandInfo_ios           : ${exported_SubcommandInfo_ios[@]}"
-    echo "${exported_Title_Log} exported_SubcommandInfo_ios_framework : ${exported_SubcommandInfo_ios_framework[@]}"
+    echo "${thisShell_Title_Log} thisShell_SubcommandInfo_aar           : ${thisShell_SubcommandInfo_aar[@]}"
+    echo "${thisShell_Title_Log} thisShell_SubcommandInfo_apk           : ${thisShell_SubcommandInfo_apk[@]}"
+    echo "${thisShell_Title_Log} thisShell_SubcommandInfo_appbundle     : ${thisShell_SubcommandInfo_appbundle[@]}"
+    echo "${thisShell_Title_Log} thisShell_SubcommandInfo_bundle        : ${thisShell_SubcommandInfo_bundle[@]}"
+    echo "${thisShell_Title_Log} thisShell_SubcommandInfo_ios           : ${thisShell_SubcommandInfo_ios[@]}"
+    echo "${thisShell_Title_Log} thisShell_SubcommandInfo_ios_framework : ${thisShell_SubcommandInfo_ios_framework[@]}"
 
-    echo "${exported_Title_Log} ============= required section : End ============="
+    echo "${thisShell_Title_Log} ============= required section : End ============="
     echo
 
 }
@@ -261,8 +261,8 @@ function parseReruiredSection() {
 function parseReportPathSection() {
 
     # build config 有設定則以設定為主。
-    if [ -n "${exported_Config_optional_report_path}" ]; then
-        exported_ReportNoteFile=${exported_Config_optional_report_path}
+    if [ -n "${thisShell_Config_optional_report_path}" ]; then
+        thisShell_ReportNoteFile=${thisShell_Config_optional_report_path}
     fi
 
 }
@@ -275,17 +275,17 @@ function parseReportPathSection() {
 #   - 只檢查是否為合法設定。
 function parseBuildConfigTypeSection() {
 
-    if [ -n "${exported_Config_optional_build_config_types}" ]; then
+    if [ -n "${thisShell_Config_optional_build_config_types}" ]; then
 
         local func_SrcList=("${configConst_BuildConfigType_Debug}" "${configConst_BuildConfigType_Profile}" "${configConst_BuildConfigType_Release}")
 
         local func_i
-        for ((func_i = 0; func_i < ${#exported_Config_optional_build_config_types[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+        for ((func_i = 0; func_i < ${#thisShell_Config_optional_build_config_types[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-            local func_Check_Value="${exported_Config_optional_build_config_types[${func_i}]}"
+            local func_Check_Value="${thisShell_Config_optional_build_config_types[${func_i}]}"
 
-            check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${exported_Title_Log}" \
-                "${func_Check_Value}" func_SrcList[@] "${exported_OldPath}"
+            check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${thisShell_Title_Log}" \
+                "${func_Check_Value}" func_SrcList[@] "${thisShell_OldPath}"
 
         done
 
@@ -299,55 +299,55 @@ function parseBuildConfigTypeSection() {
 function parseDartDefine() {
 
     # 判斷是否有 dart-define 的設定:
-    if [ -n "${exported_Config_optional_dart_define_defines}" ] && [ -n "${exported_Config_optional_dart_define_separator}" ]; then
+    if [ -n "${thisShell_Config_optional_dart_define_defines}" ] && [ -n "${thisShell_Config_optional_dart_define_separator}" ]; then
 
         echo
-        echo "${exported_Title_Log} ============= parse "${configConst_BuildParam_Key_DartDefine}" : Begin ============="
+        echo "${thisShell_Title_Log} ============= parse "${configConst_BuildParam_Key_DartDefine}" : Begin ============="
 
         # check input parameters
-        checkInputParam "${exported_Title_Log}" exported_Config_optional_dart_define_defines "${exported_Config_optional_dart_define_defines[@]}"
-        checkInputParam "${exported_Title_Log}" exported_Config_optional_dart_define_separator "${exported_Config_optional_dart_define_separator}"
+        checkInputParam "${thisShell_Title_Log}" thisShell_Config_optional_dart_define_defines "${thisShell_Config_optional_dart_define_defines[@]}"
+        checkInputParam "${thisShell_Title_Log}" thisShell_Config_optional_dart_define_separator "${thisShell_Config_optional_dart_define_separator}"
 
         echo
-        echo "${exported_Title_Log} ============= Param : Begin ============="
-        echo "${exported_Title_Log} exported_Config_optional_dart_define_defines : ${exported_Config_optional_dart_define_defines[@]}"
-        echo "${exported_Title_Log} exported_Config_optional_dart_define_separator : ${exported_Config_optional_dart_define_separator}"
-        echo "${exported_Title_Log} ============= Param : End ============="
+        echo "${thisShell_Title_Log} ============= Param : Begin ============="
+        echo "${thisShell_Title_Log} thisShell_Config_optional_dart_define_defines : ${thisShell_Config_optional_dart_define_defines[@]}"
+        echo "${thisShell_Title_Log} thisShell_Config_optional_dart_define_separator : ${thisShell_Config_optional_dart_define_separator}"
+        echo "${thisShell_Title_Log} ============= Param : End ============="
         echo
 
         local i
-        for ((i = 0; i < ${#exported_Config_optional_dart_define_defines[@]}; i++)); do #請注意 ((   )) 雙層括號
+        for ((i = 0; i < ${#thisShell_Config_optional_dart_define_defines[@]}; i++)); do #請注意 ((   )) 雙層括號
 
-            local aDefine=${exported_Config_optional_dart_define_defines[$i]}
+            local aDefine=${thisShell_Config_optional_dart_define_defines[$i]}
 
             local aKey
             local aVal
 
-            splitStringToPair "${exported_Title_Log}" "${aDefine}" "${exported_Config_optional_dart_define_separator}" aKey aVal
+            splitStringToPair "${thisShell_Title_Log}" "${aDefine}" "${thisShell_Config_optional_dart_define_separator}" aKey aVal
 
             # 第一次，尚未設定。
-            if [ -z "${exported_DartDef_PartOf_Command}" ] && [ -z "${exported_DartDef_PartOf_FileName}" ]; then
+            if [ -z "${thisShell_DartDef_PartOf_Command}" ] && [ -z "${thisShell_DartDef_PartOf_FileName}" ]; then
 
-                exported_DartDef_PartOf_Command="--"${configConst_BuildParam_Key_DartDefine}"=${aKey}=${aVal}"
-                exported_DartDef_PartOf_FileName="${aKey}_${aVal}"
+                thisShell_DartDef_PartOf_Command="--"${configConst_BuildParam_Key_DartDefine}"=${aKey}=${aVal}"
+                thisShell_DartDef_PartOf_FileName="${aKey}_${aVal}"
 
             else
 
-                exported_DartDef_PartOf_Command="${exported_DartDef_PartOf_Command} --"${configConst_BuildParam_Key_DartDefine}"=${aKey}=${aVal}"
-                exported_DartDef_PartOf_FileName="${exported_DartDef_PartOf_FileName}-${aKey}_${aVal}"
+                thisShell_DartDef_PartOf_Command="${thisShell_DartDef_PartOf_Command} --"${configConst_BuildParam_Key_DartDefine}"=${aKey}=${aVal}"
+                thisShell_DartDef_PartOf_FileName="${thisShell_DartDef_PartOf_FileName}-${aKey}_${aVal}"
 
             fi
 
         done
 
         # check input parameters
-        checkInputParam "${exported_Title_Log}" exported_DartDef_PartOf_Command "${exported_DartDef_PartOf_Command[@]}"
-        checkInputParam "${exported_Title_Log}" exported_DartDef_PartOf_FileName "${exported_DartDef_PartOf_FileName}"
+        checkInputParam "${thisShell_Title_Log}" thisShell_DartDef_PartOf_Command "${thisShell_DartDef_PartOf_Command[@]}"
+        checkInputParam "${thisShell_Title_Log}" thisShell_DartDef_PartOf_FileName "${thisShell_DartDef_PartOf_FileName}"
 
-        echo "${exported_Title_Log} exported_DartDef_PartOf_Command  : ${exported_DartDef_PartOf_Command}"
-        echo "${exported_Title_Log} exported_DartDef_PartOf_FileName : ${exported_DartDef_PartOf_FileName}"
+        echo "${thisShell_Title_Log} thisShell_DartDef_PartOf_Command  : ${thisShell_DartDef_PartOf_Command}"
+        echo "${thisShell_Title_Log} thisShell_DartDef_PartOf_FileName : ${thisShell_DartDef_PartOf_FileName}"
 
-        echo "${exported_Title_Log} ============= parse "${configConst_BuildParam_Key_DartDefine}" : End ============="
+        echo "${thisShell_Title_Log} ============= parse "${configConst_BuildParam_Key_DartDefine}" : End ============="
         echo
 
     fi
@@ -361,7 +361,7 @@ function parseDartDefine() {
 # @param $1 : command name
 function export_NotyetSupportSubcommand() {
 
-    local func_Title_Log="${exported_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # for echo color
     local func_Bold_Black='\033[1;30m'
@@ -374,7 +374,7 @@ function export_NotyetSupportSubcommand() {
 
     echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***${func_Color_Off}"
 
-    # checkResultFail_And_ChangeFolder "${func_Title_Log}" "50" "!!! ~ OPPS!! Not yet support this subcommand:  ${func_Subcommand} => fail ~ !!!" "${exported_OldPath}"
+    # checkResultFail_And_ChangeFolder "${func_Title_Log}" "50" "!!! ~ OPPS!! Not yet support this subcommand:  ${func_Subcommand} => fail ~ !!!" "${thisShell_OldPath}"
 }
 ### ==================== NotyetSupportSubcommand : End ====================
 
@@ -382,18 +382,18 @@ function export_NotyetSupportSubcommand() {
 # @brief exported aar 部分
 function export_aar() {
 
-    local func_Title_Log="${exported_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
-    local func_Subcommand=${exported_SubcommandInfo_aar[0]}
+    local func_Subcommand=${thisShell_SubcommandInfo_aar[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+    echo "${thisShell_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     export_NotyetSupportSubcommand ${func_Subcommand}
 
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${thisShell_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
 ### ==================== aar : End ====================
@@ -404,11 +404,11 @@ function export_aar() {
 function export_apk() {
 
     local func_Name=${FUNCNAME[0]}
-    local func_Title_Log="${exported_Title_Log} *** function [${func_Name}] -"
+    local func_Title_Log="${thisShell_Title_Log} *** function [${func_Name}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
-    local func_Subcommand=${exported_SubcommandInfo_apk[0]}
+    local func_Subcommand=${thisShell_SubcommandInfo_apk[0]}
 
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
@@ -432,7 +432,7 @@ function export_apk() {
     local func_Build_Command
 
 	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
-	if [ ${exported_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
+	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
 
 		func_Build_Command_Name="${configConst_CommandName_Fvm}"
 		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_buildConfigType}"
@@ -445,28 +445,28 @@ function export_apk() {
 	fi
    
     # 若有 build_name
-    if [ -n "${exported_Config_optional_build_name}" ]; then
-        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildName} ${exported_Config_optional_build_name}"
+    if [ -n "${thisShell_Config_optional_build_name}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildName} ${thisShell_Config_optional_build_name}"
     fi
 
     # 若有 build_number
-    if [ -n "${exported_Config_optional_build_number}" ]; then
-        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildNumber} ${exported_Config_optional_build_number}"
+    if [ -n "${thisShell_Config_optional_build_number}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildNumber} ${thisShell_Config_optional_build_number}"
     fi
 
     # 若有 flavor
-    if [ -n "${exported_Config_optional_flavor}" ]; then
-        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_Flavor}=${exported_Config_optional_flavor}"
+    if [ -n "${thisShell_Config_optional_flavor}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_Flavor}=${thisShell_Config_optional_flavor}"
     fi
 
     # 若有 dart-define
-    if [ -n "${exported_DartDef_PartOf_Command}" ]; then
-        func_Build_Command="${func_Build_Command} ${exported_DartDef_PartOf_Command}"
+    if [ -n "${thisShell_DartDef_PartOf_Command}" ]; then
+        func_Build_Command="${func_Build_Command} ${thisShell_DartDef_PartOf_Command}"
     fi
 
     # 若有 target-platform
-    if [ -n "${exported_Config_optional_target_platform}" ]; then
-        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_TargetPlatform} ${exported_Config_optional_target_platform}"
+    if [ -n "${thisShell_Config_optional_target_platform}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_TargetPlatform} ${thisShell_Config_optional_target_platform}"
     fi
 
     # ===> OutputFile 設定 <===
@@ -477,11 +477,11 @@ function export_apk() {
 
     # 若有 prefix file name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_prefix_file_name "${func_Build_Seperator}"
+        func_Build_FileName thisShell_Config_optional_prefix_file_name "${func_Build_Seperator}"
 
     # 若有 flavor
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_flavor "${func_Build_Seperator}"
+        func_Build_FileName thisShell_Config_optional_flavor "${func_Build_Seperator}"
 
     # 若有 config type
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
@@ -489,15 +489,15 @@ function export_apk() {
 
     # 若有 build_name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_build_name "${func_Build_Seperator}"
+        func_Build_FileName thisShell_Config_optional_build_name "${func_Build_Seperator}"
 
     # 若有 build_number
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_build_number "${func_Build_Seperator}"
+        func_Build_FileName thisShell_Config_optional_build_number "${func_Build_Seperator}"
 
     # 若有 dart-define
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_DartDef_PartOf_FileName "${func_Build_Seperator}"
+        func_Build_FileName thisShell_DartDef_PartOf_FileName "${func_Build_Seperator}"
 
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").apk"
@@ -506,8 +506,8 @@ function export_apk() {
     local func_Origin_Build_FileName="build/app/outputs/apk"
 
     # 若有 flavor
-    if [ -n "${exported_Config_optional_flavor}" ]; then
-        func_Origin_Build_FileName="${func_Origin_Build_FileName}/${exported_Config_optional_flavor}/${func_buildConfigType}/app-${exported_Config_optional_flavor}"
+    if [ -n "${thisShell_Config_optional_flavor}" ]; then
+        func_Origin_Build_FileName="${func_Origin_Build_FileName}/${thisShell_Config_optional_flavor}/${func_buildConfigType}/app-${thisShell_Config_optional_flavor}"
     else
         func_Origin_Build_FileName="${func_Origin_Build_FileName}/${func_buildConfigType}/app"
     fi
@@ -516,16 +516,16 @@ function export_apk() {
     func_Origin_Build_FileName="${func_Origin_Build_FileName}-${func_buildConfigType}.apk"
 
     # ===> report note - init 設定 <===
-    echo >>"${exported_ReportNoteFile}"
-    echo "---" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "## [${func_Name}] ${func_Build_FileName}" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "- command line :" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "  \`\`\`shell" >>"${exported_ReportNoteFile}"
-    echo "    ${func_Build_Command_Name} ${func_Build_Command}" >>"${exported_ReportNoteFile}"
-    echo "  \`\`\`" >>"${exported_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "---" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "## [${func_Name}] ${func_Build_FileName}" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "- command line :" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "  \`\`\`shell" >>"${thisShell_ReportNoteFile}"
+    echo "    ${func_Build_Command_Name} ${func_Build_Command}" >>"${thisShell_ReportNoteFile}"
+    echo "  \`\`\`" >>"${thisShell_ReportNoteFile}"
 
     # ===> build apk <===
     echo "${func_Title_Log} ===> build ${func_Subcommand} <==="
@@ -533,15 +533,15 @@ function export_apk() {
     ${func_Build_Command_Name} ${func_Build_Command}
 
     # check result - build apk
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${exported_OldPath}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
 
     # ===> copy apk to destination folder <===
     echo "${func_Title_Log} ===> copy ${func_buildConfigType} ${func_Subcommand} to output folder <==="
 
-    cp -r "${func_Origin_Build_FileName}" "${exported_Config_required_paths_output}/${func_Build_FileName}"
+    cp -r "${func_Origin_Build_FileName}" "${thisShell_Config_required_paths_output}/${func_Build_FileName}"
 
     # check result - copy apk
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy ${func_buildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${exported_OldPath}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy ${func_buildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${thisShell_OldPath}"
 
     echo "${func_Title_Log} 打包 ${func_Subcommand} 已經完成"
     echo "${func_Title_Log} output file name : ${func_Build_FileName}"
@@ -550,8 +550,8 @@ function export_apk() {
     # ===> report note - final 設定 <===
     # ===> 輸出 全部的產出時間統計 <===
     local func_TotalTime=$((${SECONDS} - ${func_Temp_Seconds}))
-    echo >>"${exported_ReportNoteFile}"
-    echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "- Elapsed time: ${func_TotalTime}s" >>"${thisShell_ReportNoteFile}"
 
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: ${func_TotalTime}s"
@@ -564,18 +564,18 @@ function export_apk() {
 # @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_appbundle() {
 
-    local func_Title_Log="${exported_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
-    local func_Subcommand=${exported_SubcommandInfo_appbundle[0]}
+    local func_Subcommand=${thisShell_SubcommandInfo_appbundle[0]}
 
     echo
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+    echo "${thisShell_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
     export_NotyetSupportSubcommand ${func_Subcommand}
 
-    echo "${exported_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${thisShell_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 }
 ### ==================== appbundle : End ====================
@@ -585,11 +585,11 @@ function export_appbundle() {
 # @param ${1}: buildConfigType :  有 debug ， profile ， release。
 function export_bundle() {
 
-    local func_Title_Log="${exported_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
-    local func_Subcommand=${exported_SubcommandInfo_bundle[0]}
+    local func_Subcommand=${thisShell_SubcommandInfo_bundle[0]}
 
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
@@ -607,11 +607,11 @@ function export_bundle() {
 function export_ios() {
 
     local func_Name=${FUNCNAME[0]}
-    local func_Title_Log="${exported_Title_Log} *** function [${func_Name}] -"
+    local func_Title_Log="${thisShell_Title_Log} *** function [${func_Name}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
-    local func_Subcommand=${exported_SubcommandInfo_ios[0]}
+    local func_Subcommand=${thisShell_SubcommandInfo_ios[0]}
 
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
@@ -635,7 +635,7 @@ function export_ios() {
     local func_Build_Command
 
 	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
-	if [ ${exported_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
+	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
 
 		func_Build_Command_Name="${configConst_CommandName_Fvm}"
 		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_buildConfigType}"
@@ -648,23 +648,23 @@ function export_ios() {
 	fi
 
     # 若有 build_name
-    if [ -n "${exported_Config_optional_build_name}" ]; then
-        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildName} ${exported_Config_optional_build_name}"
+    if [ -n "${thisShell_Config_optional_build_name}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildName} ${thisShell_Config_optional_build_name}"
     fi
 
     # 若有 build_number
-    if [ -n "${exported_Config_optional_build_number}" ]; then
-        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildNumber} ${exported_Config_optional_build_number}"
+    if [ -n "${thisShell_Config_optional_build_number}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildNumber} ${thisShell_Config_optional_build_number}"
     fi
 
     # 若有 flavor
-    if [ -n "${exported_Config_optional_flavor}" ]; then
-        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_Flavor}=${exported_Config_optional_flavor}"
+    if [ -n "${thisShell_Config_optional_flavor}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_Flavor}=${thisShell_Config_optional_flavor}"
     fi
 
     # 若有 dart-define
-    if [ -n "${exported_DartDef_PartOf_Command}" ]; then
-        func_Build_Command="${func_Build_Command} ${exported_DartDef_PartOf_Command}"
+    if [ -n "${thisShell_DartDef_PartOf_Command}" ]; then
+        func_Build_Command="${func_Build_Command} ${thisShell_DartDef_PartOf_Command}"
     fi
 
     # ===> OutputFile 設定 <===
@@ -675,11 +675,11 @@ function export_ios() {
 
     # 若有 prefix file name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_prefix_file_name "${func_Build_Seperator}"
+        func_Build_FileName thisShell_Config_optional_prefix_file_name "${func_Build_Seperator}"
 
     # 若有 flavor
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_flavor "${func_Build_Seperator}"
+        func_Build_FileName thisShell_Config_optional_flavor "${func_Build_Seperator}"
 
     # 若有 config type
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
@@ -687,15 +687,15 @@ function export_ios() {
 
     # 若有 build_name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_build_name "${func_Build_Seperator}"
+        func_Build_FileName thisShell_Config_optional_build_name "${func_Build_Seperator}"
 
     # 若有 build_number
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_Config_optional_build_number "${func_Build_Seperator}"
+        func_Build_FileName thisShell_Config_optional_build_number "${func_Build_Seperator}"
 
     # 若有 dart-define
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName exported_DartDef_PartOf_FileName "${func_Build_Seperator}"
+        func_Build_FileName thisShell_DartDef_PartOf_FileName "${func_Build_Seperator}"
 
     # 補上結尾
     func_Build_FileName="${func_Build_FileName}-$(date "+%Y%m%d%H%M").ipa"
@@ -704,23 +704,23 @@ function export_ios() {
     local func_Origin_Build_AppFolder="build/ios/iphoneos"
 
     # 若有 flavor
-    if [ -n "${exported_Config_optional_flavor}" ]; then
-        func_Origin_Build_AppFolder="${func_Origin_Build_AppFolder}/${exported_Config_optional_flavor}.app"
+    if [ -n "${thisShell_Config_optional_flavor}" ]; then
+        func_Origin_Build_AppFolder="${func_Origin_Build_AppFolder}/${thisShell_Config_optional_flavor}.app"
     else
         func_Origin_Build_AppFolder="${func_Origin_Build_AppFolder}/Runner.app"
     fi
 
     # ===> report note - init 設定 <===
-    echo >>"${exported_ReportNoteFile}"
-    echo "---" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "## [${func_Name}] ${func_Build_FileName}" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "- command line :" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "  \`\`\`shell" >>"${exported_ReportNoteFile}"
-    echo "    ${func_Build_Command_Name} ${func_Build_Command}" >>"${exported_ReportNoteFile}"
-    echo "  \`\`\`" >>"${exported_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "---" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "## [${func_Name}] ${func_Build_FileName}" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "- command line :" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "  \`\`\`shell" >>"${thisShell_ReportNoteFile}"
+    echo "    ${func_Build_Command_Name} ${func_Build_Command}" >>"${thisShell_ReportNoteFile}"
+    echo "  \`\`\`" >>"${thisShell_ReportNoteFile}"
 
     # ===> build ios <===
     echo "${func_Title_Log} ===> build ${func_Subcommand} <==="
@@ -728,30 +728,30 @@ function export_ios() {
     ${func_Build_Command_Name} ${func_Build_Command}
 
     # check result - build ios
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${exported_OldPath}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
 
     # ===> zip Payload to destination folder <===
     if [ -d ${func_Origin_Build_AppFolder} ]; then
 
         # 切換到 輸出目錄，再打包才不會包到不該包的資料夾。
-        changeToDirectory "${func_Title_Log}" "${exported_Config_required_paths_output}"
+        changeToDirectory "${func_Title_Log}" "${thisShell_Config_required_paths_output}"
 
         # 打包 ipa 的固定資料夾名稱。
         mkdir Payload
 
-        cp -r "${exported_Flutter_WorkPath}/${func_Origin_Build_AppFolder}" "${exported_Config_required_paths_output}/Payload"
+        cp -r "${thisShell_Flutter_WorkPath}/${func_Origin_Build_AppFolder}" "${thisShell_Config_required_paths_output}/Payload"
 
         # check result - copy iOS Payload
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${exported_OldPath}"
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${thisShell_OldPath}"
 
-        # zip -r -m iOS-${func_buildConfigType}-${func_iOS_BundleVersion}-${exported_Param_DartDef_Val_GitHash}-$(date "+%Y%m%d%H%M").ipa Payload
+        # zip -r -m iOS-${func_buildConfigType}-${func_iOS_BundleVersion}-${thisShell_Param_DartDef_Val_GitHash}-$(date "+%Y%m%d%H%M").ipa Payload
         zip -r -m ${func_Build_FileName} Payload
 
         # check result - zip iOS Payload
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ zip iOS Payload => fail ~ !!!" "${exported_OldPath}"
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ zip iOS Payload => fail ~ !!!" "${thisShell_OldPath}"
 
         # 切換到 flutter work path
-        changeToDirectory "${func_Title_Log}" "${exported_Flutter_WorkPath}"
+        changeToDirectory "${func_Title_Log}" "${thisShell_Flutter_WorkPath}"
 
         echo "${func_Title_Log} 打包 ${func_Subcommand} 很順利 😄"
         say "${func_Title_Log} 打包 ${func_Subcommand} 成功"
@@ -762,14 +762,14 @@ function export_ios() {
         say "${func_Title_Log} 打包 ${func_Subcommand} 失敗"
 
         # check result - copy ios
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${exported_OldPath}"
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${thisShell_OldPath}"
     fi
 
     # ===> report note - final 設定 <===
     # ===> 輸出 全部的產出時間統計 <===
     local func_TotalTime=$((${SECONDS} - ${func_Temp_Seconds}))
-    echo >>"${exported_ReportNoteFile}"
-    echo "- Elapsed time: ${func_TotalTime}s" >>"${exported_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "- Elapsed time: ${func_TotalTime}s" >>"${thisShell_ReportNoteFile}"
 
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: ${func_TotalTime}s"
@@ -781,11 +781,11 @@ function export_ios() {
 # @brief exported ios_framework 部分
 function export_ios_framework() {
 
-    local func_Title_Log="${exported_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
-    local func_Subcommand=${exported_SubcommandInfo_ios_framework[0]}
+    local func_Subcommand=${thisShell_SubcommandInfo_ios_framework[0]}
 
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
@@ -807,16 +807,16 @@ function process_Init() {
     SECONDS=0
 
     # 此 shell 的 dump log title.
-    exported_Title_Log="[exported] -"
+    thisShell_Title_Log="[exported] -"
 
     echo
-    echo "${exported_Title_Log} ||==========> exported : Begin <==========||"
+    echo "${thisShell_Title_Log} ||==========> exported : Begin <==========||"
 
     # 取得相對目錄.
     local func_Shell_WorkPath=$(dirname $0)
 
     echo
-    echo "${exported_Title_Log} func_Shell_WorkPath : ${func_Shell_WorkPath}"
+    echo "${thisShell_Title_Log} func_Shell_WorkPath : ${func_Shell_WorkPath}"
 
     # 前置處理作業
 
@@ -827,33 +827,33 @@ function process_Init() {
     # 保險起見， include configConst.sh
     # include configConst.sh for configTools.sh using export Environment Variable。
     echo
-    echo "${exported_Title_Log} include configConst.sh"
+    echo "${thisShell_Title_Log} include configConst.sh"
     . "${func_Shell_WorkPath}"/configConst.sh
 
     # include general function
     echo
-    echo "${exported_Title_Log} include general function"
+    echo "${thisShell_Title_Log} include general function"
     . "${func_Shell_WorkPath}"/../generalConst.sh
     . "${func_Shell_WorkPath}"/../generalTools.sh
 
     # include parse_yaml function
     echo
-    echo "${exported_Title_Log} include parse_yaml function"
+    echo "${thisShell_Title_Log} include parse_yaml function"
 
     # 同樣在 scm.tools 專案下的相對路徑。
     . "${func_Shell_WorkPath}"/../../../submodules/bash-yaml/script/yaml.sh
 
     # 設定原先的呼叫路徑。
-    exported_OldPath=$(pwd)
+    thisShell_OldPath=$(pwd)
 
     # 切換執行目錄.
-    changeToDirectory "${exported_Title_Log}" "${func_Shell_WorkPath}"
+    changeToDirectory "${thisShell_Title_Log}" "${func_Shell_WorkPath}"
 
     # 設定成完整路徑。
-    exported_Shell_WorkPath=$(pwd)
+    thisShell_Shell_WorkPath=$(pwd)
 
-    echo "${exported_Title_Log} exported_OldPath : ${exported_OldPath}"
-    echo "${exported_Title_Log} exported_Shell_WorkPath : ${exported_Shell_WorkPath}"
+    echo "${thisShell_Title_Log} thisShell_OldPath : ${thisShell_OldPath}"
+    echo "${thisShell_Title_Log} thisShell_Shell_WorkPath : ${thisShell_Shell_WorkPath}"
     echo
 }
 
@@ -862,18 +862,18 @@ function process_Init() {
 function process_Deal_InputParam() {
 
     # set input param variable
-    exported_Param_BuildConfigFile="${1}"
+    thisShell_Param_BuildConfigFile="${1}"
 
     # check input parameters
-    checkInputParam "${exported_Title_Log}" exported_Param_BuildConfigFile "${exported_Param_BuildConfigFile}"
+    checkInputParam "${thisShell_Title_Log}" thisShell_Param_BuildConfigFile "${thisShell_Param_BuildConfigFile}"
 
     echo
-    echo "${exported_Title_Log} ============= Param : Begin ============="
-    echo "${exported_Title_Log} exported_Param_BuildConfigFile : ${exported_Param_BuildConfigFile}"
-    echo "${exported_Title_Log} ============= Param : End ============="
+    echo "${thisShell_Title_Log} ============= Param : Begin ============="
+    echo "${thisShell_Title_Log} thisShell_Param_BuildConfigFile : ${thisShell_Param_BuildConfigFile}"
+    echo "${thisShell_Title_Log} ============= Param : End ============="
     echo
 
-    exported_ReportNoteFile="${exported_Param_BuildConfigFile}.report.md"
+    thisShell_ReportNoteFile="${thisShell_Param_BuildConfigFile}.report.md"
 }
 
 # ============= This is separation line =============
@@ -881,18 +881,18 @@ function process_Deal_InputParam() {
 function process_Deal_ToggleFeature() {
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
+    thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
 
     # build configutation type : 編譯組態設定，之後視情況是否要開放
     # 依據 flutter build ， 有 debug ， profile ， release，
     # 可參考 configConst.sh 中的 configConst_BuildConfigType_xxx
-    exported_ToogleFeature_DefaultBuildConfigType="${configConst_BuildConfigType_Release}"
+    thisShell_ToogleFeature_DefaultBuildConfigType="${configConst_BuildConfigType_Release}"
 
     echo
-    echo "${exported_Title_Log} ============= Toogle Feature : Begin ============="
-    echo "${exported_Title_Log} exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile : ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile}"
-    echo "${exported_Title_Log} exported_ToogleFeature_DefaultBuildConfigType : ${exported_ToogleFeature_DefaultBuildConfigType}"
-    echo "${exported_Title_Log} ============= Toogle Feature : End ============="
+    echo "${thisShell_Title_Log} ============= Toogle Feature : Begin ============="
+    echo "${thisShell_Title_Log} thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile : ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile}"
+    echo "${thisShell_Title_Log} thisShell_ToogleFeature_DefaultBuildConfigType : ${thisShell_ToogleFeature_DefaultBuildConfigType}"
+    echo "${thisShell_Title_Log} ============= Toogle Feature : End ============="
     echo
 
 }
@@ -905,7 +905,7 @@ function process_Init_SubcommandInfo() {
     # 搭配 flutter build 中的 subcommands，
     #
     # 此次需要編譯來源:
-    # exported_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
+    # thisShell_Config_required_subcommands=([0]="aar" [1]="apk" [2]="appbundle" [3]="bundle" [4]="ios" [5]="ios-framework")
     #
     # SubcommandInfo :
     # - 規則 :
@@ -913,12 +913,12 @@ function process_Init_SubcommandInfo() {
     #   - [1]: 是否要執行 (isExcute)。 default : "N"。
     #
     # 目前只支援 apk 及 ios，之後視情況新增。
-    exported_SubcommandInfo_aar=("${configConst_Subcommand_aar}" "N")
-    exported_SubcommandInfo_apk=("${configConst_Subcommand_apk}" "N")
-    exported_SubcommandInfo_appbundle=("${configConst_Subcommand_appbundle}" "N")
-    exported_SubcommandInfo_bundle=("${configConst_Subcommand_bundle}" "N")
-    exported_SubcommandInfo_ios=("${configConst_Subcommand_ios}" "N")
-    exported_SubcommandInfo_ios_framework=("${configConst_Subcommand_ios_framework}" "N")
+    thisShell_SubcommandInfo_aar=("${configConst_Subcommand_aar}" "N")
+    thisShell_SubcommandInfo_apk=("${configConst_Subcommand_apk}" "N")
+    thisShell_SubcommandInfo_appbundle=("${configConst_Subcommand_appbundle}" "N")
+    thisShell_SubcommandInfo_bundle=("${configConst_Subcommand_bundle}" "N")
+    thisShell_SubcommandInfo_ios=("${configConst_Subcommand_ios}" "N")
+    thisShell_SubcommandInfo_ios_framework=("${configConst_Subcommand_ios_framework}" "N")
 }
 
 # ============= This is separation line =============
@@ -927,19 +927,19 @@ function process_Parse_BuildConfig() {
 
     # 判斷 build config file
     # 字串是否不為空。 (a non-empty string)
-    if [ -n "${exported_Param_BuildConfigFile}" ]; then
+    if [ -n "${thisShell_Param_BuildConfigFile}" ]; then
 
         echo
-        echo "${exported_Title_Log} ============= parse build config file : Begin ============="
+        echo "${thisShell_Title_Log} ============= parse build config file : Begin ============="
 
         # parse build config file
-        echo "${exported_Title_Log} 將剖析 Build Config File 來做細微的設定。"
+        echo "${thisShell_Title_Log} 將剖析 Build Config File 來做細微的設定。"
 
-        create_variables "${exported_Param_BuildConfigFile}" "exported_Config_"
+        create_variables "${thisShell_Param_BuildConfigFile}" "thisShell_Config_"
 
         # 開啟可以抓到此 shell 目前有哪些設定值。
-        if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
-            set >${exported_Param_BuildConfigFile}_BeforeParseConfig.temp.log
+        if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
+            set >${thisShell_Param_BuildConfigFile}_BeforeParseConfig.temp.log
         fi
 
         # parse required section
@@ -955,11 +955,11 @@ function process_Parse_BuildConfig() {
         parseDartDefine
 
         # 開啟可以抓到此 shell 目前有哪些設定值。
-        if [ ${exported_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
-            set >${exported_Param_BuildConfigFile}_AfterParseConfig.temp.log
+        if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
+            set >${thisShell_Param_BuildConfigFile}_AfterParseConfig.temp.log
         fi
 
-        echo "${exported_Title_Log} ============= parse build config file : End ============="
+        echo "${thisShell_Title_Log} ============= parse build config file : End ============="
         echo
 
         # FIXME
@@ -973,31 +973,31 @@ function process_Parse_BuildConfig() {
 function process_Deal_Paths() {
 
     # 切換到 config file 設定的 flutter project work path: 為 flutter 專案的工作目錄 shell 目錄 (之後會切回到原有呼叫的目錄)
-    changeToDirectory "${exported_Title_Log}" "${exported_Config_required_paths_work}"
-    exported_Flutter_WorkPath=$(pwd)
+    changeToDirectory "${thisShell_Title_Log}" "${thisShell_Config_required_paths_work}"
+    thisShell_Flutter_WorkPath=$(pwd)
 
     echo
-    echo "${exported_Title_Log} //========== dump paths : Begin ==========//"
-    echo "${exported_Title_Log} exported_OldPath                      : ${exported_OldPath}"
-    echo "${exported_Title_Log} exported_Shell_WorkPath               : ${exported_Shell_WorkPath}"
-    echo "${exported_Title_Log} exported_Config_required_paths_work   : ${exported_Config_required_paths_work}"
-    echo "${exported_Title_Log} exported_Flutter_WorkPath             : ${exported_Flutter_WorkPath}"
-    echo "${exported_Title_Log} exported_Config_required_paths_output : ${exported_Config_required_paths_output}"
-    echo "${exported_Title_Log} current path                          : $(pwd)"
-    echo "${exported_Title_Log} //========== dump paths : End ==========//"
+    echo "${thisShell_Title_Log} //========== dump paths : Begin ==========//"
+    echo "${thisShell_Title_Log} thisShell_OldPath                      : ${thisShell_OldPath}"
+    echo "${thisShell_Title_Log} thisShell_Shell_WorkPath               : ${thisShell_Shell_WorkPath}"
+    echo "${thisShell_Title_Log} thisShell_Config_required_paths_work   : ${thisShell_Config_required_paths_work}"
+    echo "${thisShell_Title_Log} thisShell_Flutter_WorkPath             : ${thisShell_Flutter_WorkPath}"
+    echo "${thisShell_Title_Log} thisShell_Config_required_paths_output : ${thisShell_Config_required_paths_output}"
+    echo "${thisShell_Title_Log} current path                          : $(pwd)"
+    echo "${thisShell_Title_Log} //========== dump paths : End ==========//"
 }
 
 # ============= This is separation line =============
 # @brief function : [程序] 清除緩存 (之前編譯的暫存檔)。
 function process_Clean_Cache() {
 
-    # 以 exported_Flutter_WorkPath 為工作目錄來執行
+    # 以 thisShell_Flutter_WorkPath 為工作目錄來執行
     # 先期準備，刪除舊的資料
 
-    echo "${exported_Title_Log} 刪除 build"
+    echo "${thisShell_Title_Log} 刪除 build"
     find . -d -name "build" | xargs rm -rf
 
-    echo "${exported_Title_Log} ${configConst_CommandName_Flutter} clean"
+    echo "${thisShell_Title_Log} ${configConst_CommandName_Flutter} clean"
     ${configConst_CommandName_Flutter} clean
 
     # TODO: Check 是否有必要，上面好像已經有刪除了 ?
@@ -1008,17 +1008,17 @@ function process_Clean_Cache() {
 # call - [程序] 建立 report note 初始化部分。
 function process_Create_ReportNote_Init() {
 
-    echo "# Report Note" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "---" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "## Base info" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "- Subject : report info by \`exported.sh\`" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "- BuildConfigFile :" >>"${exported_ReportNoteFile}"
-    echo >>"${exported_ReportNoteFile}"
-    echo "  > ${exported_Param_BuildConfigFile}" >>"${exported_ReportNoteFile}"
+    echo "# Report Note" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "---" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "## Base info" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "- Subject : report info by \`exported.sh\`" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "- BuildConfigFile :" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "  > ${thisShell_Param_BuildConfigFile}" >>"${thisShell_ReportNoteFile}"
 }
 
 # ============= This is separation line =============
@@ -1027,16 +1027,16 @@ function process_Create_ReportNote_Init() {
 function process_Execute_Build_Sumcommands() {
 
     # 判斷是否要出版 aar
-    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_aar[1]} export_aar
+    check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_aar[1]} export_aar
 
     # 處理有 build config type 的 subcommands.
     # 先設定成 default 的 build config type。
-    local func_BuildConfigTypes=("${exported_ToogleFeature_DefaultBuildConfigType}")
+    local func_BuildConfigTypes=("${thisShell_ToogleFeature_DefaultBuildConfigType}")
 
     # 若有 build config types，則以此為主。
     # 支援的 subcommand : [apk] [appbundle] [bundle] [ios]。
-    if [ -n "${exported_Config_optional_build_config_types}" ]; then
-        func_BuildConfigTypes=("${exported_Config_optional_build_config_types[@]}")
+    if [ -n "${thisShell_Config_optional_build_config_types}" ]; then
+        func_BuildConfigTypes=("${thisShell_Config_optional_build_config_types[@]}")
     fi
 
     local func_i
@@ -1046,21 +1046,21 @@ function process_Execute_Build_Sumcommands() {
         local func_CommandParams=("${aBuildConfigType}")
 
         # 判斷是否要出版 apk
-        check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_apk[1]} export_apk func_CommandParams[@]
+        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_apk[1]} export_apk func_CommandParams[@]
 
         # 判斷是否要出版 appbundle
-        check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_appbundle[1]} export_appbundle func_CommandParams[@]
+        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_appbundle[1]} export_appbundle func_CommandParams[@]
 
         # 判斷是否要出版 bundle
-        check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_bundle[1]} export_bundle func_CommandParams[@]
+        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_bundle[1]} export_bundle func_CommandParams[@]
 
         # 判斷是否要出版 ios
-        check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios[1]} export_ios func_CommandParams[@]
+        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_ios[1]} export_ios func_CommandParams[@]
 
     done
 
     # 判斷是否要出版 ios_framework
-    check_OK_Then_Excute_Command "${exported_Title_Log}" ${exported_SubcommandInfo_ios_framework[1]} export_ios_framework
+    check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_ios_framework[1]} export_ios_framework
 }
 
 # ============= This is separation line =============
@@ -1069,10 +1069,10 @@ function process_Finish() {
 
     # 全部完成
     # 切回原有執行目錄.
-    changeToDirectory "${exported_Title_Log}" "${exported_OldPath}"
+    changeToDirectory "${thisShell_Title_Log}" "${thisShell_OldPath}"
 
     echo
-    echo "${exported_Title_Log} ||==========> exported : End <==========|| Elapsed time: ${SECONDS}s"
+    echo "${thisShell_Title_Log} ||==========> exported : End <==========|| Elapsed time: ${SECONDS}s"
 }
 ## ================================== prcess function section : End ==================================
 
