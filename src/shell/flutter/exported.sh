@@ -999,9 +999,6 @@ function process_Clean_Cache() {
 
     echo "${thisShell_Title_Log} ${configConst_CommandName_Flutter} clean"
     ${configConst_CommandName_Flutter} clean
-
-    # TODO: Check 是否有必要，上面好像已經有刪除了 ?
-    rm -rf build
 }
 
 # ============= This is separation line =============
