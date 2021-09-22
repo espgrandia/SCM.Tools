@@ -33,6 +33,8 @@ export configConst_Subcommand_appbundle="appbundle"
 export configConst_Subcommand_bundle="bundle"
 export configConst_Subcommand_ios="ios"
 export configConst_Subcommand_ios_framework="ios-framework"
+export configConst_Subcommand_ipa="ipa"
+export configConst_Subcommand_web="web"
 ### ---------------------------------- subcommand key section : End ----------------------------------
 
 ## ================================== buildConfig Required section : End ==================================

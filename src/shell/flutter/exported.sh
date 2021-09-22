@@ -237,6 +237,12 @@ function parseReruiredSection() {
         # 判斷是否為 ios_framework
         dealSumcommandInfo "${aSubcommand}" "${thisShell_SubcommandInfo_ios_framework[0]}" thisShell_SubcommandInfo_ios_framework[1]
 
+        # 判斷是否為 ipa
+        dealSumcommandInfo "${aSubcommand}" "${thisShell_SubcommandInfo_ipa[0]}" thisShell_SubcommandInfo_ipa[1]
+
+        # 判斷是否為 web
+        dealSumcommandInfo "${aSubcommand}" "${thisShell_SubcommandInfo_web[0]}" thisShell_SubcommandInfo_web[1]
+
     done
 
     # dump support sumcommand info
@@ -246,6 +252,8 @@ function parseReruiredSection() {
     echo "${thisShell_Title_Log} thisShell_SubcommandInfo_bundle        : ${thisShell_SubcommandInfo_bundle[@]}"
     echo "${thisShell_Title_Log} thisShell_SubcommandInfo_ios           : ${thisShell_SubcommandInfo_ios[@]}"
     echo "${thisShell_Title_Log} thisShell_SubcommandInfo_ios_framework : ${thisShell_SubcommandInfo_ios_framework[@]}"
+    echo "${thisShell_Title_Log} thisShell_SubcommandInfo_ipa           : ${thisShell_SubcommandInfo_ipa[@]}"
+    echo "${thisShell_Title_Log} thisShell_SubcommandInfo_web           : ${thisShell_SubcommandInfo_web[@]}"
 
     echo "${thisShell_Title_Log} ============= required section : End ============="
     echo
@@ -374,7 +382,7 @@ function export_NotyetSupportSubcommand() {
 
     echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***${func_Color_Off}"
 
-    # checkResultFail_And_ChangeFolder "${func_Title_Log}" "50" "!!! ~ OPPS!! Not yet support this subcommand:  ${func_Subcommand} => fail ~ !!!" "${thisShell_OldPath}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "50" "!!! ~ OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***" "${thisShell_OldPath}"
 }
 ### ==================== NotyetSupportSubcommand : End ====================
 
@@ -796,6 +804,48 @@ function export_ios_framework() {
     echo
 }
 ### ==================== ios_framework : End ====================
+
+
+### ==================== ipa : Begin ====================
+# @brief exported ipa 部分
+function export_ipa() {
+
+    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+
+    # 暫存此區塊的起始時間。
+    local func_Temp_Seconds=${SECONDS}
+    local func_Subcommand=${thisShell_SubcommandInfo_ipa[0]}
+
+    echo
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+
+    export_NotyetSupportSubcommand ${func_Subcommand}
+
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo
+}
+### ==================== ipa : End ====================
+
+
+### ==================== web : Begin ====================
+# @brief exported web 部分
+function export_web() {
+
+    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+
+    # 暫存此區塊的起始時間。
+    local func_Temp_Seconds=${SECONDS}
+    local func_Subcommand=${thisShell_SubcommandInfo_web[0]}
+
+    echo
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+
+    export_NotyetSupportSubcommand ${func_Subcommand}
+
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo
+}
+### ==================== web : End ====================
 ## ================================== export function section : End ==================================
 
 ## ================================== prcess function section : Begin ==================================
@@ -919,6 +969,8 @@ function process_Init_SubcommandInfo() {
     thisShell_SubcommandInfo_bundle=("${configConst_Subcommand_bundle}" "N")
     thisShell_SubcommandInfo_ios=("${configConst_Subcommand_ios}" "N")
     thisShell_SubcommandInfo_ios_framework=("${configConst_Subcommand_ios_framework}" "N")
+    thisShell_SubcommandInfo_ipa=("${configConst_Subcommand_ipa}" "N")
+    thisShell_SubcommandInfo_web=("${configConst_Subcommand_web}" "N")
 }
 
 # ============= This is separation line =============
@@ -1040,6 +1092,8 @@ function process_Execute_Build_Sumcommands() {
     for ((func_i = 0; func_i < ${#func_BuildConfigTypes[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
         local aBuildConfigType=${func_BuildConfigTypes[${func_i}]}
+
+        # 要帶入的 params，使用 check_OK_Then_Excute_Command 來判斷是否要執行，所以要用 array 方式帶入。
         local func_CommandParams=("${aBuildConfigType}")
 
         # 判斷是否要出版 apk
@@ -1053,6 +1107,12 @@ function process_Execute_Build_Sumcommands() {
 
         # 判斷是否要出版 ios
         check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_ios[1]} export_ios func_CommandParams[@]
+
+        # 判斷是否要出版 ipa
+        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_ipa[1]} export_ipa func_CommandParams[@]
+
+        # 判斷是否要出版 web : TODO: 只有支援 release，profile，之後可能還要判斷是否是合法的 BuildConfigType，是的話才處理。
+        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_web[1]} export_web func_CommandParams[@]
 
     done
 
