@@ -810,7 +810,8 @@ function export_ios_framework() {
 # @brief exported ipa 部分
 function export_ipa() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_Name=${FUNCNAME[0]}
+    local func_Title_Log="${thisShell_Title_Log} *** function [${func_Name}] -"
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
@@ -819,10 +820,161 @@ function export_ipa() {
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
-    export_NotyetSupportSubcommand ${func_Subcommand}
+    local func_buildConfigType="${1}"
 
-    echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    # check input parameters
+    checkInputParam "${func_Title_Log}" func_buildConfigType "${func_buildConfigType}"
+
     echo
+    echo "${func_Title_Log} ============= Param : Begin ============="
+    echo "${func_Title_Log} func_buildConfigType : ${func_buildConfigType}"
+    echo "${func_Title_Log} ============= Param : End ============="
+    echo
+
+    echo "${func_Title_Log} 開始打包 ${func_Subcommand}"
+
+    # ===> Command 設定 <===
+    # 設定基本的 command 內容. [subcommand] [config type]
+    local func_Build_Command_Name
+    local func_Build_Command
+
+	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
+	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
+
+		func_Build_Command_Name="${configConst_CommandName_Fvm}"
+		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_buildConfigType}"
+
+	else
+
+		func_Build_Command_Name="${configConst_CommandName_Flutter}"
+		func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+
+	fi
+
+    # 若有 build_name
+    if [ -n "${thisShell_Config_optional_build_name}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildName} ${thisShell_Config_optional_build_name}"
+    fi
+
+    # 若有 build_number
+    if [ -n "${thisShell_Config_optional_build_number}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_BuildNumber} ${thisShell_Config_optional_build_number}"
+    fi
+
+    # 若有 flavor
+    if [ -n "${thisShell_Config_optional_flavor}" ]; then
+        func_Build_Command="${func_Build_Command} --${configConst_BuildParam_Key_Flavor}=${thisShell_Config_optional_flavor}"
+    fi
+
+    # 若有 dart-define
+    if [ -n "${thisShell_DartDef_PartOf_Command}" ]; then
+        func_Build_Command="${func_Build_Command} ${thisShell_DartDef_PartOf_Command}"
+    fi
+
+    # ===> OutputFile 設定 <===
+    # 設定基本的輸出資料夾名稱格式。
+    local func_Build_FolderName
+
+    local func_Build_Seperator="-"
+
+    # 若有 prefix file name
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FolderName thisShell_Config_optional_prefix_file_name "${func_Build_Seperator}"
+
+    # 若有 flavor
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FolderName thisShell_Config_optional_flavor "${func_Build_Seperator}"
+
+    # 若有 config type
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FolderName func_buildConfigType "${func_Build_Seperator}"
+
+    # 若有 build_name
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FolderName thisShell_Config_optional_build_name "${func_Build_Seperator}"
+
+    # 若有 build_number
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FolderName thisShell_Config_optional_build_number "${func_Build_Seperator}"
+
+    # 若有 dart-define
+    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+        func_Build_FolderName thisShell_DartDef_PartOf_FileName "${func_Build_Seperator}"
+
+    # 補上結尾
+    func_Build_FolderName="${func_Build_FolderName}-$(date "+%Y%m%d%H%M")"
+
+    # 補上前綴資料夾名稱，最後再處理，是讓上面的處理名稱方式統一。
+    func_Build_FolderName="archive/${func_Build_FolderName}"
+
+    # ===> Origin build output 設定 <===
+    local func_Origin_Build_AppFolder="build/ios/archive"
+    local func_Origin_Archive_Name
+
+    # 若有 flavor
+    if [ -n "${thisShell_Config_optional_flavor}" ]; then
+        func_Origin_Archive_Name="${thisShell_Config_optional_flavor}.xcarchive"
+    else
+        func_Origin_Archive_Name="Runner.xcarchive"
+    fi
+
+    # sample 輸出路徑: (flutter build ipa)
+    # - build/ios/archive/[flavor].xcarchive
+    func_Origin_Build_AppFolder="${func_Origin_Build_AppFolder}/${func_Origin_Archive_Name}"
+
+    # ===> report note - init 設定 <===
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "---" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "## [${func_Name}] ${func_Build_FolderName}/${func_Origin_Archive_Name}" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "- command line :" >>"${thisShell_ReportNoteFile}"
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "  \`\`\`shell" >>"${thisShell_ReportNoteFile}"
+    echo "    ${func_Build_Command_Name} ${func_Build_Command}" >>"${thisShell_ReportNoteFile}"
+    echo "  \`\`\`" >>"${thisShell_ReportNoteFile}"
+
+    # ===> build ipa <===
+    echo "${func_Title_Log} ===> build ${func_Subcommand} <==="
+    echo "${func_Title_Log} ${func_Build_Command_Name} ${func_Build_Command}"
+    ${func_Build_Command_Name} ${func_Build_Command}
+
+    # check result - build ipa
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
+
+    # ===> zip Payload to destination folder <===
+    if [ -d ${func_Origin_Build_AppFolder} ]; then
+
+        # 確保藥輸出的 archive 的資料夾存在。
+        mkdir -p ${thisShell_Config_required_paths_output}/${func_Build_FolderName}
+
+        mv -v "${thisShell_Flutter_WorkPath}/${func_Origin_Build_AppFolder}" "${thisShell_Config_required_paths_output}/${func_Build_FolderName}"
+
+        # check result - mv iOS archive
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ mv -v iOS archive => fail ~ !!!" "${thisShell_OldPath}"
+
+        echo "${func_Title_Log} 打包 ${func_Subcommand} 很順利 😄"
+        say "${func_Title_Log} 打包 ${func_Subcommand} 成功"
+
+    else
+
+        echo "${func_Title_Log} 遇到報錯了 😭, 打開 Xcode 查找錯誤原因"
+        say "${func_Title_Log} 打包 ${func_Subcommand} 失敗"
+
+        # check result - copy ios
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${thisShell_OldPath}"
+    fi
+
+    # ===> report note - final 設定 <===
+    # ===> 輸出 全部的產出時間統計 <===
+    local func_TotalTime=$((${SECONDS} - ${func_Temp_Seconds}))
+    echo >>"${thisShell_ReportNoteFile}"
+    echo "- Elapsed time: ${func_TotalTime}s" >>"${thisShell_ReportNoteFile}"
+
+    echo
+    echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: ${func_TotalTime}s"
+    echo
+
 }
 ### ==================== ipa : End ====================
 
