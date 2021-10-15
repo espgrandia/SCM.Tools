@@ -215,7 +215,7 @@ function checkResultFail_And_ChangeFolder() {
 }
 
 # ============= This is separation line =============
-# @brief function : 驗證 input value 是否在 input list 中。
+# @brief function : 驗證 input check value 是否在 input source list 中。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 #   - 只檢查是否為合法設定。
 #   - value 有在 list 中，則回傳 0。
@@ -240,8 +240,6 @@ function check_Legal_Val_In_List() {
     echo "${func_Title_Log} check value: ${2}"
     echo "${func_Title_Log} source list: ("${!3}")"
     echo "${func_Title_Log} Input param : End ***"
-    echo "${func_Title_Log} End ***"
-    echo
 
     local func_Param_TitleLog="${1}"
     local func_Param_CheckVal="${2}"
@@ -269,16 +267,19 @@ function check_Legal_Val_In_List() {
 
     done
 
+    echo "${func_Title_Log} End ***"
+    echo
+
     return "${func_ReVal}"
 }
 
 # ============= This is separation line =============
-# @brief function : 驗證 input value 是否在 input list 中，沒找到會切換路徑並中斷程式。
+# @brief function : 驗證 input check value 是否在 input source list 中，沒找到會切換路徑並中斷程式。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 #   - 會呼叫 [check_Legal_Val_In_List] 來驗證 value 是否有在 inpput list。
-#   - 若 value 不在 list 中，
-#     - dump 錯誤訊息。 (含以及 error code : 99 失敗)。
-#     - 則切換指定的資料夾路徑
+#   - 若 value 不在 list 中 :
+#     - dump 錯誤訊息。 (以及 error code : 99 失敗)。
+#     - 則切換指定的資料夾路徑。
 #     - 離開中斷 shell。
 #
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
@@ -299,8 +300,6 @@ function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
     echo "${func_Title_Log} source list: (${!3})"
     echo "${func_Title_Log} change folder: ${4}"
     echo "${func_Title_Log} Input param : End ***"
-    echo "${func_Title_Log} End ***"
-    echo
 
     local func_Param_TitleLog="${1}"
     local func_Param_CheckVal="${2}"
@@ -312,6 +311,73 @@ function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
     checkResultFail_And_ChangeFolder "${func_Title_Log} ${func_Param_TitleLog}" "$?" \
         "\r\n!!! ~ OPPS!! Input val : ${func_Param_CheckVal} not found in (${func_Param_SrcList[*]}) => fail ~ !!!" "${func_Param_ChangeFolder}"
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+
+# ============= This is separation line =============
+# @brief function : 驗證 input check list 的 values， 每一個 value 內容，是否在 input source list 中，沒找到會切換路徑並中斷程式。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 會呼叫 [check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder] 來驗證 單一 value 是否有在 inpput list。
+#   - 若 value 不在 list 中 :
+#     - dump 錯誤訊息。 (以及 error code : 99 失敗)。
+#     - 則切換指定的資料夾路徑。
+#     - 離開中斷 shell。
+#   - check list 不可為空，若為空 :
+#     - dump 錯誤訊息。 (以及 error code : 1 失敗， shell 檢查 list 數量是否大於 0，測試的結果不成立會回傳 1)。
+#
+# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${!2} : check list : 要驗證的 array。
+# @param ${!3} : source list : 要驗證的 array。
+# @param ${4}: 切換回去的的 folder path"
+#
+# sample e.g. check_Legal_VerifiedList_In_List__If__ResultFail_Then_ChangeFolder "${sample_Title_Log}" \
+#               sample_VerifiedList[@] sample_List[@] "${sample_ChangeFolder}"
+function check_Legal_VerifiedList_In_List__If__ResultFail_Then_ChangeFolder() {
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} TitleLog: ${1}"
+    echo "${func_Title_Log} check list original name: ${2}"
+    echo "${func_Title_Log} check list: (${!2})"
+    echo "${func_Title_Log} source list original name: ${3}"
+    echo "${func_Title_Log} source list: (${!3})"
+    echo "${func_Title_Log} change folder: ${4}"
+    echo "${func_Title_Log} Input param : End ***"
+
+    local func_Param_TitleLog="${1}"
+    local func_Param_CheckList_Original_Name=${2}
+    local func_Param_CheckList=("${!2}")
+    local func_Param_SrcList=("${!3}")
+    local func_Param_ChangeFolder="${4}"
+
+    # 字串是否不為空。 (a non-empty string)
+    if 	[ "${#func_Param_CheckList[@]}" -gt "0" ]; then
+
+        local func_i
+        for ((func_i = 0; func_i < ${#func_Param_CheckList[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+
+            local func_aCheckVal=${func_Param_CheckList[${func_i}]}
+            local func_curIndx
+
+            # 判斷 是否為合法的 [config type]。
+            check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${func_Param_TitleLog}" "${func_aCheckVal}" \
+                func_Param_SrcList[@] "${func_Param_ChangeFolder}"
+
+        done
+
+    else
+
+        checkResultFail_And_ChangeFolder "${func_Param_TitleLog}" "$?" "!!! ${func_Param_CheckList_Original_Name} count : ${#func_Param_CheckList[@]} is illegal => fail ~ !!!" "${func_Param_ChangeFolder}"
+
+    fi
+
+    echo "${func_Title_Log} End ***"
+    echo
 }
 
 # ============= This is separation line =============
@@ -556,5 +622,8 @@ function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder()
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
     checkResultFail_And_ChangeFolder "${func_Param_TitleLog}" "$?" \
         "\r\n!!! ~ OPPS!! Execute Command Fail. \r\n- Command Name : ${func_Param_CoommandName}\r\n- Command Params: $(echo ${func_Param_CoommandParams[@]}) \r\n => fail ~ !!!" "${func_Param_ChangeFolder}"
+
+    echo "${func_Title_Log} End ***"
+    echo
 }
 
