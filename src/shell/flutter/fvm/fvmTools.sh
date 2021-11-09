@@ -58,7 +58,7 @@ function dealFvmSetActiveToGlobal() {
 
     echo "${func_Title_Log} ${func_Key_FlutterSdkVersion} value : ${func_FlutterSdkVersion}"
 
-    echo "${func_Title_Log} "${1}" ============= parse json file - End ============="
+    echo "${func_Title_Log} ${1} ============= parse json file - End ============="
 
     echo
     echo "${func_Title_Log} ${1} ============= fvm - Begin ============="
@@ -76,7 +76,7 @@ function dealFvmSetActiveToGlobal() {
     fvm list
     checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
 
-    echo "${func_Title_Log} "${1}" ============= fvm - End ============="
+    echo "${func_Title_Log} ${1} ============= fvm - End ============="
     echo
 
     echo "${func_Title_Log} End ***"
