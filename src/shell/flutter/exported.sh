@@ -421,14 +421,14 @@ function export_apk() {
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
-    local func_buildConfigType="${1}"
+    local func_Param_BuildConfigType="${1}"
 
     # check input parameters
-    checkInputParam "${func_Title_Log}" func_buildConfigType "${func_buildConfigType}"
+    checkInputParam "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
 
     echo
     echo "${func_Title_Log} ============= Param : Begin ============="
-    echo "${func_Title_Log} func_buildConfigType : ${func_buildConfigType}"
+    echo "${func_Title_Log} func_Param_BuildConfigType : ${func_Param_BuildConfigType}"
     echo "${func_Title_Log} ============= Param : End ============="
     echo
 
@@ -443,12 +443,12 @@ function export_apk() {
 	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
 
 		func_Build_Command_Name="${configConst_CommandName_Fvm}"
-		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_buildConfigType}"
+		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_Param_BuildConfigType}"
 
 	else
 
 		func_Build_Command_Name="${configConst_CommandName_Flutter}"
-		func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+		func_Build_Command="build ${func_Subcommand} --${func_Param_BuildConfigType}"
 
 	fi
    
@@ -493,7 +493,7 @@ function export_apk() {
 
     # 若有 config type
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName func_buildConfigType "${func_Build_Seperator}"
+        func_Build_FileName func_Param_BuildConfigType "${func_Build_Seperator}"
 
     # 若有 build_name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
@@ -515,13 +515,13 @@ function export_apk() {
 
     # 若有 flavor
     if [ -n "${thisShell_Config_optional_flavor}" ]; then
-        func_Origin_Build_FileName="${func_Origin_Build_FileName}/${thisShell_Config_optional_flavor}/${func_buildConfigType}/app-${thisShell_Config_optional_flavor}"
+        func_Origin_Build_FileName="${func_Origin_Build_FileName}/${thisShell_Config_optional_flavor}/${func_Param_BuildConfigType}/app-${thisShell_Config_optional_flavor}"
     else
-        func_Origin_Build_FileName="${func_Origin_Build_FileName}/${func_buildConfigType}/app"
+        func_Origin_Build_FileName="${func_Origin_Build_FileName}/${func_Param_BuildConfigType}/app"
     fi
 
     # build type
-    func_Origin_Build_FileName="${func_Origin_Build_FileName}-${func_buildConfigType}.apk"
+    func_Origin_Build_FileName="${func_Origin_Build_FileName}-${func_Param_BuildConfigType}.apk"
 
     # ===> report note - init 設定 <===
     echo >>"${thisShell_ReportNoteFile}"
@@ -544,12 +544,12 @@ function export_apk() {
     checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
 
     # ===> copy apk to destination folder <===
-    echo "${func_Title_Log} ===> copy ${func_buildConfigType} ${func_Subcommand} to output folder <==="
+    echo "${func_Title_Log} ===> copy ${func_Param_BuildConfigType} ${func_Subcommand} to output folder <==="
 
     cp -r "${func_Origin_Build_FileName}" "${thisShell_Config_required_paths_output}/${func_Build_FileName}"
 
     # check result - copy apk
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy ${func_buildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${thisShell_OldPath}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy ${func_Param_BuildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${thisShell_OldPath}"
 
     echo "${func_Title_Log} 打包 ${func_Subcommand} 已經完成"
     echo "${func_Title_Log} output file name : ${func_Build_FileName}"
@@ -582,22 +582,22 @@ function export_appbundle() {
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
-    local func_buildConfigType="${1}"
+    local func_Param_BuildConfigType="${1}"
 
     # check input parameters
-    checkInputParam "${func_Title_Log}" func_buildConfigType "${func_buildConfigType}"
+    checkInputParam "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
 
     echo
     echo "${func_Title_Log} ============= Param : Begin ============="
-    echo "${func_Title_Log} func_buildConfigType : ${func_buildConfigType}"
+    echo "${func_Title_Log} func_Param_BuildConfigType : ${func_Param_BuildConfigType}"
     echo "${func_Title_Log} ============= Param : End ============="
     echo
 
     # 資料夾部分內容，需要轉換 config type 的首字為大寫， e.g. release => Release 。
     # - 設定首字小寫轉大寫。
     # - 加上原本後面的內容。
-    local func_FirstLetter_Trans_To_Upper_For_BuildConfigType=$(echo ${func_buildConfigType:0:1} | tr "[:lower:]" "[:upper:]")
-    func_FirstLetter_Trans_To_Upper_For_BuildConfigType=${func_FirstLetter_Trans_To_Upper_For_BuildConfigType}$(echo ${func_buildConfigType:1})
+    local func_FirstLetter_Trans_To_Upper_For_BuildConfigType=$(echo ${func_Param_BuildConfigType:0:1} | tr "[:lower:]" "[:upper:]")
+    func_FirstLetter_Trans_To_Upper_For_BuildConfigType=${func_FirstLetter_Trans_To_Upper_For_BuildConfigType}$(echo ${func_Param_BuildConfigType:1})
 
     echo
     echo "${func_Title_Log} ============= check value : Begin ============="
@@ -616,12 +616,12 @@ function export_appbundle() {
 	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
 
 		func_Build_Command_Name="${configConst_CommandName_Fvm}"
-		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_buildConfigType}"
+		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_Param_BuildConfigType}"
 
 	else
 
 		func_Build_Command_Name="${configConst_CommandName_Flutter}"
-		func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+		func_Build_Command="build ${func_Subcommand} --${func_Param_BuildConfigType}"
 
 	fi
    
@@ -666,7 +666,7 @@ function export_appbundle() {
 
     # 若有 config type
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName func_buildConfigType "${func_Build_Seperator}"
+        func_Build_FileName func_Param_BuildConfigType "${func_Build_Seperator}"
 
     # 若有 build_name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
@@ -695,7 +695,7 @@ function export_appbundle() {
     fi
 
     # build type
-    func_Origin_Build_FileName="${func_Origin_Build_FileName}-${func_buildConfigType}.aab"
+    func_Origin_Build_FileName="${func_Origin_Build_FileName}-${func_Param_BuildConfigType}.aab"
 
     echo "${func_Title_Log} ===> func_Origin_Build_FileName : ${func_Origin_Build_FileName} <==="
 
@@ -720,12 +720,12 @@ function export_appbundle() {
     checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
 
     # ===> copy aab to destination folder <===
-    echo "${func_Title_Log} ===> copy ${func_buildConfigType} ${func_Subcommand} to output folder <==="
+    echo "${func_Title_Log} ===> copy ${func_Param_BuildConfigType} ${func_Subcommand} to output folder <==="
 
     cp -r "${func_Origin_Build_FileName}" "${thisShell_Config_required_paths_output}/${func_Build_FileName}"
 
     # check result - copy aab
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy ${func_buildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${thisShell_OldPath}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy ${func_Param_BuildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${thisShell_OldPath}"
 
     echo "${func_Title_Log} 打包 ${func_Subcommand} 已經完成"
     echo "${func_Title_Log} output file name : ${func_Build_FileName}"
@@ -779,14 +779,14 @@ function export_ios() {
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
-    local func_buildConfigType="${1}"
+    local func_Param_BuildConfigType="${1}"
 
     # check input parameters
-    checkInputParam "${func_Title_Log}" func_buildConfigType "${func_buildConfigType}"
+    checkInputParam "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
 
     echo
     echo "${func_Title_Log} ============= Param : Begin ============="
-    echo "${func_Title_Log} func_buildConfigType : ${func_buildConfigType}"
+    echo "${func_Title_Log} func_Param_BuildConfigType : ${func_Param_BuildConfigType}"
     echo "${func_Title_Log} ============= Param : End ============="
     echo
 
@@ -801,12 +801,12 @@ function export_ios() {
 	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
 
 		func_Build_Command_Name="${configConst_CommandName_Fvm}"
-		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_buildConfigType}"
+		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_Param_BuildConfigType}"
 
 	else
 
 		func_Build_Command_Name="${configConst_CommandName_Flutter}"
-		func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+		func_Build_Command="build ${func_Subcommand} --${func_Param_BuildConfigType}"
 
 	fi
 
@@ -846,7 +846,7 @@ function export_ios() {
 
     # 若有 config type
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FileName func_buildConfigType "${func_Build_Seperator}"
+        func_Build_FileName func_Param_BuildConfigType "${func_Build_Seperator}"
 
     # 若有 build_name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
@@ -907,7 +907,7 @@ function export_ios() {
         # check result - copy iOS Payload
         checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${thisShell_OldPath}"
 
-        # zip -r -m iOS-${func_buildConfigType}-${func_iOS_BundleVersion}-${thisShell_Param_DartDef_Val_GitHash}-$(date "+%Y%m%d%H%M").ipa Payload
+        # zip -r -m iOS-${func_Param_BuildConfigType}-${func_iOS_BundleVersion}-${thisShell_Param_DartDef_Val_GitHash}-$(date "+%Y%m%d%H%M").ipa Payload
         zip -r -m ${func_Build_FileName} Payload
 
         # check result - zip iOS Payload
@@ -975,14 +975,14 @@ function export_ipa() {
     echo
     echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
-    local func_buildConfigType="${1}"
+    local func_Param_BuildConfigType="${1}"
 
     # check input parameters
-    checkInputParam "${func_Title_Log}" func_buildConfigType "${func_buildConfigType}"
+    checkInputParam "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
 
     echo
     echo "${func_Title_Log} ============= Param : Begin ============="
-    echo "${func_Title_Log} func_buildConfigType : ${func_buildConfigType}"
+    echo "${func_Title_Log} func_Param_BuildConfigType : ${func_Param_BuildConfigType}"
     echo "${func_Title_Log} ============= Param : End ============="
     echo
 
@@ -997,12 +997,12 @@ function export_ipa() {
 	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
 
 		func_Build_Command_Name="${configConst_CommandName_Fvm}"
-		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_buildConfigType}"
+		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_Param_BuildConfigType}"
 
 	else
 
 		func_Build_Command_Name="${configConst_CommandName_Flutter}"
-		func_Build_Command="build ${func_Subcommand} --${func_buildConfigType}"
+		func_Build_Command="build ${func_Subcommand} --${func_Param_BuildConfigType}"
 
 	fi
 
@@ -1042,7 +1042,7 @@ function export_ipa() {
 
     # 若有 config type
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
-        func_Build_FolderName func_buildConfigType "${func_Build_Seperator}"
+        func_Build_FolderName func_Param_BuildConfigType "${func_Build_Seperator}"
 
     # 若有 build_name
     append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
