@@ -32,9 +32,15 @@
 #
 # ---
 #
+# 通用性 const define :
+#
+# - const define : "Y" 或 "N" 改使用 "${generalConst_Enable_Flag}" 或 "${generalConst_Disable_Flag}" 來判斷 ， 定義在 generalConst.sh
+#
+# ---
+#
 # Toggle Feature (切換功能) 說明:
 #
-# - thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="Y" => e.g. "Y" 或 "N"
+# - thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="${generalConst_Enable_Flag}" => e.g. "${generalConst_Enable_Flag}" 或 "${generalConst_Disable_Flag}"
 #   - 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
 #   - 上傳版本會是關閉狀態，若需要測試時，自行打開。
 #
@@ -49,7 +55,7 @@
 # SubcommandInfo :
 # - 規則 :
 #   - [0]: build subcommand name。
-#   - [1]: 是否要執行 (isExcute)。 default : "N"。
+#   - [1]: 是否要執行 (isExcute)。 default : "${generalConst_Disable_Flag}"。
 #
 # ---
 #
@@ -183,7 +189,7 @@ function dealSumcommandInfo() {
 
     # 判斷是否為 要處理的 command (subcommand name 是否相同) .
     if [ ${func_A_Subcommand} = ${func_SumcommandInfo_Name} ]; then
-        eval ${3}="Y"
+        eval ${3}="${generalConst_Enable_Flag}"
     fi
 
     # echo "${func_Title_Log} func_A_Subcommand : ${func_A_Subcommand} ***"
@@ -1238,7 +1244,7 @@ function process_Deal_InputParam() {
 function process_Deal_ToggleFeature() {
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="N"
+    thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="${generalConst_Disable_Flag}"
 
     # build configutation type : 編譯組態設定，之後視情況是否要開放
     # 依據 flutter build ， 有 debug ， profile ， release，
@@ -1267,17 +1273,17 @@ function process_Init_SubcommandInfo() {
     # SubcommandInfo :
     # - 規則 :
     #   - [0]: build subcommand name。
-    #   - [1]: 是否要執行 (isExcute)。 default : "N"。
+    #   - [1]: 是否要執行 (isExcute)。 default : "${generalConst_Disable_Flag}"。
     #
     # 目前只支援 apk 及 ios，之後視情況新增。
-    thisShell_SubcommandInfo_aar=("${configConst_Subcommand_aar}" "N")
-    thisShell_SubcommandInfo_apk=("${configConst_Subcommand_apk}" "N")
-    thisShell_SubcommandInfo_appbundle=("${configConst_Subcommand_appbundle}" "N")
-    thisShell_SubcommandInfo_bundle=("${configConst_Subcommand_bundle}" "N")
-    thisShell_SubcommandInfo_ios=("${configConst_Subcommand_ios}" "N")
-    thisShell_SubcommandInfo_ios_framework=("${configConst_Subcommand_ios_framework}" "N")
-    thisShell_SubcommandInfo_ipa=("${configConst_Subcommand_ipa}" "N")
-    thisShell_SubcommandInfo_web=("${configConst_Subcommand_web}" "N")
+    thisShell_SubcommandInfo_aar=("${configConst_Subcommand_aar}" "${generalConst_Disable_Flag}")
+    thisShell_SubcommandInfo_apk=("${configConst_Subcommand_apk}" "${generalConst_Disable_Flag}")
+    thisShell_SubcommandInfo_appbundle=("${configConst_Subcommand_appbundle}" "${generalConst_Disable_Flag}")
+    thisShell_SubcommandInfo_bundle=("${configConst_Subcommand_bundle}" "${generalConst_Disable_Flag}")
+    thisShell_SubcommandInfo_ios=("${configConst_Subcommand_ios}" "${generalConst_Disable_Flag}")
+    thisShell_SubcommandInfo_ios_framework=("${configConst_Subcommand_ios_framework}" "${generalConst_Disable_Flag}")
+    thisShell_SubcommandInfo_ipa=("${configConst_Subcommand_ipa}" "${generalConst_Disable_Flag}")
+    thisShell_SubcommandInfo_web=("${configConst_Subcommand_web}" "${generalConst_Disable_Flag}")
 }
 
 # ============= This is separation line =============
@@ -1297,7 +1303,7 @@ function process_Parse_BuildConfig() {
         create_variables "${thisShell_Param_BuildConfigFile}" "thisShell_Config_"
 
         # 開啟可以抓到此 shell 目前有哪些設定值。
-        if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
+        if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "${generalConst_Enable_Flag}" ]; then
             set >${thisShell_Param_BuildConfigFile}_BeforeParseConfig.temp.log
         fi
 
@@ -1314,7 +1320,7 @@ function process_Parse_BuildConfig() {
         parseDartDefine
 
         # 開啟可以抓到此 shell 目前有哪些設定值。
-        if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "Y" ]; then
+        if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "${generalConst_Enable_Flag}" ]; then
             set >${thisShell_Param_BuildConfigFile}_AfterParseConfig.temp.log
         fi
 
