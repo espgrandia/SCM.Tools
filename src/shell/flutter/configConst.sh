@@ -24,6 +24,8 @@ configConst_CommandName_Flutter="flutter"
 
 ### ---------------------------------- subcommand key section : Begin ----------------------------------
 # @brief for flutter subcommand
+# @detail - 目前 flutter build 支援的 subcommands，flutter version (2.2.3)。
+#  - shell 不支援 export array，所以就沒提供 flutter 以及 exported 目前支援或提供的 subcommand 功能。
 # @sa
 #   - configTools.sh 中 configTools_Gen_Required 參數可參考此區塊來設定
 #   - exported.sh 會使用到。
@@ -35,6 +37,19 @@ export configConst_Subcommand_ios="ios"
 export configConst_Subcommand_ios_framework="ios-framework"
 export configConst_Subcommand_ipa="ipa"
 export configConst_Subcommand_web="web"
+
+
+# 目前 flutter build 提供的 subcommands，flutter version (2.2.3)。
+export configConst_Flutter_Provide_Subcommands_String="${configConst_Subcommand_aar} ${configConst_Subcommand_apk}\
+ ${configConst_Subcommand_appbundle} ${configConst_Subcommand_bundle}\
+ ${configConst_Subcommand_ios} ${configConst_Subcommand_ios_framework} ${configConst_Subcommand_ipa}\
+ ${configConst_Subcommand_web}"
+
+# 目前 exported.sh 提供的 subcommands。
+export configConst_Exported_Shell_Provide_Subcommands_String="${configConst_Subcommand_apk}\
+ ${configConst_Subcommand_appbundle}\
+ ${configConst_Subcommand_ios} ${configConst_Subcommand_ipa}"
+
 ### ---------------------------------- subcommand key section : End ----------------------------------
 
 ## ================================== buildConfig Required section : End ==================================

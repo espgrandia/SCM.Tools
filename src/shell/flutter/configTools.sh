@@ -121,8 +121,9 @@ function configTools_Gen_Required() {
 
     ## for [required] [subcommands]:
     echo "" >>"${func_Param_FilePath}"
-    echo "  # [${func_Required_Key_Subcommands}] : build sumcommand (like as : ${configConst_Subcommand_aar}，${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_bundle}，${configConst_Subcommand_ios}，${configConst_Subcommand_ios_framework})" >>"${func_Param_FilePath}"
-    echo "  # - [exported.sh] provide sumcommands : ${configConst_Subcommand_apk}，${configConst_Subcommand_ios}" >>"${func_Param_FilePath}"
+    echo "  # [${func_Required_Key_Subcommands}] : flutter build sumcommand" >>"${func_Param_FilePath}"
+    echo "  # - flutter(v2) build support sumcommands : ${configConst_Flutter_Provide_Subcommands_String}" >>"${func_Param_FilePath}"
+    echo "  # - [exported.sh] provide sumcommands : ${configConst_Exported_Shell_Provide_Subcommands_String}" >>"${func_Param_FilePath}"
     echo "  ${func_Required_Key_Subcommands} :" >>"${func_Param_FilePath}"
 
     local func_i
