@@ -65,13 +65,6 @@ function process_Init() {
     # 設定成完整路徑。
     thisShell_Shell_WorkPath=$(pwd)
 
-    # # 設定 Provision Profile 目標位置，Xcode 使用 Provision Profile 資料夾 有其規則。
-    # #  - 路徑 (command line) : ~/Library/MobileDevice/Provisioning\ Profiles
-    # #  - 說明 :
-    # #    由於 shell 中使用 ~/xxx 不會自動轉換成使用者的資料夾，所以要自己兜使用者路徑。
-    # #    且因為是用直接用參數設定，所以不需要 Provisioning\ Profiles"
-    # configConst_Xcode_Using_ProvisionProfile_Folder="/Users/$USER/Library/MobileDevice/Provisioning Profiles"
-
     echo "${thisShell_Title_Log} thisShell_OldPath : ${thisShell_OldPath}"
     echo "${thisShell_Title_Log} thisShell_Shell_WorkPath : ${thisShell_Shell_WorkPath}"
     echo "${thisShell_Title_Log} configConst_Xcode_Using_ProvisionProfile_Folder : ${configConst_Xcode_Using_ProvisionProfile_Folder}"
