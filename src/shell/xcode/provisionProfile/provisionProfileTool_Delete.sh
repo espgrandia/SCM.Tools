@@ -30,10 +30,11 @@ function process_Init() {
     SECONDS=0
 
     # 此 shell 的 dump log title.
-    thisShell_Title_Log="[provisionProfileTool_Delete] -"
+    thisShell_Title_Name="provisionProfileTool_Delete"
+    thisShell_Title_Log="[${thisShell_Title_Name}] -"
 
     echo
-    echo "${thisShell_Title_Log} ||==========> provisionProfileTool_Delete : Begin <==========||"
+    echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : Begin <==========||"
 
     # 取得相對目錄.
     local func_Shell_WorkPath=$(dirname $0)
@@ -101,7 +102,7 @@ function process_Finish() {
     changeToDirectory "${thisShell_Title_Log}" "${thisShell_OldPath}"
 
     echo
-    echo "${thisShell_Title_Log} ||==========> provisionProfileTool_Delete : End <==========|| Elapsed time: ${SECONDS}s"
+    echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : End <==========|| Elapsed time: ${SECONDS}s"
 }
 ## ================================== prcess function section : End ==================================
 

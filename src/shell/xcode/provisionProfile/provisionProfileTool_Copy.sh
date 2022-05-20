@@ -7,7 +7,7 @@
 #
 # input 參數說明 :
 #
-# - $1 : thisShell_Param_ProvisionProfile_SourceFolder="[路徑]/[provision profile source folder]" : 要 copy 的 profision profile 的來源根目錄.
+# - $1 : thisShell_Param_ProvisionProfile_SourceFolder="[路徑]/[provision profile source folder]" : 要 copy 的 profision profile 的來源根目錄。
 #
 #   - 路徑可以帶相對路徑，也可以是完整路徑。
 #     - 相對路徑 : 是 [provision profile source folder] 相對於此 shell 的路徑，須以此 shell 角度來看相對路徑。
@@ -41,10 +41,11 @@ function process_Init() {
   SECONDS=0
 
   # 此 shell 的 dump log title.
-  thisShell_Title_Log="[provisionProfileTool_Copy] -"
+  thisShell_Title_Name="provisionProfileTool_Copy"
+  thisShell_Title_Log="[${thisShell_Title_Name}] -"
 
   echo
-  echo "${thisShell_Title_Log} ||==========> provisionProfileTool_Copy : Begin <==========||"
+  echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : Begin <==========||"
 
   # 取得相對目錄.
   local func_Shell_WorkPath=$(dirname $0)
@@ -84,6 +85,7 @@ function process_Init() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 處理 input param。
+# @param $1 : provision profile source folder : 要 copy 的 profision profile 的來源根目錄。
 function process_Deal_InputParam() {
 
   local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
@@ -157,7 +159,7 @@ function process_Finish() {
   changeToDirectory "${thisShell_Title_Log}" "${thisShell_OldPath}"
 
   echo
-  echo "${thisShell_Title_Log} ||==========> provisionProfileTool_Copy : End <==========|| Elapsed time: ${SECONDS}s"
+  echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : End <==========|| Elapsed time: ${SECONDS}s"
 }
 ## ================================== prcess function section : End ==================================
 
