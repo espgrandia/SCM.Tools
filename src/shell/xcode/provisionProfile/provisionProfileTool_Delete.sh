@@ -79,16 +79,15 @@ function process_Deal_Delete_ProvisionProfiles_From_DestFolder() {
 
     # 暫存此區塊的起始時間。
     local func_Temp_Seconds=${SECONDS}
-    local func_Subcommand=${thisShell_SubcommandInfo_web[0]}
 
     echo
-    echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+    echo "${func_Title_Log} ||==========> Begin <==========||"
 
     # cd ~/Library/MobileDevice/Provisioning\ Profiles
     cd "${configConst_Xcode_Using_ProvisionProfile_Folder}"
     rm *.mobileprovision
 
-    echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${func_Title_Log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
     echo
 
 }

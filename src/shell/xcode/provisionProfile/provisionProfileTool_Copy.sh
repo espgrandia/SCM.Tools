@@ -95,12 +95,10 @@ function process_Deal_InputParam() {
   checkInputParam "${thisShell_Title_Log}" thisShell_Param_ProvisionProfile_SourceFolder "${thisShell_Param_ProvisionProfile_SourceFolder}"
 
   echo
-  echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+  echo "${func_Title_Log} ||==========> Begin <==========||"
   echo "${func_Title_Log} thisShell_Param_ProvisionProfile_SourceFolder : ${thisShell_Param_ProvisionProfile_SourceFolder}"
-  echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========||"
+  echo "${func_Title_Log} ||==========> End <==========||"
   echo
-
-  # thisShell_ReportNoteFile="${thisShell_Param_ProvisionProfile_SourceFolder}.report.md"
 }
 
 # ============= This is separation line =============
@@ -111,16 +109,15 @@ function process_Guarantee_ProvisionProfile_DestFolder_Legal() {
 
   # 暫存此區塊的起始時間。
   local func_Temp_Seconds=${SECONDS}
-  local func_Subcommand=${thisShell_SubcommandInfo_web[0]}
 
   echo
-  echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+  echo "${func_Title_Log} ||==========> Begin <==========||"
 
   echo "${func_Title_Log} mkdir -p ${configConst_Xcode_Using_ProvisionProfile_Folder}"
 
   mkdir -p "${configConst_Xcode_Using_ProvisionProfile_Folder}"
 
-  echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+  echo "${func_Title_Log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
   echo
 }
 
@@ -132,12 +129,11 @@ function process_Deal_Copy_ProvisionProfile() {
 
   # 暫存此區塊的起始時間。
   local func_Temp_Seconds=${SECONDS}
-  local func_Subcommand=${thisShell_SubcommandInfo_web[0]}
 
   echo
-  echo "${func_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
+  echo "${func_Title_Log} ||==========> Begin <==========||"
 
-  # 搜尋 thisShell_Param_ProvisionProfile_SourceFolder 下的mobileprovision。
+  # 搜尋 thisShell_Param_ProvisionProfile_SourceFolder 下的 mobileprovision。
   local func_FilePaths=$(find "${thisShell_Param_ProvisionProfile_SourceFolder}" -name "*.mobileprovision")
 
   # 複製.mobileprovision檔案到 MobileDevice/Provisioning Profiles。
@@ -147,7 +143,7 @@ function process_Deal_Copy_ProvisionProfile() {
     cp $func_A_FilePath "${configConst_Xcode_Using_ProvisionProfile_Folder}"
   done
 
-  echo "${func_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+  echo "${func_Title_Log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
   echo
 
 }
