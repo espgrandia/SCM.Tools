@@ -341,14 +341,12 @@ function execute_Add_Cer_To_Keychain_From_ExtraCerInfoUnit() {
 
         local aFilePassword=${func_FilePassword_List[$i]}
 
-        local aFile=${aFilePassword}
+        # 要設定的 split 參數，先初始化。
+        local aFile=""
         local aPassword=""
 
-        # 有分隔符號，怎需要先分離在套用。
-        # TODO : splitStringToPair 優化後，可以再調整。
-        if [ -n "${func_FilePassword_Separator}" ] && [[ "${aFilePassword}" == *"${func_FilePassword_Separator}"* ]]; then
-            splitStringToPair "${thisShell_Title_Log}" "${aFilePassword}" "${func_FilePassword_Separator}" aFile aPassword
-        fi
+        # splitStringToPair 會自行判斷是否要進行 split，所以可以直接呼叫之。
+        splitStringToPair "${thisShell_Title_Log}" "${aFilePassword}" "${func_FilePassword_Separator}" aFile aPassword
 
         addCerToKeychain "${func_Title_Log}" "${thisShell_Config_required_keychain_name}" "${aFile}" "${aPassword}"
 
@@ -454,8 +452,7 @@ function process_Deal_ToggleFeature() {
     echo "${func_Title_Log} ||==========> Begin <==========||"
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    # thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile="${generalConst_Disable_Flag}"
-    thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile="${generalConst_Enable_Flag}"
+    thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile="${generalConst_Disable_Flag}"
 
     echo
     echo "${func_Title_Log} ============= Toogle Feature : Begin ============="
