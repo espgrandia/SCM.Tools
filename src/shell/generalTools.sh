@@ -408,13 +408,28 @@ function splitStringToPair() {
     echo "${func_Title_Log} second name : ${5}"
     echo "${func_Title_Log} Input param : End ***"
     echo
-    echo "${func_Title_Log} ${1} execute split ***"
 
-    eval ${4}="$(echo ${2} | cut -d${3} -f1)"
-    eval ${5}="$(echo ${2} | cut -d${3} -f2)"
+    local func_Param_SourceStringValue=${2}
+    local func_Param_Separator=${3}
 
-    echo "${func_Title_Log} ${1} 1st : $(eval echo \$${4}) ***"
-    echo "${func_Title_Log} ${1} 2nd : $(eval echo \$${5}) ***"
+    # 有分隔符號，並且 source string 有含分隔符號，才實際處理。
+    # 沒有判斷的話可能會出錯。
+    if [ -n "${func_Param_Separator}" ] && [[ "${func_Param_SourceStringValue}" == *"${func_Param_Separator}"* ]]; then
+
+        echo "${func_Title_Log} ${1} input param legal => execute split ***"
+
+        eval ${4}="$(echo ${func_Param_SourceStringValue} | cut -d${func_Param_Separator} -f1)"
+        eval ${5}="$(echo ${func_Param_SourceStringValue} | cut -d${func_Param_Separator} -f2)"
+
+    else
+        echo "${func_Title_Log} ${1} not found separator (${func_Param_Separator}) or source string (${func_Param_SourceStringValue}) not contains separator (${func_Param_Separator})。 ***"
+        echo "${func_Title_Log} ${1} 1st is assigned eaual to source string。 ***"
+
+        eval ${4}="${func_Param_SourceStringValue}"
+    fi
+
+    echo "${func_Title_Log} ${1} 1st (${4}) : $(eval echo \$${4}) ***"
+    echo "${func_Title_Log} ${1} 2nd (${5}) : $(eval echo \$${5}) ***"
     echo
     echo "${func_Title_Log} End ***"
     echo
