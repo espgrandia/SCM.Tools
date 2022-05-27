@@ -356,7 +356,7 @@ function check_Legal_VerifiedList_In_List__If__ResultFail_Then_ChangeFolder() {
     local func_Param_ChangeFolder="${4}"
 
     # 字串是否不為空。 (a non-empty string)
-    if 	[ "${#func_Param_CheckList[@]}" -gt "0" ]; then
+    if [ "${#func_Param_CheckList[@]}" -gt "0" ]; then
 
         local func_i
         for ((func_i = 0; func_i < ${#func_Param_CheckList[@]}; func_i++)); do #請注意 ((   )) 雙層括號
@@ -537,7 +537,7 @@ function append_DestString_From_SourceString_With_Separator() {
 #
 function check_OK_Then_Excute_Command() {
 
-  local func_ReVal=0
+    local func_ReVal=0
 
     echo "check_OK_Then_Excute_Command - generalConst_Enable_Flag : ${generalConst_Enable_Flag} ***"
 
@@ -611,8 +611,7 @@ function check_OK_Then_Excute_Command() {
 # @param ${5}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
 #
 # sample e.g. check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder [check_OK_Then_Excute_Command Param_1 ... Param_4] "${sample_ChangeFolder}"
-function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() 
-{
+function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -641,4 +640,3 @@ function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder()
     echo "${func_Title_Log} End ***"
     echo
 }
-
