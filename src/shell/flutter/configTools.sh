@@ -57,7 +57,7 @@ export configTools_Optional="optional"
 ## ================================== buildConfig Required section : Begin ==================================
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Required.
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 # @param ${1} : file path : 要輸出的檔案位置 (含檔名)
 # @param ${2} : flutter project work path : 指的是 flutter 專案目錄的路徑。
 # @param ${3} : output path : 指的是 輸出的資料夾路徑。
@@ -142,7 +142,7 @@ function configTools_Gen_Required() {
 ## ================================== buildConfig Optional section : Begin ==================================
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_ReportFilePath.
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #  - exported.sh 的 Report File Path 為 markdown 語法撰寫，附檔名請設定為 .md
 #  - 若 build config file 沒有設定 report file，則會以 build config file 加上後綴，"xxx.yaml.report.md"
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
@@ -183,7 +183,7 @@ function configTools_Gen_Optional_ReportFilePath() {
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_Enable_FVM_Mode.
 #
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 呼叫此函式則表示要開啟 FVM Mode，預設沒有開啟。
 #     > fvm flutter build ...
 #
@@ -228,7 +228,7 @@ function configTools_Gen_Optional_Enable_FVM_Mode() {
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_Prefix_File_Name.
 #
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 產出的檔案名稱，加上 前綴字 (prefix)。
 #
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
@@ -269,7 +269,7 @@ function configTools_Gen_Optional_Prefix_File_Name() {
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_Build_Name.
 #
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - flutter pubspec.yaml 中 version : [Build_Name]+[Build_Number]。
 #     一般對應於上面的 [Build_Name]，有設定則會當作產出的檔案名稱一環。
 #   - 預設 : 沒指定時，flutter build 會預設為下面的 [Build_Name]
@@ -317,7 +317,7 @@ function configTools_Gen_Optional_Build_Name() {
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_Build_Number.
 #
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - flutter pubspec.yaml 中 version : [Build_Name]+[Build_Number]。
 #     一般對應於上面的 [Build_Number]，有設定則會當作產出的檔案名稱一環。
 #   - 預設 : 沒指定時，flutter build 會預設為下面的 [Build_Number]
@@ -364,7 +364,7 @@ function configTools_Gen_Optional_Build_Number() {
 
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_BuildConfigType.
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param ${!2} : buildConfigTypes : 對應 flutter build config types : (debug profile release)
 # 依據 flutter build ， 有 debug ， profile ， release
@@ -413,7 +413,7 @@ function configTools_Gen_Optional_BuildConfigType() {
 
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_Dart_Define.
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : separator : 分隔符號，不判斷，單純設定，外面需決定好內容。=> e.g. "+"
 # @param $3 : defines : 兜好 [key][separator][value的內容]
@@ -468,7 +468,7 @@ function configTools_Gen_Optional_Dart_Define() {
 
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_Dart_Define.
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : flavor : flutter flavor 的設定內容 => e.g. "Runner"
 #
@@ -507,7 +507,7 @@ function configTools_Gen_Optional_Flavor() {
 
 # ============= This is separation line =============
 # @brief function : configTools_Gen_Optional_Target_Platform.
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : platforms : flutter --target-platform 的設定內容 => e.g. "android-arm,android-arm64"
 #

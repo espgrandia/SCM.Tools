@@ -161,9 +161,8 @@
 
 ## ================================== buildConfig function section : Begin ==================================
 # ============= This is separation line =============
-# @brief function : 處理並設定單一的 subcommand info，
-#        如 : version，subcommands
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @brief function : 處理並設定單一的 subcommand info .
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
 #
 # @param $1: 需要驗證的 subcommand，內容來自於 build config => e.g. "${aSubcommand}" or "aar" ...
@@ -198,9 +197,9 @@ function dealSumcommandInfo() {
 }
 
 # ============= This is separation line =============
-# @brief function : 剖析 required 部分，
-#        如 : version，subcommands
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @brief function : 剖析 required 部分 。
+#        如 : version，subcommands。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
 function parseReruiredSection() {
 
@@ -267,9 +266,8 @@ function parseReruiredSection() {
 }
 
 # ============= This is separation line =============
-# @brief function : 剖析 BuildConfigType 部分，
-#        如 : version，subcommands
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @brief function : 剖析 ReportPath 部分 。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
 #   - 只檢查是否為合法設定。
 function parseReportPathSection() {
@@ -282,9 +280,8 @@ function parseReportPathSection() {
 }
 
 # ============= This is separation line =============
-# @brief function : 剖析 BuildConfigType 部分，
-#        如 : version，subcommands
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @brief function : 剖析 BuildConfigType 部分 。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
 #   - 只檢查是否為合法設定。
 function parseBuildConfigTypeSection() {
@@ -307,8 +304,8 @@ function parseBuildConfigTypeSection() {
 }
 
 # ============= This is separation line =============
-# @brief function : 剖析 dart-define
-# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+# @brief function : 剖析 dart-define 。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
 function parseDartDefine() {
 
@@ -393,7 +390,7 @@ function export_NotyetSupportSubcommand() {
 ### ==================== NotyetSupportSubcommand : End ====================
 
 ### ==================== aar : Begin ====================
-# @brief exported aar 部分
+# @brief exported aar 部分 。
 function export_aar() {
 
     local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
@@ -413,8 +410,8 @@ function export_aar() {
 ### ==================== aar : End ====================
 
 ### ==================== apk : Begin ====================
-# @brief exported apk 部分
-# @param ${1}: buildConfigType :  有 debug ， profile ， release。
+# @brief exported apk 部分 。
+# @param ${1}: buildConfigType :  有 debug ， profile ， release 。
 function export_apk() {
 
     local func_Name=${FUNCNAME[0]}
@@ -574,8 +571,8 @@ function export_apk() {
 ### ==================== apk : End ====================
 
 ### ==================== appbundle : Begin ====================
-# @brief exported appbundle 部分
-# @param ${1}: buildConfigType :  有 debug ， profile ， release。
+# @brief exported appbundle 部分 。
+# @param ${1}: buildConfigType :  有 debug ， profile ， release 。
 function export_appbundle() {
 
     local func_Name=${FUNCNAME[0]}
@@ -750,8 +747,8 @@ function export_appbundle() {
 ### ==================== appbundle : End ====================
 
 ### ==================== bundle : Begin ====================
-# @brief exported bundle 部分
-# @param ${1}: buildConfigType :  有 debug ， profile ， release。
+# @brief exported bundle 部分 。
+# @param ${1}: buildConfigType :  有 debug ， profile ， release 。
 function export_bundle() {
 
     local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
@@ -771,8 +768,8 @@ function export_bundle() {
 ### ==================== bundle : End ====================
 
 ### ==================== ios : Begin ====================
-# @brief ios 部分
-# @param ${1}: buildConfigType :  有 debug ， profile ， release。
+# @brief ios 部分 。
+# @param ${1}: buildConfigType :  有 debug ， profile ， release 。
 function export_ios() {
 
     local func_Name=${FUNCNAME[0]}
@@ -947,7 +944,7 @@ function export_ios() {
 ### ==================== ios : End ====================
 
 ### ==================== ios_framework : Begin ====================
-# @brief exported ios_framework 部分
+# @brief exported ios_framework 部分 。
 function export_ios_framework() {
 
     local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
@@ -968,7 +965,8 @@ function export_ios_framework() {
 
 
 ### ==================== ipa : Begin ====================
-# @brief exported ipa 部分
+# @brief exported ipa 部分 。
+# @param ${1}: buildConfigType :  有 debug ， profile ， release 。
 function export_ipa() {
 
     local func_Name=${FUNCNAME[0]}
@@ -1141,7 +1139,7 @@ function export_ipa() {
 
 
 ### ==================== web : Begin ====================
-# @brief exported web 部分
+# @brief exported web 部分 。
 function export_web() {
 
     local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
@@ -1434,7 +1432,7 @@ function process_Execute_Build_Sumcommands() {
 }
 
 # ============= This is separation line =============
-# @brief function : [程序] shell 全部完成需處理的部份.
+# @brief function : [程序] shell 全部完成需處理的部份。
 function process_Finish() {
 
     # 全部完成
@@ -1486,7 +1484,7 @@ process_Create_ReportNote_Init
 process_Execute_Build_Sumcommands
 
 # ============= This is separation line =============
-# call - [程序] shell 全部完成需處理的部份.
+# call - [程序] shell 全部完成需處理的部份。
 process_Finish
 ## ================================== deal prcess step section : End ==================================
 
