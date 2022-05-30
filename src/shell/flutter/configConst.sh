@@ -18,7 +18,7 @@
 # @brief : 透過 flutter 通用的。
 
 # flutter 的 command name
-configConst_CommandName_Flutter="flutter"
+export configConst_CommandName_Flutter="flutter"
 
 ### ---------------------------------- flutter command section : End ----------------------------------
 
