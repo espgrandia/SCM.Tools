@@ -52,32 +52,65 @@ function dealFvmSetActiveToGlobal() {
 
     local func_Key_FlutterSdkVersion="flutterSdkVersion"
 
-    # 取得 jsonfile : key 為 [flutterSdkVersion] 的內容。
-    local func_FlutterSdkVersion=$(python ${func_Param_Parse_JsonFile_BY_Python} ${func_Param_Fvm_Config_File} ${func_Key_FlutterSdkVersion})
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ parse json file => fail ~ !!!" "${2}"
+    # 設定支援的 python command name。
+    local func_PythonList=(python python3 python2)
 
-    echo "${func_Title_Log} ${func_Key_FlutterSdkVersion} value : ${func_FlutterSdkVersion}"
+    local func_Execute_Python=""
 
-    echo "${func_Title_Log} ${1} ============= parse json file - End ============="
+    echo "${func_Title_Log} ${1} func_PythonList : ${func_PythonList[@]}"
 
-    echo
-    echo "${func_Title_Log} ${1} ============= fvm - Begin ============="
-    echo "${func_Title_Log} ${1} fvm list [before fvm global ${func_FlutterSdkVersion}]"
-    fvm list
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
+    # Check 是否有找到可使用的 python。
+    local func_i
+    for ((func_i = 0; func_i < ${#func_PythonList[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-    echo
-    echo "${func_Title_Log} ${1} fvm global ${func_FlutterSdkVersion}"
-    fvm global ${func_FlutterSdkVersion}
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm global ${func_FlutterSdkVersion} => fail ~ !!!" "${2}"
+        local aPythonName=${func_PythonList[${func_i}]}
 
-    echo
-    echo "${func_Title_Log} ${1} fvm list [after fvm global ${func_FlutterSdkVersion}]"
-    fvm list
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
+        echo "${func_Title_Log} which ${aPythonName}"
+        which which ${aPythonName}
 
-    echo "${func_Title_Log} ${1} ============= fvm - End ============="
-    echo
+        if [ $? -eq 0 ]; then
+            echo "${func_Title_Log} assign func_Execute_Python to ${aPythonName}"
+            func_Execute_Python=${aPythonName}
+            break
+        fi
+
+    done
+
+    # 若有 python
+    if [ -n "${func_Execute_Python}" ]; then
+
+        # 取得 jsonfile : key 為 [flutterSdkVersion] 的內容。
+        local func_FlutterSdkVersion=$(${func_Execute_Python} ${func_Param_Parse_JsonFile_BY_Python} ${func_Param_Fvm_Config_File} ${func_Key_FlutterSdkVersion})
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ parse json file => fail ~ !!!" "${2}"
+
+        echo "${func_Title_Log} ${func_Key_FlutterSdkVersion} value : ${func_FlutterSdkVersion}"
+
+        echo "${func_Title_Log} ${1} ============= parse json file - End ============="
+
+        echo
+        echo "${func_Title_Log} ${1} ============= fvm - Begin ============="
+        echo "${func_Title_Log} ${1} fvm list [before fvm global ${func_FlutterSdkVersion}]"
+        fvm list
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
+
+        echo
+        echo "${func_Title_Log} ${1} fvm global ${func_FlutterSdkVersion}"
+        fvm global ${func_FlutterSdkVersion}
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm global ${func_FlutterSdkVersion} => fail ~ !!!" "${2}"
+
+        echo
+        echo "${func_Title_Log} ${1} fvm list [after fvm global ${func_FlutterSdkVersion}]"
+        fvm list
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
+
+        echo "${func_Title_Log} ${1} ============= fvm - End ============="
+        echo
+
+    else
+
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "404" "!!! Not found python list ($(echo ${func_PythonList[@]})) in os. => fail ~ !!!" "${2}"
+
+    fi
 
     echo "${func_Title_Log} End ***"
     echo
