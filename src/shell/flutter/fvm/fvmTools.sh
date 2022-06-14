@@ -11,7 +11,7 @@
 #
 # 注意事項:
 # - 使用此通用函式，有相依於 scm.tools/src/shell/generalTools.sh
-#   - 其中有使用到 checkResultFail_And_ChangeFolder
+#   - 其中有使用到 [checkResultFail_And_ChangeFolder]，[get_First_Found_Command_From_InputCommandist_By_Using_Which_Command]，etc ...。
 #   - 需自行 include generalConst.sh
 #   - 需自行 include generalTools.sh
 #
@@ -33,7 +33,7 @@
 #
 function dealFvmSetActiveToGlobal() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] - ${1}"
 
     echo
     echo "${func_Title_Log} Begin ***"
@@ -44,73 +44,56 @@ function dealFvmSetActiveToGlobal() {
     echo "${func_Title_Log} parse json file by python: ${4}"
     echo "${func_Title_Log} Input param : End ***"
 
+    local func_Param_TitleLog="${1}"
+    local func_Param_ChangeFolder="${2}"
     local func_Param_Fvm_Config_File="${3}"
     local func_Param_Parse_JsonFile_BY_Python="${4}"
 
     echo
-    echo "${func_Title_Log} ${1} ============= parse json file - Begin ============="
+    echo "${func_Title_Log} ============= parse json file - Begin ============="
 
     local func_Key_FlutterSdkVersion="flutterSdkVersion"
 
-    # 設定支援的 python command name。
+    # [get python command name] : 設定支援的 python command name。
     local func_PythonList=(python python3 python2)
-
     local func_Execute_Python=""
 
-    echo "${func_Title_Log} ${1} func_PythonList : ${func_PythonList[@]}"
+    echo "${func_Title_Log} func_PythonList : ${func_PythonList[@]}"
 
-    # Check 是否有找到可使用的 python。
-    local func_i
-    for ((func_i = 0; func_i < ${#func_PythonList[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+    # [get python command name] : 使用 scm.tools 工具。
+    get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If__ResultFail_Then_ChangeFolder \
+        "${func_Param_TitleLog}" func_PythonList[@] func_Execute_Python "${func_Param_ChangeFolder}"
 
-        local aPythonName=${func_PythonList[${func_i}]}
+    # [get python command name] : 可以到這，表示有找到合法的 python ， func_Execute_Python 一定有內容。
+    echo "${func_Title_Log} func_Execute_Python : ${func_Execute_Python}"
 
-        echo "${func_Title_Log} which ${aPythonName}"
-        which which ${aPythonName}
+    # [取得 jsonfile] : key 為 [flutterSdkVersion] 的內容。
+    echo "${func_Title_Log} will execute python command : ${func_Execute_Python} ${func_Param_Parse_JsonFile_BY_Python} ${func_Param_Fvm_Config_File} ${func_Key_FlutterSdkVersion}"
+    local func_FlutterSdkVersion=$(${func_Execute_Python} ${func_Param_Parse_JsonFile_BY_Python} ${func_Param_Fvm_Config_File} ${func_Key_FlutterSdkVersion})
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ parse json file => fail ~ !!!" "${2}"
 
-        if [ $? -eq 0 ]; then
-            echo "${func_Title_Log} assign func_Execute_Python to ${aPythonName}"
-            func_Execute_Python=${aPythonName}
-            break
-        fi
+    echo "${func_Title_Log} ${func_Key_FlutterSdkVersion} value : ${func_FlutterSdkVersion}"
 
-    done
+    echo "${func_Title_Log} ============= parse json file - End ============="
 
-    # 若有 python
-    if [ -n "${func_Execute_Python}" ]; then
+    echo
+    echo "${func_Title_Log} ============= fvm - Begin ============="
+    echo "${func_Title_Log} fvm list [before fvm global ${func_FlutterSdkVersion}]"
+    fvm list
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
 
-        # 取得 jsonfile : key 為 [flutterSdkVersion] 的內容。
-        local func_FlutterSdkVersion=$(${func_Execute_Python} ${func_Param_Parse_JsonFile_BY_Python} ${func_Param_Fvm_Config_File} ${func_Key_FlutterSdkVersion})
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ parse json file => fail ~ !!!" "${2}"
+    echo
+    echo "${func_Title_Log} fvm global ${func_FlutterSdkVersion}"
+    fvm global "${func_FlutterSdkVersion}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm global ${func_FlutterSdkVersion} => fail ~ !!!" "${2}"
 
-        echo "${func_Title_Log} ${func_Key_FlutterSdkVersion} value : ${func_FlutterSdkVersion}"
+    echo
+    echo "${func_Title_Log} fvm list [after fvm global ${func_FlutterSdkVersion}]"
+    fvm list
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
 
-        echo "${func_Title_Log} ${1} ============= parse json file - End ============="
-
-        echo
-        echo "${func_Title_Log} ${1} ============= fvm - Begin ============="
-        echo "${func_Title_Log} ${1} fvm list [before fvm global ${func_FlutterSdkVersion}]"
-        fvm list
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
-
-        echo
-        echo "${func_Title_Log} ${1} fvm global ${func_FlutterSdkVersion}"
-        fvm global ${func_FlutterSdkVersion}
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm global ${func_FlutterSdkVersion} => fail ~ !!!" "${2}"
-
-        echo
-        echo "${func_Title_Log} ${1} fvm list [after fvm global ${func_FlutterSdkVersion}]"
-        fvm list
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
-
-        echo "${func_Title_Log} ${1} ============= fvm - End ============="
-        echo
-
-    else
-
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "404" "!!! Not found python list ($(echo ${func_PythonList[@]})) in os. => fail ~ !!!" "${2}"
-
-    fi
+    echo "${func_Title_Log} ============= fvm - End ============="
+    echo
 
     echo "${func_Title_Log} End ***"
     echo
