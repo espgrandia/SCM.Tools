@@ -29,6 +29,8 @@
 #   - website : https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 #
 
+## ================================== Git section : Begin ==================================
+##
 # ============= This is separation line =============
 # @brief function : 取得 git short hash .
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
@@ -61,7 +63,11 @@ function getGitShortHash() {
     echo "${func_Title_Log} End ***"
     echo
 }
+##
+## ================================== Git section : End ==================================
 
+## ================================== Folder section : Begin ==================================
+##
 # ============= This is separation line =============
 # @brief function : 刪除並重新建立資料夾.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
@@ -128,7 +134,11 @@ function changeToDirectory() {
     echo "${func_Title_Log} End ***"
     echo
 }
+##
+## ================================== Folder section : End ==================================
 
+## ================================== Check section : Begin ==================================
+##
 # ============= This is separation line =============
 # @brief function : check input param is illegal.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
@@ -379,7 +389,11 @@ function check_Legal_VerifiedList_In_List__If__ResultFail_Then_ChangeFolder() {
     echo "${func_Title_Log} End ***"
     echo
 }
+##
+## ================================== Check section : End ==================================
 
+## ================================== String section : Begin ==================================
+##
 # ============= This is separation line =============
 # @brief function : split string to a pair .
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
@@ -494,7 +508,11 @@ function append_DestString_From_SourceString_With_Separator() {
     echo "${func_Title_Log} End ***"
     echo
 }
+##
+## ================================== String section : End ==================================
 
+## ================================== Command section : Begin ==================================
+##
 # ============= This is separation line =============
 # @brief function : 確認成功，則執行 command.
 # @details : 要執行 command 前會判斷是否要帶入其對應參數 (commandParams)
@@ -640,3 +658,121 @@ function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
     echo "${func_Title_Log} End ***"
     echo
 }
+
+# ============= This is separation line =============
+# @brief function : 藉由 which 來收尋 source command list，取得第一個找到的 command。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 只檢查是否為合法設定，
+#   - 透過 which 命令，依序 找尋 source command list。
+#     - 有找到合法的 command， 則設定 found first command， 並回傳 0。
+#     - command list 都找不到，則回傳 99。
+#   - 呼叫完此函式，可使用 "$?" 來取得回傳值。
+#
+# @param ${1} : 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${!2} : source command list : 要驗證的 command list。 e.g. sample_CommandList[@]
+# @param ${3} : found first command : 第一個收尋到的 commmand。 e.g. sample_Found_First_Command .
+#
+# sample e.g. get_First_Found_Command_From_InputCommandist_By_Using_Which_Command "${sample_Title_Log}" sample_CommandList[@] sample_Found_First_Command
+#
+# @retrun 0: 成功， 99: 失敗 (Not Found Command)。
+function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command() {
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} TitleLog: ${1}"
+    echo "${func_Title_Log} source command list: (${!2})"
+    echo "${func_Title_Log} found first command: ${3}"
+    echo "${func_Title_Log} Input param : End ***"
+
+    local func_Param_TitleLog="${1}"
+    local func_Param_CommandList=("${!2}")
+    local func_Param_Found_First_Command="${3}"
+
+    checkInputParam "${func_Title_Log}" func_Param_TitleLog "${func_Param_TitleLog}"
+    checkInputParam "${func_Title_Log}" func_Param_CommandList "${func_Param_CommandList[@]}"
+    checkInputParam "${func_Title_Log}" func_Param_Found_First_Command "${func_Param_Found_First_Command}"
+
+    # func_ReVal 的初始設定。
+    local func_ReVal=99
+
+    # Check 是否有找到可使用的 python。
+    local func_i
+    for ((func_i = 0; func_i < ${#func_Param_CommandList[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+
+        local aCommand=${func_Param_CommandList[${func_i}]}
+
+        echo "${func_Title_Log} which ${aCommand}"
+        which which ${aCommand}
+
+        if [ $? -eq 0 ]; then
+            echo "${func_Title_Log} assign ${func_Param_Found_First_Command} to ${aCommand}"
+            func_ReVal=0
+            eval ${3}="${aCommand}"
+            break
+        fi
+
+    done
+
+    echo "${func_Title_Log} ${1} found first command => (${func_Param_Found_First_Command}) : $(eval echo \$${func_Param_Found_First_Command}) ***"
+
+    echo "${func_Title_Log} ${1} func_ReVal : ${func_ReVal} ***"
+
+    echo "${func_Title_Log} End ***"
+    echo
+
+    return "${func_ReVal}"
+}
+
+# ============= This is separation line =============
+# @brief function : 轉呼叫 [get_First_Found_Command_From_InputCommandist_By_Using_Which_Command]，沒找到會切換路徑並中斷程式。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 會呼叫 [get_First_Found_Command_From_InputCommandist_By_Using_Which_Command] 來驗證 ， input command list 透過 which 命令是否有找到其中一個 command。
+#   - 若 找不到 合法的 command:
+#     - dump 錯誤訊息。 (以及 error code : 99 失敗)。
+#     - 則切換指定的資料夾路徑。
+#     - 離開中斷 shell。
+#
+# === copy from [get_First_Found_Command_From_InputCommandist_By_Using_Which_Command] - Begin
+# @param ${1} : 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${!2} : source command list : 要驗證的 command list。 e.g. sample_CommandList[@]
+# @param ${3} : found first command : 第一個收尋到的 commmand。 e.g. sample_Found_First_Command .
+# === copy from [get_First_Found_Command_From_InputCommandist_By_Using_Which_Command] - End
+#
+# @param ${4}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
+#
+# sample e.g. get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If__ResultFail_Then_ChangeFolder "${sample_Title_Log}" sample_CommandList[@] sample_Found_First_Command "${sample_ChangeFolder}"
+#
+# @retrun 0: 成功， 404: 失敗 (Not Found Command)。
+function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If__ResultFail_Then_ChangeFolder() {
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} TitleLog: ${1}"
+    echo "${func_Title_Log} source command list: (${!2})"
+    echo "${func_Title_Log} found first command: ${3}"
+    echo "${func_Title_Log} change folder: ${4}"
+    echo "${func_Title_Log} Input param : End ***"
+
+    local func_Param_TitleLog="${1}"
+    local func_Param_CommandList=("${!2}")
+    local func_Param_Found_First_Command="${3}"
+    local func_Param_ChangeFolder="${4}"
+
+    get_First_Found_Command_From_InputCommandist_By_Using_Which_Command \
+        "${func_Param_TitleLog}" func_Param_CommandList[@] "${func_Param_Found_First_Command}"
+
+    # 呼叫驗證，帶入回傳值，不合法則中斷程序。
+    checkResultFail_And_ChangeFolder "${func_Title_Log} ${func_Param_TitleLog}" "$?" \
+        "\r\n!!! ~ OPPS!! Input Command List : (${func_Param_CommandList[*]}) not found by using \`which\` command. => fail ~ !!!" "${func_Param_ChangeFolder}"
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+##
+## ================================== Command section : End ==================================
