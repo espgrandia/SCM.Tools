@@ -24,10 +24,13 @@
 #
 
 ## ================================== Public Function Section : Begin ==================================
+#
 # ============= This is separation line =============
 # @brief function : flutterExtensionTools_Generator_VersionMachine_File。
 # @details : 要產生的 flutter version machin 資訊的檔案。
 #  - 需注意，該檔案內容會直接覆蓋，資料夾路徑須先準備好，這裡不做資料夾路徑檢查。
+#  - 若 local 沒有該版本，在 console dump version 版本時，會需要手動按下允許。
+#    此時若不允許，則產生的檔案會有問題，請自行排除之。
 # @param ${1} : 要輸出的 title log : e.g. "${sample_Title_Log}"
 # @param ${2} : is enable fvm mode : "Y" 或 "N" : e.g. $"{sample_Is_Enable_FVM_Mode}"
 # @param ${3} : 要產生的檔案， generator file path: 檔名含路徑 e.g. "${sample_Generator_FlutterVersionMachin_File}"
@@ -73,10 +76,15 @@ function flutterExtensionTools_Generator_VersionMachine_File() {
         func_Execute_Command_Content="${func_Execute_Command_SubCommand_Content}"
 	fi
 
-    # execute command
-    echo "${func_Title_Log} ${1} ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_Generator_File}"
-    ${func_Execute_Command_Name} ${func_Execute_Command_Content}>>"${func_Param_Generator_File}"
+    # [execute command] : 於 terminal 先呼叫一次，有可能 local 第一次下載此版本，此時需要手動操作，使用者需按下允許更新。
+    echo "${func_Title_Log} ${1} Execute Command => [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} ] <="
+    ${func_Execute_Command_Name} ${func_Execute_Command_Content}
     checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Execute_Command_Name} ${func_Execute_Command_Content} => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+
+    # [execute command] : 再次呼叫 command，此次會寫到檔案。
+    echo "${func_Title_Log} ${1} Execute Command => [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_Generator_File} ] <="
+    ${func_Execute_Command_Name} ${func_Execute_Command_Content}>>"${func_Param_Generator_File}"
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_Generator_File} ] => fail ~ !!!" "${func_Param_ChangeFolderPath}"
     
     echo ";" >> "${func_Param_Generator_File}"
 
@@ -87,6 +95,7 @@ function flutterExtensionTools_Generator_VersionMachine_File() {
     echo "${func_Title_Log} End ***"
     echo
 }
+#
 ## ================================== Public Function Section : End ==================================
 
 
