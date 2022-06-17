@@ -26,6 +26,82 @@
 ## ================================== Public Function Section : Begin ==================================
 #
 # ============= This is separation line =============
+# @brief function : [flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder]
+#   - 說明 : 處理 fvm mode 資訊，會調整後續呼叫的 command name， 以及 command params，
+#           再轉呼叫 [Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder] 來執行命令。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+#   - 主要參數及使用方式，請參考 [check_OK_Then_Excute_Command] 說明。
+#
+# @Params :
+# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${2}: is enable fvm mode : "Y" 或 "N" : e.g. "${sample_Is_Enable_FVM_Mode}"
+# @Param ${3}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. "${sample_IsExcute}"
+# @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
+# @param ${5}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
+#
+# sample e.g. flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder \
+#  "${sample_Title_Log}" "${sample_Is_Enable_FVM_Mode}" "${sample_IsExcute}" sample_CommandParams[@] "${sample_ChangeFolder}"
+function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+    echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} TitleLog: ${1}"
+    echo "${func_Title_Log} is enable fvm mode : ${2}"
+    echo "${func_Title_Log} isExcute : ${3}"
+    echo "${func_Title_Log} command params : ${!4}"
+    echo "${func_Title_Log} change folder : ${5}"
+    echo "${func_Title_Log} Input param : End ***"
+
+    local func_Param_TitleLog="${1}"
+    local func_Param_Is_Enable_FVM_Mode="${2}"
+    local func_Param_IsExcute="${3}"
+    local func_Param_CoommandParams=("${!4}")
+    local func_Param_ChangeFolder="${5}"
+
+    # ===> flutter command <===
+    # command 初始設定
+    local func_CommandName=""
+    local func_CommandParams=()
+
+    # 判斷 func_Param_Is_Enable_FVM_Mode
+    if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
+
+        func_CommandName="${configConst_CommandName_Fvm}"
+        func_CommandParams+=("${configConst_CommandName_Flutter}")
+
+    else
+
+        func_CommandName="${configConst_CommandName_Flutter}"
+
+    fi
+
+    # 處理 execute params。
+    local func_i
+    for ((func_i = 0; func_i < ${#func_Param_CoommandParams[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+
+        local aCommand=${func_Param_CoommandParams[${func_i}]}
+
+        echo "${func_Title_Log} aCommand : ${aCommand}"
+        func_CommandParams+=("${aCommand}")
+
+    done
+
+    echo "${func_Title_Log} func_CommandParams : ${func_CommandParams[@]}"
+    echo "${func_Title_Log} func_CommandParams count : ${#func_CommandParams[@]}"
+
+    # execute command
+    # 呼叫通用函式來處理是否要執行該 command 以及錯誤的後續處理。
+    check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder "${func_Title_Log}" "${func_Param_IsExcute}" \
+        "${func_CommandName}" func_CommandParams[@] "${func_Param_ChangeFolder}"
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+
+# ============= This is separation line =============
 # @brief function : flutterExtensionTools_Generator_VersionMachine_File。
 # @details : 要產生的 flutter version machin 資訊的檔案。
 #  - 需注意，該檔案內容會直接覆蓋，資料夾路徑須先準備好，這裡不做資料夾路徑檢查。
