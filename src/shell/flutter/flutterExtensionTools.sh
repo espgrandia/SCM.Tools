@@ -43,11 +43,12 @@
 #  "${sample_Title_Log}" "${sample_Is_Enable_FVM_Mode}" "${sample_IsExcute}" sample_CommandParams[@] "${sample_ChangeFolder}"
 function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_Title_Log="*** function [${FUNCNAME[0]}] - ${1}"
 
     echo
     echo "${func_Title_Log} Begin ***"
     echo "${func_Title_Log} Input param : Begin ***"
+    echo "${func_Title_Log} test show param index 0 : ${0}"
     echo "${func_Title_Log} TitleLog: ${1}"
     echo "${func_Title_Log} is enable fvm mode : ${2}"
     echo "${func_Title_Log} isExcute : ${3}"
@@ -79,18 +80,15 @@ function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then
     fi
 
     # 處理 execute params。
-    local func_i
-    for ((func_i = 0; func_i < ${#func_Param_CoommandParams[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+    func_CommandParams+=("${func_Param_CoommandParams[@]}")
 
-        local aCommand=${func_Param_CoommandParams[${func_i}]}
-
-        echo "${func_Title_Log} aCommand : ${aCommand}"
-        func_CommandParams+=("${aCommand}")
-
-    done
-
+    echo
+    echo "${func_Title_Log} command info : Begin ***"
+    echo "${func_Title_Log} func_CommandName : ${func_CommandName}"
     echo "${func_Title_Log} func_CommandParams : ${func_CommandParams[@]}"
     echo "${func_Title_Log} func_CommandParams count : ${#func_CommandParams[@]}"
+    echo "${func_Title_Log} command info : End ***"
+    echo
 
     # execute command
     # 呼叫通用函式來處理是否要執行該 command 以及錯誤的後續處理。
