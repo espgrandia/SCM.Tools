@@ -514,12 +514,12 @@ function append_DestString_From_SourceString_With_Separator() {
 ## ================================== Command section : Begin ==================================
 ##
 # ============= This is separation line =============
-# @brief function : 確認成功，則執行 command.
+# @brief function : [check_OK_Then_Excute_Command] 確認成功，則執行 command.
 # @details : 要執行 command 前會判斷是否要帶入其對應參數 (commandParams)
 #
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. ${sample_IsExcute}
-# @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. sample_Command
+# @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. "${sample_IsExcute}"
+# @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. "${sample_CommandName}"，"open"，"flutter"，...。
 # @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
 #   - 為 option，有才會帶入到 command 後面。
 #   - array : 第 0 個為 command line，
@@ -621,14 +621,15 @@ function check_OK_Then_Excute_Command() {
 # @Params :
 # === copy from [check_OK_Then_Excute_Command] - Begin
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. ${sample_IsExcute}
-# @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. sample_Command
+# @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. "${sample_IsExcute}"
+# @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. "${sample_CommandName}"，"open"，"flutter"，...。
 # @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
 # === copy from [check_OK_Then_Excute_Command] - End
 #
 # @param ${5}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
 #
-# sample e.g. check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder [check_OK_Then_Excute_Command Param_1 ... Param_4] "${sample_ChangeFolder}"
+# sample e.g. check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder \
+#  "${sample_Title_Log}"  "${sample_IsExcute}" "${sample_CommandName}" sample_CommandParams[@] "${sample_ChangeFolder}"
 function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
