@@ -55,8 +55,8 @@ function flutterExtensionTools_Generator_VersionMachine_File() {
     echo
     echo "${func_Title_Log} ${1} ============= Generator Flutter Version Machine To File - Begin ============="
 
-    echo "">"${func_Param_Generator_File}"
-    echo "const Map<String, String> flutterVersionMachine = const <String, String>" >> "${func_Param_Generator_File}"
+    echo "" >"${func_Param_Generator_File}"
+    echo "const Map<String, String> flutterVersionMachine = const <String, String>" >>"${func_Param_Generator_File}"
 
     # ===> flutter command <===
     # command 初始設定
@@ -64,17 +64,17 @@ function flutterExtensionTools_Generator_VersionMachine_File() {
     local func_Execute_Command_Content
     local func_Execute_Command_SubCommand_Content="--version --machine"
 
-	# 判斷 func_Param_Is_Enable_FVM_Mode
-	if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
+    # 判斷 func_Param_Is_Enable_FVM_Mode
+    if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
 
-		func_Execute_Command_Name="${configConst_CommandName_Fvm}"
+        func_Execute_Command_Name="${configConst_CommandName_Fvm}"
         func_Execute_Command_Content="${configConst_CommandName_Flutter} ${func_Execute_Command_SubCommand_Content}"
 
-	else
+    else
 
-		func_Execute_Command_Name="${configConst_CommandName_Flutter}"
+        func_Execute_Command_Name="${configConst_CommandName_Flutter}"
         func_Execute_Command_Content="${func_Execute_Command_SubCommand_Content}"
-	fi
+    fi
 
     # [execute command] : 於 terminal 先呼叫一次，有可能 local 第一次下載此版本，此時需要手動操作，使用者需按下允許更新。
     echo "${func_Title_Log} ${1} Execute Command => [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} ] <="
@@ -83,11 +83,10 @@ function flutterExtensionTools_Generator_VersionMachine_File() {
 
     # [execute command] : 再次呼叫 command，此次會寫到檔案。
     echo "${func_Title_Log} ${1} Execute Command => [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_Generator_File} ] <="
-    ${func_Execute_Command_Name} ${func_Execute_Command_Content}>>"${func_Param_Generator_File}"
+    ${func_Execute_Command_Name} ${func_Execute_Command_Content} >>"${func_Param_Generator_File}"
     checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_Generator_File} ] => fail ~ !!!" "${func_Param_ChangeFolderPath}"
-    
-    echo ";" >> "${func_Param_Generator_File}"
 
+    echo ";" >>"${func_Param_Generator_File}"
 
     echo "${func_Title_Log} ${1} ============= Generator Flutter Version Machine To File - End ============="
     echo
@@ -98,7 +97,8 @@ function flutterExtensionTools_Generator_VersionMachine_File() {
 #
 ## ================================== Public Function Section : End ==================================
 
-
 ## ================================== Private Function Section : Begin ==================================
+#
 # TBD，暫時保留區。
+#
 ## ================================== Private Function Section : End ==================================
