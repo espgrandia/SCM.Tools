@@ -18,7 +18,7 @@
 #
 # 注意事項:
 # - 使用此通用函式，有相依於 scm.tools/src/shell/generalConst.sh
-#   - 其中有使用到 checkResultFail_And_ChangeFolder
+#   - 其中有使用到 generalConst_Enable_Flag
 #   - 需自行 include generalConst.sh
 #   - 再 include generalTools.sh
 #
