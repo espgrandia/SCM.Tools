@@ -12,7 +12,7 @@
 #
 # 注意事項:
 # - 使用此通用函式，有相依 include 檔案於
-#   - scm.tools/src/shell/generalConst.sh
+#   - scm.tools/src/shell/generalTools.sh
 #     > func => checkResultFail_And_ChangeFolder ...
 #   - configConst.sh
 #     > export 參數 => configConst_CommandName_Fvm ...
@@ -77,7 +77,7 @@ function releastNoteTools_Gen_Init() {
     echo >>"${func_Param_ReleaseNote_File}"
     echo "- Is Enable FVM Mode : ${func_Param_Is_Enable_FVM_Mode}" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
-    echo "  > 只有為 ${generalConst_Enable_Flag} 才會使用 ${configConst_CommandName_Fvm} 功能呼叫 ${configConst_CommandName_Flutter} 。">>"${func_Param_ReleaseNote_File}"
+    echo "  > 只有為 ${generalConst_Enable_Flag} 才會使用 ${configConst_CommandName_Fvm} 功能呼叫 ${configConst_CommandName_Flutter} 。" >>"${func_Param_ReleaseNote_File}"
 
     # ===> flutter pub get <===
     # 執行 flutter pub get 會以 pubspec.lock 為主要優先插件版本的參考檔案
@@ -160,7 +160,6 @@ function releastNoteTools_Gen_Final() {
 }
 ## ================================== Public Function Section : End ==================================
 
-
 ## ================================== Private Function Section : Begin ==================================
 # ============= This is separation line =============
 # @brief function (private) : _releastNoteTools_Gen_Init_Excecute_Command_Section.
@@ -170,7 +169,7 @@ function releastNoteTools_Gen_Final() {
 # @param ${3} : Execute SubCommand Content : 部分的子 command content。 e.g. "${sample_Execute_SubCommand_Content}"， "pub get" ...
 # @param ${4} : 若失敗要切換的路徑，change folder path : e.g. "${sample_OldPath}"
 # @param ${5} : [optional] release note file path: 檔名含路徑。
-#  - 若有值，則表示要將內容， dump log 到 release note file 中。 e.g. "${sample_ReleaseNote_File}" 
+#  - 若有值，則表示要將內容， dump log 到 release note file 中。 e.g. "${sample_ReleaseNote_File}"
 #  - 沒有值，則直接用 console 執行。
 function _releastNoteTools_Gen_Init_Excecute_Command_Section() {
 
@@ -196,17 +195,17 @@ function _releastNoteTools_Gen_Init_Excecute_Command_Section() {
     local func_Execute_Command_Name
     local func_Execute_Command_Content
 
-	# 判斷 func_Param_Is_Enable_FVM_Mode
-	if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
+    # 判斷 func_Param_Is_Enable_FVM_Mode
+    if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
 
-		func_Execute_Command_Name="${configConst_CommandName_Fvm}"
+        func_Execute_Command_Name="${configConst_CommandName_Fvm}"
         func_Execute_Command_Content="${configConst_CommandName_Flutter} ${func_Param_Execute_SubCommand_Content}"
 
-	else
+    else
 
-		func_Execute_Command_Name="${configConst_CommandName_Flutter}"
+        func_Execute_Command_Name="${configConst_CommandName_Flutter}"
         func_Execute_Command_Content="${func_Param_Execute_SubCommand_Content}"
-	fi
+    fi
 
     echo "${func_Title_Log} ${1} ============= ${func_Execute_Command_Name} ${func_Execute_Command_Content} - Begin ============="
 
@@ -222,7 +221,7 @@ function _releastNoteTools_Gen_Init_Excecute_Command_Section() {
 
         # execute command
         echo "${func_Title_Log} ${1} ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_ReleaseNote_File}"
-        ${func_Execute_Command_Name} ${func_Execute_Command_Content}>>"${func_Param_ReleaseNote_File}"
+        ${func_Execute_Command_Name} ${func_Execute_Command_Content} >>"${func_Param_ReleaseNote_File}"
 
     else
 
