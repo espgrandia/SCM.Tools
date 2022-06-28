@@ -770,7 +770,7 @@ function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If
 
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
     checkResultFail_And_ChangeFolder "${func_Title_Log} ${func_Param_TitleLog}" "$?" \
-        "\r\n!!! ~ OPPS!! Input Command List : (${func_Param_CommandList[*]}) not found by using \`which\` command. => fail ~ !!!" "${func_Param_ChangeFolder}"
+        "\r\n!!! ~ OPPS!! \r\nInput Command List : (${func_Param_CommandList[*]}) \r\nNot found by using \`which\` command. => fail ~ !!!" "${func_Param_ChangeFolder}"
 
     echo "${func_Title_Log} End ***"
     echo
