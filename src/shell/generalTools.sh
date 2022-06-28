@@ -654,7 +654,7 @@ function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
 
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
     checkResultFail_And_ChangeFolder "${func_Param_TitleLog}" "$?" \
-        "\r\n!!! ~ OPPS!! Execute Command Fail. \r\n- Command Name : ${func_Param_CoommandName}\r\n- Command Params: $(echo ${func_Param_CoommandParams[@]}) \r\n => fail ~ !!!" "${func_Param_ChangeFolder}"
+        "\r\n!!! ~ OPPS!! Execute Command Fail. \r\n- Command Name : ${func_Param_CoommandName}\r\n- Command Params: (${func_Param_CoommandParams[*]}) \r\n => fail ~ !!!" "${func_Param_ChangeFolder}"
 
     echo "${func_Title_Log} End ***"
     echo
