@@ -50,14 +50,17 @@ function getGitShortHash() {
     echo "${func_Title_Log} input param name for setting git hash : ${2}"
     echo "${func_Title_Log} Input param : End ***"
 
+    # 應用於函式中主體的 title log。
+    local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+
     # Git Hash version
     # 使用 git show 的方式取得 shor commit ID (為 7 位數)。
     eval ${2}=$(git show -s --format=%h)
 
     echo
-    echo "${func_Title_Log} ${1} ============= git hash - Begin ============="
-    echo "${func_Title_Log} ${1} ${2} : $(eval echo \$${2})"
-    echo "${func_Title_Log} ${1} ============= git hash - End ============="
+    echo "${func_MainBody_Title_Log} ============= git hash - Begin ============="
+    echo "${func_MainBody_Title_Log} ${2} : $(eval echo \$${2})"
+    echo "${func_MainBody_Title_Log} ============= git hash - End ============="
     echo
 
     echo "${func_Title_Log} End ***"
@@ -88,21 +91,24 @@ function remvoe_And_Makedir() {
     echo "${func_Title_Log} Dest Folder path : "${2}""
     echo "${func_Title_Log} Input param : End ***"
 
+    # 應用於函式中主體的 title log。
+    local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+
     echo
-    echo "${func_Title_Log} ${1} ============= rm & mkdir folder - Begin ============="
+    echo "${func_MainBody_Title_Log} ============= rm & mkdir folder - Begin ============="
 
     # 設定輸出資料夾
     func_DestFolder="${2}"
 
     # 刪除輸出資料夾.
-    echo "${func_Title_Log} ${1} rm -rf "${func_DestFolder}""
+    echo "${func_MainBody_Title_Log} rm -rf "${func_DestFolder}""
     rm -rf "${func_DestFolder}"
 
     # 建立輸出目錄
-    echo "${func_Title_Log} ${1} mkdir -p "${func_DestFolder}""
+    echo "${func_MainBody_Title_Log} mkdir -p "${func_DestFolder}""
     mkdir -p "${func_DestFolder}"
 
-    echo "${func_Title_Log} ${1} ============= rm & mkdir folder - End ============="
+    echo "${func_MainBody_Title_Log} ============= rm & mkdir folder - End ============="
     echo
 
     echo "${func_Title_Log} End ***"
@@ -125,12 +131,17 @@ function changeToDirectory() {
     echo "${func_Title_Log} TitleLog: ${1}"
     echo "${func_Title_Log} ChangeDestFolder: ${2}"
     echo "${func_Title_Log} Input param : End ***"
-    echo "${func_Title_Log} ${1} current path: $(pwd) ***"
+
+    # 應用於函式中主體的 title log。
+    local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+
+    echo "${func_MainBody_Title_Log} current path: $(pwd) ***"
 
     cd "${2}"
 
-    echo "${func_Title_Log} ${1} change dir to ${2} ***"
-    echo "${func_Title_Log} ${1} current path: $(pwd) ***"
+    echo "${func_MainBody_Title_Log} change dir to ${2} ***"
+    echo "${func_MainBody_Title_Log} current path: $(pwd) ***"
+    echo
     echo "${func_Title_Log} End ***"
     echo
 }
@@ -167,7 +178,13 @@ function checkInputParam() {
         echo "${func_Title_Log} param name: ${2}"
         echo "${func_Title_Log} param value: ${3}"
         echo "${func_Title_Log} Input param : End ***"
-        echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} ${1} ${2}: ${3} is illegal. Error !!!${func_Color_Off}"
+
+        # 應用於函式中主體的 title log。
+        local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+
+        echo
+        echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_MainBody_Title_Log} ${2}: ${3} is illegal. Error !!!${func_Color_Off}"
+        echo
         echo "${func_Title_Log} End ***"
         echo
 
@@ -209,14 +226,17 @@ function checkResultFail_And_ChangeFolder() {
         echo "${func_Title_Log} Change Folder: ${4}"
         echo "${func_Title_Log} Input param : End ***"
 
+        # 應用於函式中主體的 title log。
+        local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+
         # 切回原有執行目錄.
         echo
-        echo "${func_Title_Log} ${1} ===> change director : ${4} <==="
-        changeToDirectory "${1}" "${4}"
+        echo "${func_MainBody_Title_Log} ===> change director : ${4} <==="
+        changeToDirectory "${func_Title_Log}" "${4}"
 
         echo
-        echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} ${1} ===> dump log : ${3} <===${func_Color_Off}"
-        echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} ${1} ===> exit shell : result : ${2} <===${func_Color_Off}"
+        echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_MainBody_Title_Log} ===> dump log : ${3} <===${func_Color_Off}"
+        echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_MainBody_Title_Log} ===> exit shell : result : ${2} <===${func_Color_Off}"
         echo
         echo "${func_Title_Log} End ***"
 
@@ -259,6 +279,9 @@ function check_Legal_Val_In_List() {
     checkInputParam "${func_Title_Log}" func_Param_CheckVal "${func_Param_CheckVal}"
     checkInputParam "${func_Title_Log}" func_Param_SrcList "${func_Param_SrcList[@]}"
 
+    # 應用於函式中主體的 title log。
+    local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+
     # func_ReVal 的初始設定。
     local func_ReVal=99
 
@@ -270,7 +293,7 @@ function check_Legal_Val_In_List() {
 
         # 判斷是否為 要處理的 command (subcommand name 是否相同) .
         if [ ${func_Param_CheckVal} = ${aCheckVal} ]; then
-            echo "${func_Title_Log} Find aCheckVal : ${aCheckVal} in (${func_Param_SrcList[*]}) ***"
+            echo "${func_MainBody_Title_Log} Find aCheckVal : ${aCheckVal} in (${func_Param_SrcList[*]}) ***"
             func_ReVal=0
             break
         fi
@@ -316,10 +339,10 @@ function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
     local func_Param_SrcList=("${!3}")
     local func_Param_ChangeFolder="${4}"
 
-    check_Legal_Val_In_List "${func_Param_TitleLog}" "${func_Param_CheckVal}" func_Param_SrcList[@]
+    check_Legal_Val_In_List "${func_Title_Log}" "${func_Param_CheckVal}" func_Param_SrcList[@]
 
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
-    checkResultFail_And_ChangeFolder "${func_Title_Log} ${func_Param_TitleLog}" "$?" \
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" \
         "\r\n!!! ~ OPPS!! Input val : ${func_Param_CheckVal} not found in (${func_Param_SrcList[*]}) => fail ~ !!!" "${func_Param_ChangeFolder}"
 
     echo "${func_Title_Log} End ***"
@@ -359,7 +382,6 @@ function check_Legal_VerifiedList_In_List__If__ResultFail_Then_ChangeFolder() {
     echo "${func_Title_Log} change folder: ${4}"
     echo "${func_Title_Log} Input param : End ***"
 
-    local func_Param_TitleLog="${1}"
     local func_Param_CheckList_Original_Name=${2}
     local func_Param_CheckList=("${!2}")
     local func_Param_SrcList=("${!3}")
@@ -375,14 +397,14 @@ function check_Legal_VerifiedList_In_List__If__ResultFail_Then_ChangeFolder() {
             local func_curIndx
 
             # 判斷 是否為合法的 [config type]。
-            check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${func_Param_TitleLog}" "${func_aCheckVal}" \
+            check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${func_Title_Log}" "${func_aCheckVal}" \
                 func_Param_SrcList[@] "${func_Param_ChangeFolder}"
 
         done
 
     else
 
-        checkResultFail_And_ChangeFolder "${func_Param_TitleLog}" "$?" "!!! ${func_Param_CheckList_Original_Name} count : ${#func_Param_CheckList[@]} is illegal => fail ~ !!!" "${func_Param_ChangeFolder}"
+        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ${func_Param_CheckList_Original_Name} count : ${#func_Param_CheckList[@]} is illegal => fail ~ !!!" "${func_Param_ChangeFolder}"
 
     fi
 
@@ -423,6 +445,9 @@ function splitStringToPair() {
     echo "${func_Title_Log} Input param : End ***"
     echo
 
+    # 應用於函式中主體的 title log。
+    local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+
     local func_Param_SourceStringValue=${2}
     local func_Param_Separator=${3}
 
@@ -430,20 +455,20 @@ function splitStringToPair() {
     # 沒有判斷的話可能會出錯。
     if [ -n "${func_Param_Separator}" ] && [[ "${func_Param_SourceStringValue}" == *"${func_Param_Separator}"* ]]; then
 
-        echo "${func_Title_Log} ${1} input param legal => execute split ***"
+        echo "${func_MainBody_Title_Log} input param legal => execute split ***"
 
         eval ${4}="$(echo ${func_Param_SourceStringValue} | cut -d${func_Param_Separator} -f1)"
         eval ${5}="$(echo ${func_Param_SourceStringValue} | cut -d${func_Param_Separator} -f2)"
 
     else
-        echo "${func_Title_Log} ${1} not found separator (${func_Param_Separator}) or source string (${func_Param_SourceStringValue}) not contains separator (${func_Param_Separator})。 ***"
-        echo "${func_Title_Log} ${1} 1st is assigned eaual to source string。 ***"
+        echo "${func_MainBody_Title_Log} not found separator (${func_Param_Separator}) or source string (${func_Param_SourceStringValue}) not contains separator (${func_Param_Separator})。 ***"
+        echo "${func_MainBody_Title_Log} 1st is assigned eaual to source string。 ***"
 
         eval ${4}="${func_Param_SourceStringValue}"
     fi
 
-    echo "${func_Title_Log} ${1} 1st (${4}) : $(eval echo \$${4}) ***"
-    echo "${func_Title_Log} ${1} 2nd (${5}) : $(eval echo \$${5}) ***"
+    echo "${func_MainBody_Title_Log} 1st (${4}) : $(eval echo \$${4}) ***"
+    echo "${func_MainBody_Title_Log} 2nd (${5}) : $(eval echo \$${5}) ***"
     echo
     echo "${func_Title_Log} End ***"
     echo
@@ -480,14 +505,17 @@ function append_DestString_From_SourceString_With_Separator() {
     echo "${func_Title_Log} Input param : End ***"
     echo
 
+    # 應用於函式中主體的 title log。
+    local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+
     local func_Param_DestStringValue=$(eval echo \$${2})
     local func_Param_SourceStringValue=$(eval echo \$${3})
     local func_Param_Separator=${4}
 
-    echo "${func_Title_Log} ${1} ${2} (dest string value)   : $(eval echo \$${2}) ***"
-    echo "${func_Title_Log} ${1} ${3} (source string value) : $(eval echo \$${3}) ***"
+    echo "${func_MainBody_Title_Log} ${2} (dest string value)   : $(eval echo \$${2}) ***"
+    echo "${func_MainBody_Title_Log} ${3} (source string value) : $(eval echo \$${3}) ***"
     echo
-    echo "${func_Title_Log} ${1} execute append - [Begin] ***"
+    echo "${func_MainBody_Title_Log} execute append - [Begin] ***"
 
     # 若有 Source String Value
     if [ -n "${func_Param_SourceStringValue}" ]; then
@@ -501,9 +529,9 @@ function append_DestString_From_SourceString_With_Separator() {
 
     fi
 
-    echo "${func_Title_Log} ${1} ${2} (dest string value)   : $(eval echo \$${2}) ***"
-    echo "${func_Title_Log} ${1} ${3} (source string value) : $(eval echo \$${3}) ***"
-    echo "${func_Title_Log} ${1} execute append - [End] ***"
+    echo "${func_MainBody_Title_Log} ${2} (dest string value)   : $(eval echo \$${2}) ***"
+    echo "${func_MainBody_Title_Log} ${3} (source string value) : $(eval echo \$${3}) ***"
+    echo "${func_MainBody_Title_Log} execute append - [End] ***"
     echo
     echo "${func_Title_Log} End ***"
     echo
@@ -572,8 +600,11 @@ function check_OK_Then_Excute_Command() {
         echo "${func_Title_Log} command params : ${!4}"
         echo "${func_Title_Log} Input param : End ***"
 
+        # 應用於函式中主體的 title log。
+        local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+
         echo
-        echo "${func_Title_Log} ${1} ============= excute command - Begin ============="
+        echo "${func_MainBody_Title_Log} ============= excute command - Begin ============="
 
         # for local varient
         local func_Command="${3}"
@@ -582,27 +613,27 @@ function check_OK_Then_Excute_Command() {
         # 若有 func_CommandParams
         if [ -n "${func_CommandParams}" ]; then
 
-            echo "${func_Title_Log} ${1} func_CommandParams : ${func_CommandParams[@]}"
-            echo "${func_Title_Log} ${1} func_CommandParams count : ${#func_CommandParams[@]}"
-            echo "${func_Title_Log} ${1} will excute command : ${func_Command} ${func_CommandParams[@]}"
+            echo "${func_MainBody_Title_Log} func_CommandParams : ${func_CommandParams[@]}"
+            echo "${func_MainBody_Title_Log} func_CommandParams count : ${#func_CommandParams[@]}"
+            echo "${func_MainBody_Title_Log} will excute command : ${func_Command} ${func_CommandParams[@]}"
 
             ${func_Command} "${func_CommandParams[@]}"
 
             func_ReVal=$?
-            echo "${func_Title_Log} ${1} excute command result code: ${func_ReVal}"
+            echo "${func_MainBody_Title_Log} excute command result code: ${func_ReVal}"
 
         else
 
-            echo "${func_Title_Log} ${1} will excute command : ${func_Command}"
+            echo "${func_MainBody_Title_Log} will excute command : ${func_Command}"
 
             ${func_Command}
 
             func_ReVal=$?
-            echo "${func_Title_Log} ${1} excute command result code: ${func_ReVal}"
+            echo "${func_MainBody_Title_Log} excute command result code: ${func_ReVal}"
 
         fi
 
-        echo "${func_Title_Log} ${1} ============= excute command - End ============="
+        echo "${func_MainBody_Title_Log} ============= excute command - End ============="
         echo
 
         echo "${func_Title_Log} End ***"
@@ -650,10 +681,10 @@ function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
     local func_Param_CoommandParams=("${!4}")
     local func_Param_ChangeFolder="${5}"
 
-    check_OK_Then_Excute_Command "${func_Param_TitleLog}" "${func_Param_IsExcute}" "${func_Param_CoommandName}" func_Param_CoommandParams[@]
+    check_OK_Then_Excute_Command "${func_Title_Log}" "${func_Param_IsExcute}" "${func_Param_CoommandName}" func_Param_CoommandParams[@]
 
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
-    checkResultFail_And_ChangeFolder "${func_Param_TitleLog}" "$?" \
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" \
         "\r\n!!! ~ OPPS!! Execute Command Fail. \r\n- Command Name : ${func_Param_CoommandName}\r\n- Command Params: (${func_Param_CoommandParams[*]}) \r\n => fail ~ !!!" "${func_Param_ChangeFolder}"
 
     echo "${func_Title_Log} End ***"
@@ -696,6 +727,9 @@ function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command() {
     checkInputParam "${func_Title_Log}" func_Param_CommandList "${func_Param_CommandList[@]}"
     checkInputParam "${func_Title_Log}" func_Param_Found_First_Command "${func_Param_Found_First_Command}"
 
+    # 應用於函式中主體的 title log。
+    local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+
     # func_ReVal 的初始設定。
     local func_ReVal=99
 
@@ -705,11 +739,11 @@ function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command() {
 
         local aCommand=${func_Param_CommandList[${func_i}]}
 
-        echo "${func_Title_Log} which ${aCommand}"
+        echo "${func_MainBody_Title_Log} which ${aCommand}"
         which which ${aCommand}
 
         if [ $? -eq 0 ]; then
-            echo "${func_Title_Log} assign ${func_Param_Found_First_Command} to ${aCommand}"
+            echo "${func_MainBody_Title_Log} assign ${func_Param_Found_First_Command} to ${aCommand}"
             func_ReVal=0
             eval ${3}="${aCommand}"
             break
@@ -717,9 +751,9 @@ function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command() {
 
     done
 
-    echo "${func_Title_Log} ${1} found first command => (${func_Param_Found_First_Command}) : $(eval echo \$${func_Param_Found_First_Command}) ***"
+    echo "${func_MainBody_Title_Log} found first command => (${func_Param_Found_First_Command}) : $(eval echo \$${func_Param_Found_First_Command}) ***"
 
-    echo "${func_Title_Log} ${1} func_ReVal : ${func_ReVal} ***"
+    echo "${func_MainBody_Title_Log} func_ReVal : ${func_ReVal} ***"
 
     echo "${func_Title_Log} End ***"
     echo
@@ -760,16 +794,15 @@ function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If
     echo "${func_Title_Log} change folder: ${4}"
     echo "${func_Title_Log} Input param : End ***"
 
-    local func_Param_TitleLog="${1}"
     local func_Param_CommandList=("${!2}")
     local func_Param_Found_First_Command="${3}"
     local func_Param_ChangeFolder="${4}"
 
     get_First_Found_Command_From_InputCommandist_By_Using_Which_Command \
-        "${func_Param_TitleLog}" func_Param_CommandList[@] "${func_Param_Found_First_Command}"
+        "${func_Title_Log}" func_Param_CommandList[@] "${func_Param_Found_First_Command}"
 
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
-    checkResultFail_And_ChangeFolder "${func_Title_Log} ${func_Param_TitleLog}" "$?" \
+    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" \
         "\r\n!!! ~ OPPS!! \r\nInput Command List : (${func_Param_CommandList[*]}) \r\nNot found by using \`which\` command. => fail ~ !!!" "${func_Param_ChangeFolder}"
 
     echo "${func_Title_Log} End ***"
