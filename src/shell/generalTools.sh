@@ -153,7 +153,7 @@ function changeToDirectory() {
 # ============= This is separation line =============
 # @brief function : check input param is illegal.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
-#   - 判斷輸入參數的合法性，失敗會直接 return.
+#   - 判斷輸入參數的合法性，失敗會直接 exit 1 .
 #
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @param ${2}: input param name: e.g. "sample_Param_ProjectRelativePath" .
@@ -161,12 +161,6 @@ function changeToDirectory() {
 function checkInputParam() {
 
     if [[ ${3} == "" ]]; then
-
-        # for echo color
-        local func_Bold_Black='\033[1;30m'
-        local func_ForegroundColor_Red='\033[0;31m'
-        local func_BackgroundColor_Cyan='\033[46m'
-        local func_Color_Off='\033[0m'
 
         # fail 再秀 log.
         local func_Title_Log="*** function [${FUNCNAME[0]}] -"
@@ -183,7 +177,7 @@ function checkInputParam() {
         local func_MainBody_Title_Log="${func_Title_Log} ${1}"
 
         echo
-        echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_MainBody_Title_Log} ${2}: ${3} is illegal. Error !!!${func_Color_Off}"
+        echo "${generalConst_Colors_BBlack}${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ${2}: ${3} is illegal. Error !!!${generalConst_Colors_Color_Off}"
         echo
         echo "${func_Title_Log} End ***"
         echo
@@ -207,12 +201,6 @@ function checkResultFail_And_ChangeFolder() {
 
     if [ "${2}" -ne 0 ]; then
 
-        # for echo color
-        local func_Bold_Black='\033[1;30m'
-        local func_ForegroundColor_Red='\033[0;31m'
-        local func_BackgroundColor_Cyan='\033[46m'
-        local func_Color_Off='\033[0m'
-
         # fail 再秀 log.
         local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -235,8 +223,8 @@ function checkResultFail_And_ChangeFolder() {
         changeToDirectory "${func_Title_Log}" "${4}"
 
         echo
-        echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_MainBody_Title_Log} ===> dump log : ${3} <===${func_Color_Off}"
-        echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_MainBody_Title_Log} ===> exit shell : result : ${2} <===${func_Color_Off}"
+        echo "${generalConst_Colors_BBlack}${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ===> dump log : ${3} <===${generalConst_Colors_Color_Off}"
+        echo "${generalConst_Colors_BBlack}${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ===> exit shell : result : ${2} <===${generalConst_Colors_Color_Off}"
         echo
         echo "${func_Title_Log} End ***"
 
@@ -812,3 +800,111 @@ function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If
 }
 ##
 ## ================================== Command section : End ==================================
+
+## ================================== Show Colors Info section : Begin ==================================
+##
+# ============= This is separation line =============
+# @brief function : 秀 log 的顏色設定，可由此參考 dump log 是否需要調整顏色，使重要訊息可以呈現出來。
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
+function show_Colors_Info() {
+
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_Title_Log} Begin ***"
+
+    # reset
+    _show_One_Color generalConst_Colors_Color_Off
+
+    # Regular Colors
+    _show_One_Color generalConst_Colors_Black
+    _show_One_Color generalConst_Colors_Red
+    _show_One_Color generalConst_Colors_Green
+    _show_One_Color generalConst_Colors_Yellow
+    _show_One_Color generalConst_Colors_Blue
+    _show_One_Color generalConst_Colors_Purple
+    _show_One_Color generalConst_Colors_Cyan
+    _show_One_Color generalConst_Colors_White
+
+    # Bold
+    _show_One_Color generalConst_Colors_BBlack
+    _show_One_Color generalConst_Colors_BRed
+    _show_One_Color generalConst_Colors_BGreen
+    _show_One_Color generalConst_Colors_BYellow
+    _show_One_Color generalConst_Colors_BBlue
+    _show_One_Color generalConst_Colors_BPurple
+    _show_One_Color generalConst_Colors_BCyan
+    _show_One_Color generalConst_Colors_BWhite
+
+    # Underline
+    _show_One_Color generalConst_Colors_UBlack
+    _show_One_Color generalConst_Colors_URed
+    _show_One_Color generalConst_Colors_UGreen
+    _show_One_Color generalConst_Colors_UYellow
+    _show_One_Color generalConst_Colors_UBlue
+    _show_One_Color generalConst_Colors_UPurple
+    _show_One_Color generalConst_Colors_UCyan
+    _show_One_Color generalConst_Colors_UWhite
+
+    # Background
+    _show_One_Color generalConst_Colors_On_Black
+    _show_One_Color generalConst_Colors_On_Red
+    _show_One_Color generalConst_Colors_On_Green
+    _show_One_Color generalConst_Colors_On_Yellow
+    _show_One_Color generalConst_Colors_On_Blue
+    _show_One_Color generalConst_Colors_On_Purple
+    _show_One_Color generalConst_Colors_On_Cyan
+    _show_One_Color generalConst_Colors_On_White
+
+    # High Intensity
+    _show_One_Color generalConst_Colors_IBlack
+    _show_One_Color generalConst_Colors_IRed
+    _show_One_Color generalConst_Colors_IGreen
+    _show_One_Color generalConst_Colors_IYellow
+    _show_One_Color generalConst_Colors_IBlue
+    _show_One_Color generalConst_Colors_IPurple
+    _show_One_Color generalConst_Colors_ICyan
+    _show_One_Color generalConst_Colors_IWhite
+
+    # Bold High Intensity
+    _show_One_Color generalConst_Colors_BIBlack
+    _show_One_Color generalConst_Colors_BIRed
+    _show_One_Color generalConst_Colors_BIGreen
+    _show_One_Color generalConst_Colors_BIYellow
+    _show_One_Color generalConst_Colors_BIBlue
+    _show_One_Color generalConst_Colors_BIPurple
+    _show_One_Color generalConst_Colors_BICyan
+    _show_One_Color generalConst_Colors_BIWhite
+
+    # High Intensity backgrounds
+    _show_One_Color generalConst_Colors_On_IBlack
+    _show_One_Color generalConst_Colors_On_IRed
+    _show_One_Color generalConst_Colors_On_IGreen
+    _show_One_Color generalConst_Colors_On_IYellow
+    _show_One_Color generalConst_Colors_On_IBlue
+    _show_One_Color generalConst_Colors_On_IPurple
+    _show_One_Color generalConst_Colors_On_ICyan
+    _show_One_Color generalConst_Colors_On_IWhite
+
+    echo "${func_Title_Log} End ***"
+    echo
+}
+##
+## ================================== Show Colors Info section : End ==================================
+
+## ================================== Private Function Section : Begin ==================================
+##
+# ============= This is separation line =============
+# @brief function : 單純秀 單一 color 設定的 log。
+#  - private function，暫時沒考慮開放。
+#
+# @param ${1}: 要輸出的 Color 參數名稱，內部會取其實際內容。 e.g. sample_Color_Name
+#
+# sample e.g. _show_One_Color sample_Color_Name
+function _show_One_Color() {
+    local func_Color_Name=${1}
+    local func_Color_Value=$(eval echo \$${1})
+    echo "Color Value Name : ${generalConst_Colors_White}${func_Color_Name} = ${func_Color_Value}I love you${generalConst_Colors_Color_Off}"
+}
+##
+## ================================== Private Function Section : End ==================================
