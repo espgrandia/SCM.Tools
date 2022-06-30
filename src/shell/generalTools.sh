@@ -177,7 +177,7 @@ function checkInputParam() {
         local func_MainBody_Title_Log="${func_Title_Log} ${1}"
 
         echo
-        echo "${generalConst_Colors_BBlack}${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ${2}: ${3} is illegal. Error !!!${generalConst_Colors_Color_Off}"
+        echo "${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ${2}: ${3} is illegal. Error !!!${generalConst_Colors_Color_Off}"
         echo
         echo "${func_Title_Log} End ***"
         echo
@@ -223,8 +223,8 @@ function checkResultFail_And_ChangeFolder() {
         changeToDirectory "${func_Title_Log}" "${4}"
 
         echo
-        echo "${generalConst_Colors_BBlack}${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ===> dump log : ${3} <===${generalConst_Colors_Color_Off}"
-        echo "${generalConst_Colors_BBlack}${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ===> exit shell : result : ${2} <===${generalConst_Colors_Color_Off}"
+        echo "${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ===> dump log : ${3} <===${generalConst_Colors_Color_Off}"
+        echo "${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ===> exit shell : result : ${2} <===${generalConst_Colors_Color_Off}"
         echo
         echo "${func_Title_Log} End ***"
 
