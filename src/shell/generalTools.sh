@@ -583,14 +583,16 @@ function append_DestString_From_SourceString_With_Separator() {
 #
 function check_OK_Then_Excute_Command() {
 
-    local func_ReVal=0
+    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
-    echo "check_OK_Then_Excute_Command - generalConst_Enable_Flag : ${generalConst_Enable_Flag} ***"
+    checkInputParam "${func_Title_Log}" generalConst_Enable_Flag "${generalConst_Enable_Flag}"
+
+    echo "${func_Title_Log} generalConst_Enable_Flag : ${generalConst_Enable_Flag} ***"
+
+    local func_ReVal=0
 
     # 驗證成功再處理後續。
     if [ ${2} = "${generalConst_Enable_Flag}" ]; then
-
-        local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
         echo
         echo "${func_Title_Log} Begin ***"
