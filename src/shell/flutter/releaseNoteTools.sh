@@ -13,7 +13,7 @@
 # 注意事項:
 # - 使用此通用函式，有相依 include 檔案於
 #   - scm.tools/src/shell/generalTools.sh
-#     > func => checkResultFail_And_ChangeFolder ...
+#     > func => check_result_if_fail_then_change_folder ...
 #   - configConst.sh
 #     > export 參數 => configConst_CommandName_Fvm ...
 #   - include 方式 :
@@ -231,7 +231,7 @@ function _releastNoteTools_Gen_Init_Excecute_Command_Section() {
 
     fi
 
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Execute_Command_Name} ${func_Execute_Command_Content} => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ ${func_Execute_Command_Name} ${func_Execute_Command_Content} => fail ~ !!!" "${func_Param_ChangeFolderPath}"
 
     echo "${func_Title_Log} ${1} ============= ${func_Execute_Command_Name} ${func_Execute_Command_Content} - End ============="
     echo

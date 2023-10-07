@@ -33,19 +33,19 @@
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 # @param $1: 要輸出的 title log : e.g. "${buildXcodeFramework_Title_Log}"
 # @param $2: 切換的目的資料夾: e.g. "${buildXcodeFramework_Shell_WorkPath}".
-function changeToDirectory(){
-	changeToDirectory_Title_Log="*** function [changeToDirectory] -"
+function change_to_directory(){
+	change_to_directory_Title_Log="*** function [change_to_directory] -"
 	echo
-	echo "${changeToDirectory_Title_Log} Begin ***"
-	echo "${changeToDirectory_Title_Log} Input param : Begin ***"
-	echo "${changeToDirectory_Title_Log} TitleLog: ${1}"
-	echo "${changeToDirectory_Title_Log} ChangeDestFolder: ${2}"
-	echo "${changeToDirectory_Title_Log} Input param : End ***"
-	echo "${changeToDirectory_Title_Log} ${1} current path: `pwd` ***"
+	echo "${change_to_directory_Title_Log} Begin ***"
+	echo "${change_to_directory_Title_Log} Input param : Begin ***"
+	echo "${change_to_directory_Title_Log} TitleLog: ${1}"
+	echo "${change_to_directory_Title_Log} ChangeDestFolder: ${2}"
+	echo "${change_to_directory_Title_Log} Input param : End ***"
+	echo "${change_to_directory_Title_Log} ${1} current path: `pwd` ***"
 	cd ${2}
-	echo "${changeToDirectory_Title_Log} ${1} change dir to ${2} ***"
-	echo "${changeToDirectory_Title_Log} ${1} current path: `pwd` ***"
-	echo "${changeToDirectory_Title_Log} End ***"
+	echo "${change_to_directory_Title_Log} ${1} change dir to ${2} ***"
+	echo "${change_to_directory_Title_Log} ${1} current path: `pwd` ***"
+	echo "${change_to_directory_Title_Log} End ***"
 	echo
 }
 
@@ -55,20 +55,20 @@ function changeToDirectory(){
 # @param $1: 要輸出的 title log : e.g. "${buildXcodeFramework_Title_Log}"
 # @param $2: input param name: e.g. "buildXcodeFramework_Param_ProjectRelativePath".
 # @param $3: input param value: e.g. "${buildXcodeFramework_Param_ProjectRelativePath}".
-function checkInputParam(){
+function check_input_param(){
 
 	if [[ ${3} == "" ]]; then
 		# fail 再秀 log.
-		checkInputParam_Title_Log="*** function [checkInputParam_Title_Log] -"
+		check_input_param_Title_Log="*** function [check_input_param_Title_Log] -"
 		echo
-		echo "${checkInputParam_Title_Log} Begin ***"
-		echo "${checkInputParam_Title_Log} Input param : Begin ***"
-		echo "${checkInputParam_Title_Log} TitleLog: ${1}"
-		echo "${checkInputParam_Title_Log} param name: ${2}"
-		echo "${checkInputParam_Title_Log} param value: ${3}"
-		echo "${checkInputParam_Title_Log} Input param : End ***"
-		echo "${checkInputParam_Title_Log} ${1} ${2}: ${3} is illegal. Error !!!"
-		echo "${checkInputParam_Title_Log} End ***"
+		echo "${check_input_param_Title_Log} Begin ***"
+		echo "${check_input_param_Title_Log} Input param : Begin ***"
+		echo "${check_input_param_Title_Log} TitleLog: ${1}"
+		echo "${check_input_param_Title_Log} param name: ${2}"
+		echo "${check_input_param_Title_Log} param value: ${3}"
+		echo "${check_input_param_Title_Log} Input param : End ***"
+		echo "${check_input_param_Title_Log} ${1} ${2}: ${3} is illegal. Error !!!"
+		echo "${check_input_param_Title_Log} End ***"
 		echo
 		exit 1
 	fi
@@ -103,13 +103,13 @@ echo
 # check input param ...
 echo 
 echo "${buildXcodeFramework_Title_Log} check input param"
-checkInputParam "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_ProjectRelativePath "${buildXcodeFramework_Param_ProjectRelativePath}"
-checkInputParam "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_ProjFolderName "${buildXcodeFramework_Param_ProjFolderName}"
-checkInputParam "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_SchemeName "${buildXcodeFramework_Param_SchemeName}"
-checkInputParam "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_ConfigurationType "${buildXcodeFramework_Param_ConfigurationType}"
-checkInputParam "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_BUILD_DIR "${buildXcodeFramework_Param_BUILD_DIR}"
-checkInputParam "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_DerivedData "${buildXcodeFramework_Param_DerivedData}"
-checkInputParam "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_ExportedFolder "${buildXcodeFramework_Param_ExportedFolder}"
+check_input_param "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_ProjectRelativePath "${buildXcodeFramework_Param_ProjectRelativePath}"
+check_input_param "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_ProjFolderName "${buildXcodeFramework_Param_ProjFolderName}"
+check_input_param "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_SchemeName "${buildXcodeFramework_Param_SchemeName}"
+check_input_param "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_ConfigurationType "${buildXcodeFramework_Param_ConfigurationType}"
+check_input_param "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_BUILD_DIR "${buildXcodeFramework_Param_BUILD_DIR}"
+check_input_param "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_DerivedData "${buildXcodeFramework_Param_DerivedData}"
+check_input_param "${buildXcodeFramework_Title_Log}" buildXcodeFramework_Param_ExportedFolder "${buildXcodeFramework_Param_ExportedFolder}"
 
 # ============= This is separation line =============
 # 切換執行目錄.
@@ -123,12 +123,12 @@ buildXcodeFramework_Shell_WorkPath=$(dirname $0)
 # buildXcodeFramework_Shell_WorkPath=$(dirname $(readlink -f $0))
 echo 
 echo "${buildXcodeFramework_Title_Log} buildXcodeFramework_Shell_WorkPath : " ${buildXcodeFramework_Shell_WorkPath} 
-changeToDirectory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_Shell_WorkPath}"
+change_to_directory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_Shell_WorkPath}"
 
 # 切換到指定的執行路徑.
 echo 
 echo "${buildXcodeFramework_Title_Log} buildXcodeFramework_Param_ProjectRelativePath : " ${buildXcodeFramework_Param_ProjectRelativePath} 
-changeToDirectory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_Param_ProjectRelativePath}"
+change_to_directory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_Param_ProjectRelativePath}"
 
 # ============= This is separation line =============
 # delete folder.
@@ -152,7 +152,7 @@ if [ $? -ne 0 ]; then
 	echo "${buildXcodeFramework_Title_Log} ${buildXcodeFramework_TmpCommandLine}"
 
 	# 切回原有執行目錄.
-	changeToDirectory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_OldPath}"
+	change_to_directory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_OldPath}"
 
 	exit 10
 fi
@@ -169,7 +169,7 @@ if [ $? -ne 0 ]; then
 	echo "${buildXcodeFramework_Title_Log} ${buildXcodeFramework_TmpCommandLine}"
 
 	# 切回原有執行目錄.
-	changeToDirectory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_OldPath}"
+	change_to_directory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_OldPath}"
 	exit 11
 fi
 
@@ -214,7 +214,7 @@ if [ $? -ne 0 ]; then
 	echo "${buildXcodeFramework_Title_Log} lipo ${buildXcodeFramework_TmpCommandLine}"
 
 	# 切回原有執行目錄.
-	changeToDirectory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_OldPath}"
+	change_to_directory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_OldPath}"
 	exit 20
 fi
 
@@ -231,11 +231,11 @@ if [ $? -ne 0 ]; then
 	echo "${buildXcodeFramework_Title_Log} lipo ${buildXcodeFramework_TmpCommandLine}"
 
 	# 切回原有執行目錄.
-	changeToDirectory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_OldPath}"
+	change_to_directory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_OldPath}"
 	exit 21
 fi
 
 # 全部完成
 # 切回原有執行目錄.
-changeToDirectory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_OldPath}"
+change_to_directory "${buildXcodeFramework_Title_Log}" "${buildXcodeFramework_OldPath}"
 exit 0

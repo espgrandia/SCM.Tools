@@ -8,10 +8,10 @@
 #
 # sample :
 #  ``` shell
-#  # include changeToDirectory function
+#  # include change_to_directory function
 #  . src/generalTools.sh
 #
-#  changeToDirectory "${sample_Title_Log}" "${sample_WorkPath}"
+#  change_to_directory "${sample_Title_Log}" "${sample_WorkPath}"
 #  ```
 #
 # ---
@@ -38,7 +38,7 @@
 #
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @param ${2}: 要設定 git hash 的參數: e.g. sample_GitHash_Short .
-function getGitShortHash() {
+function get_git_short_hash() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -79,7 +79,7 @@ function getGitShortHash() {
 #
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @param ${2}: 要處理的目標資料夾(含路徑) : e.g. "${sample_DestFolder}" .
-function remvoe_And_Makedir() {
+function remvoe_and_make_dir() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -121,7 +121,7 @@ function remvoe_And_Makedir() {
 #
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @param ${2}: 切換的目的資料夾: e.g. "${sample_WorkPath}"，$(dirname $0)，etc ...
-function changeToDirectory() {
+function change_to_directory() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -158,7 +158,7 @@ function changeToDirectory() {
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @param ${2}: input param name: e.g. "sample_Param_ProjectRelativePath" .
 # @param ${3}: input param value: e.g. "${sample_Param_ProjectRelativePath}" .
-function checkInputParam() {
+function check_input_param() {
 
     if [[ ${3} == "" ]]; then
 
@@ -197,7 +197,7 @@ function checkInputParam() {
 # @param ${2}: 要驗證的 result value: e.g. $? : 非0為失敗 ..
 # @param ${3}: 要 dump log" .
 # @param ${4}: 切換回去的的 folder path" .
-function checkResultFail_And_ChangeFolder() {
+function check_result_if_fail_then_change_folder() {
 
     if [ "${2}" -ne 0 ]; then
 
@@ -220,7 +220,7 @@ function checkResultFail_And_ChangeFolder() {
         # 切回原有執行目錄.
         echo
         echo "${func_MainBody_Title_Log} ===> change director : ${4} <==="
-        changeToDirectory "${func_Title_Log}" "${4}"
+        change_to_directory "${func_Title_Log}" "${4}"
 
         echo
         echo "${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_MainBody_Title_Log} ===> dump log : ${3} <===${generalConst_Colors_Color_Off}"
@@ -244,10 +244,10 @@ function checkResultFail_And_ChangeFolder() {
 # @param ${2} : check value : 要驗證的 value。
 # @param ${!3} : source list : 要驗證的 array。
 #
-# sample e.g. check_Legal_Val_In_List "${sample_Title_Log}" "${sample_Val}" sample_List[@]
+# sample e.g. check_legal_val_in_list "${sample_Title_Log}" "${sample_Val}" sample_List[@]
 #
 # @retrun 0: 成功， 99: 失敗。
-function check_Legal_Val_In_List() {
+function check_legal_val_in_list() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -263,9 +263,9 @@ function check_Legal_Val_In_List() {
     local func_Param_CheckVal="${2}"
     local func_Param_SrcList=("${!3}")
 
-    checkInputParam "${func_Title_Log}" func_Param_TitleLog "${func_Param_TitleLog}"
-    checkInputParam "${func_Title_Log}" func_Param_CheckVal "${func_Param_CheckVal}"
-    checkInputParam "${func_Title_Log}" func_Param_SrcList "${func_Param_SrcList[@]}"
+    check_input_param "${func_Title_Log}" func_Param_TitleLog "${func_Param_TitleLog}"
+    check_input_param "${func_Title_Log}" func_Param_CheckVal "${func_Param_CheckVal}"
+    check_input_param "${func_Title_Log}" func_Param_SrcList "${func_Param_SrcList[@]}"
 
     # 應用於函式中主體的 title log。
     local func_MainBody_Title_Log="${func_Title_Log} ${1}"
@@ -297,7 +297,7 @@ function check_Legal_Val_In_List() {
 # ============= This is separation line =============
 # @brief function : 驗證 input check value 是否在 input source list 中，沒找到會切換路徑並中斷程式。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
-#   - 會呼叫 [check_Legal_Val_In_List] 來驗證 value 是否有在 inpput list。
+#   - 會呼叫 [check_legal_val_in_list] 來驗證 value 是否有在 inpput list。
 #   - 若 value 不在 list 中 :
 #     - dump 錯誤訊息。 (以及 error code : 99 失敗)。
 #     - 則切換指定的資料夾路徑。
@@ -308,8 +308,8 @@ function check_Legal_Val_In_List() {
 # @param ${!3} : source list : 要驗證的 array。
 # @param ${4}: 切換回去的的 folder path"
 #
-# sample e.g. check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${sample_Title_Log}" "${sample_Val}" sample_List[@] "${sample_ChangeFolder}"
-function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
+# sample e.g. check_legal_val_in_list__if__result_fail_then_change_folder "${sample_Title_Log}" "${sample_Val}" sample_List[@] "${sample_ChangeFolder}"
+function check_legal_val_in_list__if__result_fail_then_change_folder() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -327,10 +327,10 @@ function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
     local func_Param_SrcList=("${!3}")
     local func_Param_ChangeFolder="${4}"
 
-    check_Legal_Val_In_List "${func_Title_Log}" "${func_Param_CheckVal}" func_Param_SrcList[@]
+    check_legal_val_in_list "${func_Title_Log}" "${func_Param_CheckVal}" func_Param_SrcList[@]
 
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" \
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" \
         "\r\n!!! ~ OPPS!! Input val : ${func_Param_CheckVal} not found in (${func_Param_SrcList[*]}) => fail ~ !!!" "${func_Param_ChangeFolder}"
 
     echo "${func_Title_Log} End ***"
@@ -340,7 +340,7 @@ function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
 # ============= This is separation line =============
 # @brief function : 驗證 input check list 的 values， 每一個 value 內容，是否在 input source list 中，沒找到會切換路徑並中斷程式。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
-#   - 會呼叫 [check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder] 來驗證 單一 value 是否有在 inpput list。
+#   - 會呼叫 [check_legal_val_in_list__if__result_fail_then_change_folder] 來驗證 單一 value 是否有在 inpput list。
 #   - 若 value 不在 list 中 :
 #     - dump 錯誤訊息。 (以及 error code : 99 失敗)。
 #     - 則切換指定的資料夾路徑。
@@ -353,9 +353,9 @@ function check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder() {
 # @param ${!3} : source list : 要驗證的 array。
 # @param ${4}: 切換回去的的 folder path"
 #
-# sample e.g. check_Legal_VerifiedList_In_List__If__ResultFail_Then_ChangeFolder "${sample_Title_Log}" \
+# sample e.g. check_legal_verified_list_in_list__if__result_fail_then_change_folder "${sample_Title_Log}" \
 #               sample_VerifiedList[@] sample_List[@] "${sample_ChangeFolder}"
-function check_Legal_VerifiedList_In_List__If__ResultFail_Then_ChangeFolder() {
+function check_legal_verified_list_in_list__if__result_fail_then_change_folder() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -385,14 +385,14 @@ function check_Legal_VerifiedList_In_List__If__ResultFail_Then_ChangeFolder() {
             local func_curIndx
 
             # 判斷 是否為合法的 [config type]。
-            check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${func_Title_Log}" "${func_aCheckVal}" \
+            check_legal_val_in_list__if__result_fail_then_change_folder "${func_Title_Log}" "${func_aCheckVal}" \
                 func_Param_SrcList[@] "${func_Param_ChangeFolder}"
 
         done
 
     else
 
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ${func_Param_CheckList_Original_Name} count : ${#func_Param_CheckList[@]} is illegal => fail ~ !!!" "${func_Param_ChangeFolder}"
+        check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ${func_Param_CheckList_Original_Name} count : ${#func_Param_CheckList[@]} is illegal => fail ~ !!!" "${func_Param_ChangeFolder}"
 
     fi
 
@@ -416,8 +416,8 @@ function check_Legal_VerifiedList_In_List__If__ResultFail_Then_ChangeFolder() {
 # @param ${4}: 要設定的第一個參數，拆解後取第一位的內容來設定。 e.g. sample_Split_First .
 # @param ${5}: 要設定的第一個參數，拆解後取第二位的內容來設定。 e.g. sample_Split_Second .
 #
-# sample e.g. splitStringToPair "${sample_Title_Log}" "${sample_SourceString}" "${sample_Separator}" sample_Split_First sample_Split_Second
-function splitStringToPair() {
+# sample e.g. split_string_to_pair "${sample_Title_Log}" "${sample_SourceString}" "${sample_Separator}" sample_Split_First sample_Split_Second
+function split_string_to_pair() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -477,8 +477,8 @@ function splitStringToPair() {
 # @param ${3}: 要 append 的來源的字串參數，要 dump log，所以也是用參數帶入 (有可能為空，需判斷): e.g. sample_SourceString ("App_1.0.1" or "") .
 # @param ${4}: separator 的字串 (要 append 時的分隔字串，允許為空字串): e.g. "-" .
 #
-# sample e.g. append_DestString_From_SourceString_With_Separator "${sample_Title_Log}" sample_DestString sample_SourceString "${sample_Separator}"
-function append_DestString_From_SourceString_With_Separator() {
+# sample e.g. append_dest_string_from_source_string_with_separator "${sample_Title_Log}" sample_DestString sample_SourceString "${sample_Separator}"
+function append_dest_string_from_source_string_with_separator() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -530,7 +530,7 @@ function append_DestString_From_SourceString_With_Separator() {
 ## ================================== Command section : Begin ==================================
 ##
 # ============= This is separation line =============
-# @brief function : [check_OK_Then_Excute_Command] 確認成功，則執行 command.
+# @brief function : [check_ok_then_excute_command] 確認成功，則執行 command.
 # @details : 要執行 command 前會判斷是否要帶入其對應參數 (commandParams)
 #
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
@@ -551,10 +551,10 @@ function append_DestString_From_SourceString_With_Separator() {
 # @sample
 #  - e.g.1.
 #     sample_CommandParams=("help" "build" "apk")
-#     check_OK_Then_Excute_Command "${sample_Title_Log}" "${sample_ToggleFeature_Is_Excute}" "flutter" sample_CommandParams[@]
+#     check_ok_then_excute_command "${sample_Title_Log}" "${sample_ToggleFeature_Is_Excute}" "flutter" sample_CommandParams[@]
 #  - e.g.2.
 #     sample_CommandParams=("${sample_OutputFolder}")
-#     check_OK_Then_Excute_Command "${sample_Title_Log}" "${sample_ToggleFeature_Is_Excute}" "open" sample_CommandParams[@]
+#     check_ok_then_excute_command "${sample_Title_Log}" "${sample_ToggleFeature_Is_Excute}" "open" sample_CommandParams[@]
 #
 # ---
 #
@@ -569,11 +569,11 @@ function append_DestString_From_SourceString_With_Separator() {
 #  不過若某個 value 是有含空白，在 array copy 時會被視為不同的內容，也就是數量會長大。
 #  導致要用別的方式處理，後來改成直接輸入兩個參數 (command , command prarms) 來判斷比較簡單。
 #
-function check_OK_Then_Excute_Command() {
+function check_ok_then_excute_command() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
-    checkInputParam "${func_Title_Log}" GENERAL_CONST_ENABLE_FLAG "${GENERAL_CONST_ENABLE_FLAG}"
+    check_input_param "${func_Title_Log}" GENERAL_CONST_ENABLE_FLAG "${GENERAL_CONST_ENABLE_FLAG}"
 
     echo "${func_Title_Log} GENERAL_CONST_ENABLE_FLAG : ${GENERAL_CONST_ENABLE_FLAG} ***"
 
@@ -635,23 +635,23 @@ function check_OK_Then_Excute_Command() {
 }
 
 # ============= This is separation line =============
-# @brief function : 轉呼叫 [check_OK_Then_Excute_Command]，回傳值若非成功 (0)，則切換路徑並中斷程式。
+# @brief function : 轉呼叫 [check_ok_then_excute_command]，回傳值若非成功 (0)，則切換路徑並中斷程式。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
-#   - 主要參數及使用方式，請參考 [check_OK_Then_Excute_Command] 說明。
+#   - 主要參數及使用方式，請參考 [check_ok_then_excute_command] 說明。
 #
 # @Params :
-# === copy from [check_OK_Then_Excute_Command] - Begin
+# === copy from [check_ok_then_excute_command] - Begin
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. "${sample_IsExcute}"
 # @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. "${sample_CommandName}"，"open"，"flutter"，...。
 # @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
-# === copy from [check_OK_Then_Excute_Command] - End
+# === copy from [check_ok_then_excute_command] - End
 #
 # @param ${5}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
 #
-# sample e.g. check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder \
+# sample e.g. check_ok_then_excute_command__if__result_fail_then_change_folder \
 #  "${sample_Title_Log}"  "${sample_IsExcute}" "${sample_CommandName}" sample_CommandParams[@] "${sample_ChangeFolder}"
-function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
+function check_ok_then_excute_command__if__result_fail_then_change_folder() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -671,10 +671,10 @@ function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
     local func_Param_CoommandParams=("${!4}")
     local func_Param_ChangeFolder="${5}"
 
-    check_OK_Then_Excute_Command "${func_Title_Log}" "${func_Param_IsExcute}" "${func_Param_CoommandName}" func_Param_CoommandParams[@]
+    check_ok_then_excute_command "${func_Title_Log}" "${func_Param_IsExcute}" "${func_Param_CoommandName}" func_Param_CoommandParams[@]
 
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" \
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" \
         "\r\n!!! ~ OPPS!! Execute Command Fail. \r\n- Command Name : ${func_Param_CoommandName}\r\n- Command Params: (${func_Param_CoommandParams[*]}) \r\n => fail ~ !!!" "${func_Param_ChangeFolder}"
 
     echo "${func_Title_Log} End ***"
@@ -694,10 +694,10 @@ function check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
 # @param ${!2} : source command list : 要驗證的 command list。 e.g. sample_CommandList[@]
 # @param ${3} : found first command : 第一個收尋到的 commmand。 e.g. sample_Found_First_Command .
 #
-# sample e.g. get_First_Found_Command_From_InputCommandist_By_Using_Which_Command "${sample_Title_Log}" sample_CommandList[@] sample_Found_First_Command
+# sample e.g. get_first_found_command_from_input_command_list_by_using_which_command "${sample_Title_Log}" sample_CommandList[@] sample_Found_First_Command
 #
 # @retrun 0: 成功， 99: 失敗 (Not Found Command)。
-function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command() {
+function get_first_found_command_from_input_command_list_by_using_which_command() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -713,9 +713,9 @@ function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command() {
     local func_Param_CommandList=("${!2}")
     local func_Param_Found_First_Command="${3}"
 
-    checkInputParam "${func_Title_Log}" func_Param_TitleLog "${func_Param_TitleLog}"
-    checkInputParam "${func_Title_Log}" func_Param_CommandList "${func_Param_CommandList[@]}"
-    checkInputParam "${func_Title_Log}" func_Param_Found_First_Command "${func_Param_Found_First_Command}"
+    check_input_param "${func_Title_Log}" func_Param_TitleLog "${func_Param_TitleLog}"
+    check_input_param "${func_Title_Log}" func_Param_CommandList "${func_Param_CommandList[@]}"
+    check_input_param "${func_Title_Log}" func_Param_Found_First_Command "${func_Param_Found_First_Command}"
 
     # 應用於函式中主體的 title log。
     local func_MainBody_Title_Log="${func_Title_Log} ${1}"
@@ -752,26 +752,26 @@ function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command() {
 }
 
 # ============= This is separation line =============
-# @brief function : 轉呼叫 [get_First_Found_Command_From_InputCommandist_By_Using_Which_Command]，沒找到會切換路徑並中斷程式。
+# @brief function : 轉呼叫 [get_first_found_command_from_input_command_list_by_using_which_command]，沒找到會切換路徑並中斷程式。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
-#   - 會呼叫 [get_First_Found_Command_From_InputCommandist_By_Using_Which_Command] 來驗證 ， input command list 透過 which 命令是否有找到其中一個 command。
+#   - 會呼叫 [get_first_found_command_from_input_command_list_by_using_which_command] 來驗證 ， input command list 透過 which 命令是否有找到其中一個 command。
 #   - 若 找不到 合法的 command:
 #     - dump 錯誤訊息。 (以及 error code : 99 失敗)。
 #     - 則切換指定的資料夾路徑。
 #     - 離開中斷 shell。
 #
-# === copy from [get_First_Found_Command_From_InputCommandist_By_Using_Which_Command] - Begin
+# === copy from [get_first_found_command_from_input_command_list_by_using_which_command] - Begin
 # @param ${1} : 要輸出的 title log : e.g. "${sample_Title_Log}" .
 # @param ${!2} : source command list : 要驗證的 command list。 e.g. sample_CommandList[@]
 # @param ${3} : found first command : 第一個收尋到的 commmand。 e.g. sample_Found_First_Command .
-# === copy from [get_First_Found_Command_From_InputCommandist_By_Using_Which_Command] - End
+# === copy from [get_first_found_command_from_input_command_list_by_using_which_command] - End
 #
 # @param ${4}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
 #
-# sample e.g. get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If__ResultFail_Then_ChangeFolder "${sample_Title_Log}" sample_CommandList[@] sample_Found_First_Command "${sample_ChangeFolder}"
+# sample e.g. get_first_found_command_from_input_command_list_by_using_which_command__if__result_fail_then_change_folder "${sample_Title_Log}" sample_CommandList[@] sample_Found_First_Command "${sample_ChangeFolder}"
 #
 # @retrun 0: 成功， 404: 失敗 (Not Found Command)。
-function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If__ResultFail_Then_ChangeFolder() {
+function get_first_found_command_from_input_command_list_by_using_which_command__if__result_fail_then_change_folder() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -788,11 +788,11 @@ function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If
     local func_Param_Found_First_Command="${3}"
     local func_Param_ChangeFolder="${4}"
 
-    get_First_Found_Command_From_InputCommandist_By_Using_Which_Command \
+    get_first_found_command_from_input_command_list_by_using_which_command \
         "${func_Title_Log}" func_Param_CommandList[@] "${func_Param_Found_First_Command}"
 
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" \
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" \
         "\r\n!!! ~ OPPS!! \r\nInput Command List : (${func_Param_CommandList[*]}) \r\nNot found by using \`which\` command. => fail ~ !!!" "${func_Param_ChangeFolder}"
 
     echo "${func_Title_Log} End ***"
@@ -806,7 +806,7 @@ function get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If
 # ============= This is separation line =============
 # @brief function : 秀 log 的顏色設定，可由此參考 dump log 是否需要調整顏色，使重要訊息可以呈現出來。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
-function show_Colors_Info() {
+function show_colors_info() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
@@ -814,77 +814,77 @@ function show_Colors_Info() {
     echo "${func_Title_Log} Begin ***"
 
     # reset
-    _show_One_Color generalConst_Colors_Color_Off
+    _show_one_color generalConst_Colors_Color_Off
 
     # Regular Colors
-    _show_One_Color GENERAL_CONST_COLORS_BLACK
-    _show_One_Color GENERAL_CONST_COLORS_RED
-    _show_One_Color GENERAL_CONST_COLORS_GREEN
-    _show_One_Color GENERAL_CONST_COLORS_YELLOW
-    _show_One_Color GENERAL_CONST_COLORS_BLUE
-    _show_One_Color GENERAL_CONST_COLORS_PURPLE
-    _show_One_Color GENERAL_CONST_COLORS_CYAN
-    _show_One_Color GENERAL_CONST_COLORS_WHITE
+    _show_one_color GENERAL_CONST_COLORS_BLACK
+    _show_one_color GENERAL_CONST_COLORS_RED
+    _show_one_color GENERAL_CONST_COLORS_GREEN
+    _show_one_color GENERAL_CONST_COLORS_YELLOW
+    _show_one_color GENERAL_CONST_COLORS_BLUE
+    _show_one_color GENERAL_CONST_COLORS_PURPLE
+    _show_one_color GENERAL_CONST_COLORS_CYAN
+    _show_one_color GENERAL_CONST_COLORS_WHITE
 
     # Bold
-    _show_One_Color GENERAL_CONST_COLORS_BBLACK
-    _show_One_Color GENERAL_CONST_COLORS_BRED
-    _show_One_Color GENERAL_CONST_COLORS_BGREEN
-    _show_One_Color GENERAL_CONST_COLORS_BYELLOW
-    _show_One_Color GENERAL_CONST_COLORS_BBLUE
-    _show_One_Color GENERAL_CONST_COLORS_BPURPLE
-    _show_One_Color GENERAL_CONST_COLORS_BCYAN
-    _show_One_Color GENERAL_CONST_COLORS_BWHITE
+    _show_one_color GENERAL_CONST_COLORS_BBLACK
+    _show_one_color GENERAL_CONST_COLORS_BRED
+    _show_one_color GENERAL_CONST_COLORS_BGREEN
+    _show_one_color GENERAL_CONST_COLORS_BYELLOW
+    _show_one_color GENERAL_CONST_COLORS_BBLUE
+    _show_one_color GENERAL_CONST_COLORS_BPURPLE
+    _show_one_color GENERAL_CONST_COLORS_BCYAN
+    _show_one_color GENERAL_CONST_COLORS_BWHITE
 
     # Underline
-    _show_One_Color GENERAL_CONST_COLORS_UBLACK
-    _show_One_Color GENERAL_CONST_COLORS_URED
-    _show_One_Color GENERAL_CONST_COLORS_UGREEN
-    _show_One_Color GENERAL_CONST_COLORS_UYELLOW
-    _show_One_Color GENERAL_CONST_COLORS_UBLUE
-    _show_One_Color GENERAL_CONST_COLORS_UPURPLE
-    _show_One_Color GENERAL_CONST_COLORS_UCYAN
-    _show_One_Color GENERAL_CONST_COLORS_UWHITE
+    _show_one_color GENERAL_CONST_COLORS_UBLACK
+    _show_one_color GENERAL_CONST_COLORS_URED
+    _show_one_color GENERAL_CONST_COLORS_UGREEN
+    _show_one_color GENERAL_CONST_COLORS_UYELLOW
+    _show_one_color GENERAL_CONST_COLORS_UBLUE
+    _show_one_color GENERAL_CONST_COLORS_UPURPLE
+    _show_one_color GENERAL_CONST_COLORS_UCYAN
+    _show_one_color GENERAL_CONST_COLORS_UWHITE
 
     # Background
-    _show_One_Color GENERAL_CONST_COLORS_ON_BLACK
-    _show_One_Color GENERAL_CONST_COLORS_ON_RED
-    _show_One_Color GENERAL_CONST_COLORS_ON_GREEN
-    _show_One_Color GENERAL_CONST_COLORS_ON_YELLOW
-    _show_One_Color GENERAL_CONST_COLORS_ON_BLUE
-    _show_One_Color GENERAL_CONST_COLORS_ON_PURPLE
-    _show_One_Color GENERAL_CONST_COLORS_ON_CYAN
-    _show_One_Color GENERAL_CONST_COLORS_ON_WHITE
+    _show_one_color GENERAL_CONST_COLORS_ON_BLACK
+    _show_one_color GENERAL_CONST_COLORS_ON_RED
+    _show_one_color GENERAL_CONST_COLORS_ON_GREEN
+    _show_one_color GENERAL_CONST_COLORS_ON_YELLOW
+    _show_one_color GENERAL_CONST_COLORS_ON_BLUE
+    _show_one_color GENERAL_CONST_COLORS_ON_PURPLE
+    _show_one_color GENERAL_CONST_COLORS_ON_CYAN
+    _show_one_color GENERAL_CONST_COLORS_ON_WHITE
 
     # High Intensity
-    _show_One_Color GENERAL_CONST_COLORS_IBLACK
-    _show_One_Color GENERAL_CONST_COLORS_IRED
-    _show_One_Color GENERAL_CONST_COLORS_IGREEN
-    _show_One_Color GENERAL_CONST_COLORS_IYELLOW
-    _show_One_Color GENERAL_CONST_COLORS_IBLUE
-    _show_One_Color GENERAL_CONST_COLORS_IPURPLE
-    _show_One_Color GENERAL_CONST_COLORS_ICYAN
-    _show_One_Color GENERAL_CONST_COLORS_IWHITE
+    _show_one_color GENERAL_CONST_COLORS_IBLACK
+    _show_one_color GENERAL_CONST_COLORS_IRED
+    _show_one_color GENERAL_CONST_COLORS_IGREEN
+    _show_one_color GENERAL_CONST_COLORS_IYELLOW
+    _show_one_color GENERAL_CONST_COLORS_IBLUE
+    _show_one_color GENERAL_CONST_COLORS_IPURPLE
+    _show_one_color GENERAL_CONST_COLORS_ICYAN
+    _show_one_color GENERAL_CONST_COLORS_IWHITE
 
     # Bold High Intensity
-    _show_One_Color GENERAL_CONST_COLORS_BIBLACK
-    _show_One_Color GENERAL_CONST_COLORS_BIRED
-    _show_One_Color GENERAL_CONST_COLORS_BIGREEN
-    _show_One_Color GENERAL_CONST_COLORS_BIYELLOW
-    _show_One_Color GENERAL_CONST_COLORS_BIBLUE
-    _show_One_Color GENERAL_CONST_COLORS_BIPURPLE
-    _show_One_Color GENERAL_CONST_COLORS_BICYAN
-    _show_One_Color GENERAL_CONST_COLORS_BIWHITE
+    _show_one_color GENERAL_CONST_COLORS_BIBLACK
+    _show_one_color GENERAL_CONST_COLORS_BIRED
+    _show_one_color GENERAL_CONST_COLORS_BIGREEN
+    _show_one_color GENERAL_CONST_COLORS_BIYELLOW
+    _show_one_color GENERAL_CONST_COLORS_BIBLUE
+    _show_one_color GENERAL_CONST_COLORS_BIPURPLE
+    _show_one_color GENERAL_CONST_COLORS_BICYAN
+    _show_one_color GENERAL_CONST_COLORS_BIWHITE
 
     # High Intensity backgrounds
-    _show_One_Color GENERAL_CONST_COLORS_ON_IBLACK
-    _show_One_Color GENERAL_CONST_COLORS_ON_IRED
-    _show_One_Color GENERAL_CONST_COLORS_ON_IGREEN
-    _show_One_Color GENERAL_CONST_COLORS_ON_IYELLOW
-    _show_One_Color GENERAL_CONST_COLORS_ON_IBLUE
-    _show_One_Color GENERAL_CONST_COLORS_ON_IPURPLE
-    _show_One_Color GENERAL_CONST_COLORS_ON_ICYAN
-    _show_One_Color GENERAL_CONST_COLORS_ON_IWHITE
+    _show_one_color GENERAL_CONST_COLORS_ON_IBLACK
+    _show_one_color GENERAL_CONST_COLORS_ON_IRED
+    _show_one_color GENERAL_CONST_COLORS_ON_IGREEN
+    _show_one_color GENERAL_CONST_COLORS_ON_IYELLOW
+    _show_one_color GENERAL_CONST_COLORS_ON_IBLUE
+    _show_one_color GENERAL_CONST_COLORS_ON_IPURPLE
+    _show_one_color GENERAL_CONST_COLORS_ON_ICYAN
+    _show_one_color GENERAL_CONST_COLORS_ON_IWHITE
 
     echo "${func_Title_Log} End ***"
     echo
@@ -900,8 +900,8 @@ function show_Colors_Info() {
 #
 # @param ${1}: 要輸出的 Color 參數名稱，內部會取其實際內容。 e.g. sample_Color_Name
 #
-# sample e.g. _show_One_Color sample_Color_Name
-function _show_One_Color() {
+# sample e.g. _show_one_color sample_Color_Name
+function _show_one_color() {
     local func_Color_Name=${1}
     local func_Color_Value=$(eval echo \$${1})
     echo "Color Value Name : ${GENERAL_CONST_COLORS_WHITE}${func_Color_Name} = ${func_Color_Value}I love you${generalConst_Colors_Color_Off}"

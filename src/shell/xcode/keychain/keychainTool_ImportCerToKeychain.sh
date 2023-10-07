@@ -152,9 +152,9 @@ function parseReruiredSection() {
     echo "${func_Title_Log} ||==========> Begin <==========||"
 
     # check input parameters
-    checkInputParam "${func_Title_Log}" thisShell_Config_required_keychain_name "${thisShell_Config_required_keychain_name}"
-    checkInputParam "${func_Title_Log}" thisShell_Config_required_keychain_password "${thisShell_Config_required_keychain_password}"
-    checkInputParam "${func_Title_Log}" thisShell_Config_required_cer_info_key_names "${thisShell_Config_required_cer_info_key_names[@]}"
+    check_input_param "${func_Title_Log}" thisShell_Config_required_keychain_name "${thisShell_Config_required_keychain_name}"
+    check_input_param "${func_Title_Log}" thisShell_Config_required_keychain_password "${thisShell_Config_required_keychain_password}"
+    check_input_param "${func_Title_Log}" thisShell_Config_required_cer_info_key_names "${thisShell_Config_required_cer_info_key_names[@]}"
 
     echo
     echo "${func_Title_Log} ============= Param : Begin ============="
@@ -196,8 +196,8 @@ function check_ExtraCerInfoUnit_Legal() {
     local func_Check_Legal_CerInfoKeyName_FilePassword_Separator=thisShell_Config_${func_Param_CerInfoKeyName}_file_password_separator
     local func_Check_Legal_CerInfoKeyName_FilePassword_List=thisShell_Config_${func_Param_CerInfoKeyName}_file_password_list
 
-    # checkInputParam "${func_Title_Log}" ${func_Check_Legal_CerInfoKeyName_FilePassword_Separator} "$(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
-    checkInputParam "${func_Title_Log}" ${func_Check_Legal_CerInfoKeyName_FilePassword_List} "$(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
+    # check_input_param "${func_Title_Log}" ${func_Check_Legal_CerInfoKeyName_FilePassword_Separator} "$(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
+    check_input_param "${func_Title_Log}" ${func_Check_Legal_CerInfoKeyName_FilePassword_List} "$(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
 
     echo "${func_Title_Log} ${func_Check_Legal_CerInfoKeyName_FilePassword_Separator} : $(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
 
@@ -345,8 +345,8 @@ function execute_Add_Cer_To_Keychain_From_ExtraCerInfoUnit() {
         local aFile=""
         local aPassword=""
 
-        # splitStringToPair 會自行判斷是否要進行 split，所以可以直接呼叫之。
-        splitStringToPair "${thisShell_Title_Log}" "${aFilePassword}" "${func_FilePassword_Separator}" aFile aPassword
+        # split_string_to_pair 會自行判斷是否要進行 split，所以可以直接呼叫之。
+        split_string_to_pair "${thisShell_Title_Log}" "${aFilePassword}" "${func_FilePassword_Separator}" aFile aPassword
 
         addCerToKeychain "${func_Title_Log}" "${thisShell_Config_required_keychain_name}" "${aFile}" "${aPassword}"
 
@@ -407,7 +407,7 @@ function process_Init() {
     thisShell_OldPath=$(pwd)
 
     # 切換執行目錄.
-    changeToDirectory "${thisShell_Title_Log}" "${func_Shell_WorkPath}"
+    change_to_directory "${thisShell_Title_Log}" "${func_Shell_WorkPath}"
 
     # 設定成完整路徑。
     thisShell_Shell_WorkPath=$(pwd)
@@ -430,7 +430,7 @@ function process_Deal_InputParam() {
     thisShell_Param_ConfigFile="${1}"
 
     # check input parameters
-    checkInputParam "${func_Title_Log}" thisShell_Param_ConfigFile "${thisShell_Param_ConfigFile}"
+    check_input_param "${func_Title_Log}" thisShell_Param_ConfigFile "${thisShell_Param_ConfigFile}"
 
     echo
     echo "${func_Title_Log} ============= Param : Begin ============="
@@ -514,7 +514,7 @@ function process_Deal_Paths() {
     # 判斷是否要切換到 config file 設定的 work path。
     # 有的話，會切換到該目錄，再執行 keycahin 相關命令 (之後會切回到原有呼叫的目錄)。
     if [ -n "${thisShell_Config_optional_work_path}" ]; then
-        changeToDirectory "${thisShell_Title_Log}" "${thisShell_Config_optional_work_path}"
+        change_to_directory "${thisShell_Title_Log}" "${thisShell_Config_optional_work_path}"
     fi
 
     thisShell_Execute_Keychain_WorkPath=$(pwd)
@@ -617,7 +617,7 @@ function process_Finish() {
 
     # 全部完成
     # 切回原有執行目錄.
-    changeToDirectory "${thisShell_Title_Log}" "${thisShell_OldPath}"
+    change_to_directory "${thisShell_Title_Log}" "${thisShell_OldPath}"
 
     echo
     echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : End <==========|| Elapsed time: ${SECONDS}s"

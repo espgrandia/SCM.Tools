@@ -72,7 +72,7 @@ function process_Init() {
   thisShell_OldPath=$(pwd)
 
   # 切換執行目錄.
-  changeToDirectory "${thisShell_Title_Log}" "${func_Shell_WorkPath}"
+  change_to_directory "${thisShell_Title_Log}" "${func_Shell_WorkPath}"
 
   # 設定成完整路徑。
   thisShell_Shell_WorkPath=$(pwd)
@@ -94,7 +94,7 @@ function process_Deal_InputParam() {
   thisShell_Param_ProvisionProfile_SourceFolder="${1}"
 
   # check input parameters
-  checkInputParam "${thisShell_Title_Log}" thisShell_Param_ProvisionProfile_SourceFolder "${thisShell_Param_ProvisionProfile_SourceFolder}"
+  check_input_param "${thisShell_Title_Log}" thisShell_Param_ProvisionProfile_SourceFolder "${thisShell_Param_ProvisionProfile_SourceFolder}"
 
   echo
   echo "${func_Title_Log} ||==========> Begin <==========||"
@@ -156,7 +156,7 @@ function process_Finish() {
 
   # 全部完成
   # 切回原有執行目錄.
-  changeToDirectory "${thisShell_Title_Log}" "${thisShell_OldPath}"
+  change_to_directory "${thisShell_Title_Log}" "${thisShell_OldPath}"
 
   echo
   echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : End <==========|| Elapsed time: ${SECONDS}s"

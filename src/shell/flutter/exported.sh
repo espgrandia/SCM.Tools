@@ -207,9 +207,9 @@ function parseReruiredSection() {
     echo "${thisShell_Title_Log} ============= parse required section : Begin ============="
 
     # check input parameters
-    checkInputParam "${thisShell_Title_Log}" thisShell_Config_required_paths_work "${thisShell_Config_required_paths_work}"
-    checkInputParam "${thisShell_Title_Log}" thisShell_Config_required_paths_output "${thisShell_Config_required_paths_output}"
-    checkInputParam "${thisShell_Title_Log}" thisShell_Config_required_subcommands "${thisShell_Config_required_subcommands[@]}"
+    check_input_param "${thisShell_Title_Log}" thisShell_Config_required_paths_work "${thisShell_Config_required_paths_work}"
+    check_input_param "${thisShell_Title_Log}" thisShell_Config_required_paths_output "${thisShell_Config_required_paths_output}"
+    check_input_param "${thisShell_Title_Log}" thisShell_Config_required_subcommands "${thisShell_Config_required_subcommands[@]}"
 
     echo
     echo "${thisShell_Title_Log} ============= Param : Begin ============="
@@ -295,7 +295,7 @@ function parseBuildConfigTypeSection() {
 
             local func_Check_Value="${thisShell_Config_optional_build_config_types[${func_i}]}"
 
-            check_Legal_Val_In_List__If__ResultFail_Then_ChangeFolder "${thisShell_Title_Log}" \
+            check_legal_val_in_list__if__result_fail_then_change_folder "${thisShell_Title_Log}" \
                 "${func_Check_Value}" func_SrcList[@] "${thisShell_OldPath}"
 
         done
@@ -316,8 +316,8 @@ function parseDartDefine() {
         echo "${thisShell_Title_Log} ============= parse "${configConst_BuildParam_Key_DartDefine}" : Begin ============="
 
         # check input parameters
-        checkInputParam "${thisShell_Title_Log}" thisShell_Config_optional_dart_define_defines "${thisShell_Config_optional_dart_define_defines[@]}"
-        checkInputParam "${thisShell_Title_Log}" thisShell_Config_optional_dart_define_separator "${thisShell_Config_optional_dart_define_separator}"
+        check_input_param "${thisShell_Title_Log}" thisShell_Config_optional_dart_define_defines "${thisShell_Config_optional_dart_define_defines[@]}"
+        check_input_param "${thisShell_Title_Log}" thisShell_Config_optional_dart_define_separator "${thisShell_Config_optional_dart_define_separator}"
 
         echo
         echo "${thisShell_Title_Log} ============= Param : Begin ============="
@@ -334,7 +334,7 @@ function parseDartDefine() {
             local aKey
             local aVal
 
-            splitStringToPair "${thisShell_Title_Log}" "${aDefine}" "${thisShell_Config_optional_dart_define_separator}" aKey aVal
+            split_string_to_pair "${thisShell_Title_Log}" "${aDefine}" "${thisShell_Config_optional_dart_define_separator}" aKey aVal
 
             # 第一次，尚未設定。
             if [ -z "${thisShell_DartDef_PartOf_Command}" ] && [ -z "${thisShell_DartDef_PartOf_FileName}" ]; then
@@ -352,8 +352,8 @@ function parseDartDefine() {
         done
 
         # check input parameters
-        checkInputParam "${thisShell_Title_Log}" thisShell_DartDef_PartOf_Command "${thisShell_DartDef_PartOf_Command[@]}"
-        checkInputParam "${thisShell_Title_Log}" thisShell_DartDef_PartOf_FileName "${thisShell_DartDef_PartOf_FileName}"
+        check_input_param "${thisShell_Title_Log}" thisShell_DartDef_PartOf_Command "${thisShell_DartDef_PartOf_Command[@]}"
+        check_input_param "${thisShell_Title_Log}" thisShell_DartDef_PartOf_FileName "${thisShell_DartDef_PartOf_FileName}"
 
         echo "${thisShell_Title_Log} thisShell_DartDef_PartOf_Command  : ${thisShell_DartDef_PartOf_Command}"
         echo "${thisShell_Title_Log} thisShell_DartDef_PartOf_FileName : ${thisShell_DartDef_PartOf_FileName}"
@@ -385,7 +385,7 @@ function export_NotyetSupportSubcommand() {
 
     echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***${func_Color_Off}"
 
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "50" "!!! ~ OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***" "${thisShell_OldPath}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "50" "!!! ~ OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***" "${thisShell_OldPath}"
 }
 ### ==================== NotyetSupportSubcommand : End ====================
 
@@ -427,7 +427,7 @@ function export_apk() {
     local func_Param_BuildConfigType="${1}"
 
     # check input parameters
-    checkInputParam "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
+    check_input_param "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
 
     echo
     echo "${func_Title_Log} ============= Param : Begin ============="
@@ -487,27 +487,27 @@ function export_apk() {
     local func_Build_Seperator="-"
 
     # 若有 prefix file name
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_prefix_file_name "${func_Build_Seperator}"
 
     # 若有 flavor
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_flavor "${func_Build_Seperator}"
 
     # 若有 config type
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName func_Param_BuildConfigType "${func_Build_Seperator}"
 
     # 若有 build_name
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_build_name "${func_Build_Seperator}"
 
     # 若有 build_number
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_build_number "${func_Build_Seperator}"
 
     # 若有 dart-define
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_DartDef_PartOf_FileName "${func_Build_Seperator}"
 
     # 補上結尾
@@ -544,7 +544,7 @@ function export_apk() {
     ${func_Build_Command_Name} ${func_Build_Command}
 
     # check result - build apk
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
 
     # ===> copy apk to destination folder <===
     echo "${func_Title_Log} ===> copy ${func_Param_BuildConfigType} ${func_Subcommand} to output folder <==="
@@ -552,7 +552,7 @@ function export_apk() {
     cp -r "${func_Origin_Build_FileName}" "${thisShell_Config_required_paths_output}/${func_Build_FileName}"
 
     # check result - copy apk
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy ${func_Param_BuildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${thisShell_OldPath}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ copy ${func_Param_BuildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${thisShell_OldPath}"
 
     echo "${func_Title_Log} 打包 ${func_Subcommand} 已經完成"
     echo "${func_Title_Log} output file name : ${func_Build_FileName}"
@@ -588,7 +588,7 @@ function export_appbundle() {
     local func_Param_BuildConfigType="${1}"
 
     # check input parameters
-    checkInputParam "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
+    check_input_param "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
 
     echo
     echo "${func_Title_Log} ============= Param : Begin ============="
@@ -660,27 +660,27 @@ function export_appbundle() {
     local func_Build_Seperator="-"
 
     # 若有 prefix file name
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_prefix_file_name "${func_Build_Seperator}"
 
     # 若有 flavor
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_flavor "${func_Build_Seperator}"
 
     # 若有 config type
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName func_Param_BuildConfigType "${func_Build_Seperator}"
 
     # 若有 build_name
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_build_name "${func_Build_Seperator}"
 
     # 若有 build_number
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_build_number "${func_Build_Seperator}"
 
     # 若有 dart-define
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_DartDef_PartOf_FileName "${func_Build_Seperator}"
 
     # 補上結尾
@@ -720,7 +720,7 @@ function export_appbundle() {
     ${func_Build_Command_Name} ${func_Build_Command}
 
     # check result - build appbundle
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
 
     # ===> copy aab to destination folder <===
     echo "${func_Title_Log} ===> copy ${func_Param_BuildConfigType} ${func_Subcommand} to output folder <==="
@@ -728,7 +728,7 @@ function export_appbundle() {
     cp -r "${func_Origin_Build_FileName}" "${thisShell_Config_required_paths_output}/${func_Build_FileName}"
 
     # check result - copy aab
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy ${func_Param_BuildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${thisShell_OldPath}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ copy ${func_Param_BuildConfigType} ${func_Subcommand} to output folder => fail ~ !!!" "${thisShell_OldPath}"
 
     echo "${func_Title_Log} 打包 ${func_Subcommand} 已經完成"
     echo "${func_Title_Log} output file name : ${func_Build_FileName}"
@@ -785,7 +785,7 @@ function export_ios() {
     local func_Param_BuildConfigType="${1}"
 
     # check input parameters
-    checkInputParam "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
+    check_input_param "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
 
     echo
     echo "${func_Title_Log} ============= Param : Begin ============="
@@ -840,27 +840,27 @@ function export_ios() {
     local func_Build_Seperator="-"
 
     # 若有 prefix file name
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_prefix_file_name "${func_Build_Seperator}"
 
     # 若有 flavor
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_flavor "${func_Build_Seperator}"
 
     # 若有 config type
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName func_Param_BuildConfigType "${func_Build_Seperator}"
 
     # 若有 build_name
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_build_name "${func_Build_Seperator}"
 
     # 若有 build_number
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_Config_optional_build_number "${func_Build_Seperator}"
 
     # 若有 dart-define
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FileName thisShell_DartDef_PartOf_FileName "${func_Build_Seperator}"
 
     # 補上結尾
@@ -894,13 +894,13 @@ function export_ios() {
     ${func_Build_Command_Name} ${func_Build_Command}
 
     # check result - build ios
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
 
     # ===> zip Payload to destination folder <===
     if [ -d ${func_Origin_Build_AppFolder} ]; then
 
         # 切換到 輸出目錄，再打包才不會包到不該包的資料夾。
-        changeToDirectory "${func_Title_Log}" "${thisShell_Config_required_paths_output}"
+        change_to_directory "${func_Title_Log}" "${thisShell_Config_required_paths_output}"
 
         # 打包 ipa 的固定資料夾名稱。
         mkdir Payload
@@ -908,16 +908,16 @@ function export_ios() {
         cp -r "${thisShell_Flutter_WorkPath}/${func_Origin_Build_AppFolder}" "${thisShell_Config_required_paths_output}/Payload"
 
         # check result - copy iOS Payload
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${thisShell_OldPath}"
+        check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${thisShell_OldPath}"
 
         # zip -r -m iOS-${func_Param_BuildConfigType}-${func_iOS_BundleVersion}-${thisShell_Param_DartDef_Val_GitHash}-$(date "+%Y%m%d%H%M").ipa Payload
         zip -r -m ${func_Build_FileName} Payload
 
         # check result - zip iOS Payload
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ zip iOS Payload => fail ~ !!!" "${thisShell_OldPath}"
+        check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ zip iOS Payload => fail ~ !!!" "${thisShell_OldPath}"
 
         # 切換到 flutter work path
-        changeToDirectory "${func_Title_Log}" "${thisShell_Flutter_WorkPath}"
+        change_to_directory "${func_Title_Log}" "${thisShell_Flutter_WorkPath}"
 
         echo "${func_Title_Log} 打包 ${func_Subcommand} 很順利 😄"
         say "${func_Title_Log} 打包 ${func_Subcommand} 成功"
@@ -928,7 +928,7 @@ function export_ios() {
         say "${func_Title_Log} 打包 ${func_Subcommand} 失敗"
 
         # check result - copy ios
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${thisShell_OldPath}"
+        check_result_if_fail_then_change_folder "${func_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${thisShell_OldPath}"
     fi
 
     # ===> report note - final 設定 <===
@@ -982,7 +982,7 @@ function export_ipa() {
     local func_Param_BuildConfigType="${1}"
 
     # check input parameters
-    checkInputParam "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
+    check_input_param "${func_Title_Log}" func_Param_BuildConfigType "${func_Param_BuildConfigType}"
 
     echo
     echo "${func_Title_Log} ============= Param : Begin ============="
@@ -1037,27 +1037,27 @@ function export_ipa() {
     local func_Build_Seperator="-"
 
     # 若有 prefix file name
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FolderName thisShell_Config_optional_prefix_file_name "${func_Build_Seperator}"
 
     # 若有 flavor
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FolderName thisShell_Config_optional_flavor "${func_Build_Seperator}"
 
     # 若有 config type
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FolderName func_Param_BuildConfigType "${func_Build_Seperator}"
 
     # 若有 build_name
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FolderName thisShell_Config_optional_build_name "${func_Build_Seperator}"
 
     # 若有 build_number
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FolderName thisShell_Config_optional_build_number "${func_Build_Seperator}"
 
     # 若有 dart-define
-    append_DestString_From_SourceString_With_Separator "${func_Title_Log}" \
+    append_dest_string_from_source_string_with_separator "${func_Title_Log}" \
         func_Build_FolderName thisShell_DartDef_PartOf_FileName "${func_Build_Seperator}"
 
     # 補上結尾
@@ -1099,7 +1099,7 @@ function export_ipa() {
     ${func_Build_Command_Name} ${func_Build_Command}
 
     # check result - build ipa
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ ${func_Build_Command_Name} ${func_Build_Command} => fail ~ !!!" "${thisShell_OldPath}"
 
     # ===> zip Payload to destination folder <===
     if [ -d ${func_Origin_Build_AppFolder} ]; then
@@ -1110,7 +1110,7 @@ function export_ipa() {
         mv -v "${thisShell_Flutter_WorkPath}/${func_Origin_Build_AppFolder}" "${thisShell_Config_required_paths_output}/${func_Build_FolderName}"
 
         # check result - mv iOS archive
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ mv -v iOS archive => fail ~ !!!" "${thisShell_OldPath}"
+        check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ mv -v iOS archive => fail ~ !!!" "${thisShell_OldPath}"
 
         echo "${func_Title_Log} 打包 ${func_Subcommand} 很順利 😄"
         say "${func_Title_Log} 打包 ${func_Subcommand} 成功"
@@ -1121,7 +1121,7 @@ function export_ipa() {
         say "${func_Title_Log} 打包 ${func_Subcommand} 失敗"
 
         # check result - copy ios
-        checkResultFail_And_ChangeFolder "${func_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${thisShell_OldPath}"
+        check_result_if_fail_then_change_folder "${func_Title_Log}" "100" "!!! ~ Not found ${func_Origin_Build_AppFolder} => fail ~ !!!" "${thisShell_OldPath}"
     fi
 
     # ===> report note - final 設定 <===
@@ -1208,7 +1208,7 @@ function process_Init() {
     thisShell_OldPath=$(pwd)
 
     # 切換執行目錄.
-    changeToDirectory "${thisShell_Title_Log}" "${func_Shell_WorkPath}"
+    change_to_directory "${thisShell_Title_Log}" "${func_Shell_WorkPath}"
 
     # 設定成完整路徑。
     thisShell_Shell_WorkPath=$(pwd)
@@ -1226,7 +1226,7 @@ function process_Deal_InputParam() {
     thisShell_Param_BuildConfigFile="${1}"
 
     # check input parameters
-    checkInputParam "${thisShell_Title_Log}" thisShell_Param_BuildConfigFile "${thisShell_Param_BuildConfigFile}"
+    check_input_param "${thisShell_Title_Log}" thisShell_Param_BuildConfigFile "${thisShell_Param_BuildConfigFile}"
 
     echo
     echo "${thisShell_Title_Log} ============= Param : Begin ============="
@@ -1336,7 +1336,7 @@ function process_Parse_BuildConfig() {
 function process_Deal_Paths() {
 
     # 切換到 config file 設定的 flutter project work path: 為 flutter 專案的工作目錄 shell 目錄 (之後會切回到原有呼叫的目錄)
-    changeToDirectory "${thisShell_Title_Log}" "${thisShell_Config_required_paths_work}"
+    change_to_directory "${thisShell_Title_Log}" "${thisShell_Config_required_paths_work}"
     thisShell_Flutter_WorkPath=$(pwd)
 
     echo
@@ -1387,7 +1387,7 @@ function process_Create_ReportNote_Init() {
 function process_Execute_Build_Sumcommands() {
 
     # 判斷是否要出版 aar
-    check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_aar[1]} export_aar
+    check_ok_then_excute_command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_aar[1]} export_aar
 
     # 處理有 build config type 的 subcommands.
     # 先設定成 default 的 build config type。
@@ -1404,31 +1404,31 @@ function process_Execute_Build_Sumcommands() {
 
         local aBuildConfigType=${func_BuildConfigTypes[${func_i}]}
 
-        # 要帶入的 params，使用 check_OK_Then_Excute_Command 來判斷是否要執行，所以要用 array 方式帶入。
+        # 要帶入的 params，使用 check_ok_then_excute_command 來判斷是否要執行，所以要用 array 方式帶入。
         local func_CommandParams=("${aBuildConfigType}")
 
         # 判斷是否要出版 apk
-        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_apk[1]} export_apk func_CommandParams[@]
+        check_ok_then_excute_command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_apk[1]} export_apk func_CommandParams[@]
 
         # 判斷是否要出版 appbundle
-        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_appbundle[1]} export_appbundle func_CommandParams[@]
+        check_ok_then_excute_command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_appbundle[1]} export_appbundle func_CommandParams[@]
 
         # 判斷是否要出版 bundle
-        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_bundle[1]} export_bundle func_CommandParams[@]
+        check_ok_then_excute_command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_bundle[1]} export_bundle func_CommandParams[@]
 
         # 判斷是否要出版 ios
-        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_ios[1]} export_ios func_CommandParams[@]
+        check_ok_then_excute_command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_ios[1]} export_ios func_CommandParams[@]
 
         # 判斷是否要出版 ipa
-        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_ipa[1]} export_ipa func_CommandParams[@]
+        check_ok_then_excute_command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_ipa[1]} export_ipa func_CommandParams[@]
 
         # 判斷是否要出版 web : TODO: 只有支援 release，profile，之後可能還要判斷是否是合法的 BuildConfigType，是的話才處理。
-        check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_web[1]} export_web func_CommandParams[@]
+        check_ok_then_excute_command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_web[1]} export_web func_CommandParams[@]
 
     done
 
     # 判斷是否要出版 ios_framework
-    check_OK_Then_Excute_Command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_ios_framework[1]} export_ios_framework
+    check_ok_then_excute_command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_ios_framework[1]} export_ios_framework
 }
 
 # ============= This is separation line =============
@@ -1437,7 +1437,7 @@ function process_Finish() {
 
     # 全部完成
     # 切回原有執行目錄.
-    changeToDirectory "${thisShell_Title_Log}" "${thisShell_OldPath}"
+    change_to_directory "${thisShell_Title_Log}" "${thisShell_OldPath}"
 
     echo
     echo "${thisShell_Title_Log} ||==========> exported : End <==========|| Elapsed time: ${SECONDS}s"

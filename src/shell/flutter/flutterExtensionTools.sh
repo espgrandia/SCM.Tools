@@ -13,7 +13,7 @@
 # 注意事項:
 # - 使用此通用函式，有相依 include 檔案於
 #   - scm.tools/src/shell/generalConst.sh
-#     > func => checkResultFail_And_ChangeFolder ...
+#     > func => check_result_if_fail_then_change_folder ...
 #   - configConst.sh
 #     > export 參數 => configConst_CommandName_Fvm ...
 #   - include 方式 :
@@ -30,7 +30,7 @@
 #   - 說明 : 處理 fvm mode 資訊，會調整後續呼叫的 command name， 以及 command params，
 #           再轉呼叫 [Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder] 來執行命令。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
-#   - 主要參數及使用方式，請參考 [check_OK_Then_Excute_Command] 說明。
+#   - 主要參數及使用方式，請參考 [check_ok_then_excute_command] 說明。
 #
 # @Params :
 # @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
@@ -94,7 +94,7 @@ function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then
 
     # execute command
     # 呼叫通用函式來處理是否要執行該 command 以及錯誤的後續處理。
-    check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder "${func_Title_Log}" "${func_Param_IsExcute}" \
+    check_ok_then_excute_command__if__result_fail_then_change_folder "${func_Title_Log}" "${func_Param_IsExcute}" \
         "${func_CommandName}" func_CommandParams[@] "${func_Param_ChangeFolder}"
 
     echo "${func_Title_Log} End ***"
@@ -159,12 +159,12 @@ function flutterExtensionTools_Generator_VersionMachine_File() {
     # [execute command] : 於 terminal 先呼叫一次，有可能 local 第一次下載此版本，此時需要手動操作，使用者需按下允許更新。
     echo "${func_MainBody_Title_Log} Execute Command => [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} ] <="
     ${func_Execute_Command_Name} ${func_Execute_Command_Content}
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ ${func_Execute_Command_Name} ${func_Execute_Command_Content} => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ ${func_Execute_Command_Name} ${func_Execute_Command_Content} => fail ~ !!!" "${func_Param_ChangeFolderPath}"
 
     # [execute command] : 再次呼叫 command，此次會寫到檔案。
     echo "${func_MainBody_Title_Log} Execute Command => [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_Generator_File} ] <="
     ${func_Execute_Command_Name} ${func_Execute_Command_Content} >>"${func_Param_Generator_File}"
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_Generator_File} ] => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_Generator_File} ] => fail ~ !!!" "${func_Param_ChangeFolderPath}"
 
     echo ";" >>"${func_Param_Generator_File}"
 

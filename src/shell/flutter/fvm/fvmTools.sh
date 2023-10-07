@@ -11,7 +11,7 @@
 #
 # 注意事項:
 # - 使用此通用函式，有相依於 scm.tools/src/shell/generalTools.sh
-#   - 其中有使用到 [checkResultFail_And_ChangeFolder]，[get_First_Found_Command_From_InputCommandist_By_Using_Which_Command]，etc ...。
+#   - 其中有使用到 [check_result_if_fail_then_change_folder]，[get_first_found_command_from_input_command_list_by_using_which_command]，etc ...。
 #   - 需自行 include generalConst.sh
 #   - 需自行 include generalTools.sh
 #
@@ -61,7 +61,7 @@ function dealFvmSetActiveToGlobal() {
     echo "${func_Title_Log} func_PythonList : ${func_PythonList[@]}"
 
     # [get python command name] : 使用 scm.tools 工具。
-    get_First_Found_Command_From_InputCommandist_By_Using_Which_Command__If__ResultFail_Then_ChangeFolder \
+    get_first_found_command_from_input_command_list_by_using_which_command__if__result_fail_then_change_folder \
         "${func_Param_TitleLog}" func_PythonList[@] func_Execute_Python "${func_Param_ChangeFolder}"
 
     # [get python command name] : 可以到這，表示有找到合法的 python ， func_Execute_Python 一定有內容。
@@ -70,7 +70,7 @@ function dealFvmSetActiveToGlobal() {
     # [取得 jsonfile] : key 為 [flutterSdkVersion] 的內容。
     echo "${func_Title_Log} will execute python command : ${func_Execute_Python} ${func_Param_Parse_JsonFile_BY_Python} ${func_Param_Fvm_Config_File} ${func_Key_FlutterSdkVersion}"
     local func_FlutterSdkVersion=$(${func_Execute_Python} ${func_Param_Parse_JsonFile_BY_Python} ${func_Param_Fvm_Config_File} ${func_Key_FlutterSdkVersion})
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ parse json file => fail ~ !!!" "${2}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ parse json file => fail ~ !!!" "${2}"
 
     echo "${func_Title_Log} ${func_Key_FlutterSdkVersion} value : ${func_FlutterSdkVersion}"
 
@@ -80,17 +80,17 @@ function dealFvmSetActiveToGlobal() {
     echo "${func_Title_Log} ============= fvm - Begin ============="
     echo "${func_Title_Log} fvm list [before fvm global ${func_FlutterSdkVersion}]"
     fvm list
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
 
     echo
     echo "${func_Title_Log} fvm global ${func_FlutterSdkVersion}"
     fvm global "${func_FlutterSdkVersion}"
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm global ${func_FlutterSdkVersion} => fail ~ !!!" "${2}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ fvm global ${func_FlutterSdkVersion} => fail ~ !!!" "${2}"
 
     echo
     echo "${func_Title_Log} fvm list [after fvm global ${func_FlutterSdkVersion}]"
     fvm list
-    checkResultFail_And_ChangeFolder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
+    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
 
     echo "${func_Title_Log} ============= fvm - End ============="
     echo
