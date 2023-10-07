@@ -77,7 +77,7 @@ function releastNoteTools_Gen_Init() {
     echo >>"${func_Param_ReleaseNote_File}"
     echo "- Is Enable FVM Mode : ${func_Param_Is_Enable_FVM_Mode}" >>"${func_Param_ReleaseNote_File}"
     echo >>"${func_Param_ReleaseNote_File}"
-    echo "  > 只有為 ${generalConst_Enable_Flag} 才會使用 ${configConst_CommandName_Fvm} 功能呼叫 ${configConst_CommandName_Flutter} 。" >>"${func_Param_ReleaseNote_File}"
+    echo "  > 只有為 ${GENERAL_CONST_ENABLE_FLAG} 才會使用 ${configConst_CommandName_Fvm} 功能呼叫 ${configConst_CommandName_Flutter} 。" >>"${func_Param_ReleaseNote_File}"
 
     # ===> flutter pub get <===
     # 執行 flutter pub get 會以 pubspec.lock 為主要優先插件版本的參考檔案
@@ -196,7 +196,7 @@ function _releastNoteTools_Gen_Init_Excecute_Command_Section() {
     local func_Execute_Command_Content
 
     # 判斷 func_Param_Is_Enable_FVM_Mode
-    if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
+    if [ ${func_Param_Is_Enable_FVM_Mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
         func_Execute_Command_Name="${configConst_CommandName_Fvm}"
         func_Execute_Command_Content="${configConst_CommandName_Flutter} ${func_Param_Execute_SubCommand_Content}"

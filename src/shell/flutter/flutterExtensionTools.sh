@@ -70,7 +70,7 @@ function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then
     local func_CommandParams=()
 
     # 判斷 func_Param_Is_Enable_FVM_Mode
-    if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
+    if [ ${func_Param_Is_Enable_FVM_Mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
         func_CommandName="${configConst_CommandName_Fvm}"
         func_CommandParams+=("${configConst_CommandName_Flutter}")
@@ -145,7 +145,7 @@ function flutterExtensionTools_Generator_VersionMachine_File() {
     local func_Execute_Command_SubCommand_Content="--version --machine"
 
     # 判斷 func_Param_Is_Enable_FVM_Mode
-    if [ ${func_Param_Is_Enable_FVM_Mode} = "${generalConst_Enable_Flag}" ]; then
+    if [ ${func_Param_Is_Enable_FVM_Mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
         func_Execute_Command_Name="${configConst_CommandName_Fvm}"
         func_Execute_Command_Content="${configConst_CommandName_Flutter} ${func_Execute_Command_SubCommand_Content}"

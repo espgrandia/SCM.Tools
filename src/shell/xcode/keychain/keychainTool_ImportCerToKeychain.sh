@@ -56,13 +56,13 @@
 #
 # 通用性 const define :
 #
-# - const define : "Y" 或 "N" 改使用 "${generalConst_Enable_Flag}" 或 "${generalConst_Disable_Flag}" 來判斷 ， 定義在 generalConst.sh
+# - const define : "Y" 或 "N" 改使用 "${GENERAL_CONST_ENABLE_FLAG}" 或 "${GENERAL_CONST_DISABLE_FLAG}" 來判斷 ， 定義在 generalConst.sh
 #
 # ---
 #
 # Toggle Feature (切換功能) 說明:
 #
-# - thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile="${generalConst_Enable_Flag}" => e.g. "${generalConst_Enable_Flag}" 或 "${generalConst_Disable_Flag}"
+# - thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile="${GENERAL_CONST_ENABLE_FLAG}" => e.g. "${GENERAL_CONST_ENABLE_FLAG}" 或 "${GENERAL_CONST_DISABLE_FLAG}"
 #   - 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
 #   - 上傳版本會是關閉狀態，若需要測試時，自行打開。
 #
@@ -452,7 +452,7 @@ function process_Deal_ToggleFeature() {
     echo "${func_Title_Log} ||==========> Begin <==========||"
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile="${generalConst_Disable_Flag}"
+    thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile="${GENERAL_CONST_DISABLE_FLAG}"
 
     echo
     echo "${func_Title_Log} ============= Toogle Feature : Begin ============="
@@ -480,7 +480,7 @@ function process_Parse_ConfigFile() {
     create_variables "${thisShell_Param_ConfigFile}" "thisShell_Config_"
 
     # 開啟可以抓到此 shell 目前有哪些設定值。
-    if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile} = "${generalConst_Enable_Flag}" ]; then
+    if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
         set >${thisShell_Param_ConfigFile}_BeforeParseConfig.temp.log
     fi
 
@@ -491,7 +491,7 @@ function process_Parse_ConfigFile() {
     parseExtraCerInfoSection
 
     # 開啟可以抓到此 shell 目前有哪些設定值。
-    if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile} = "${generalConst_Enable_Flag}" ]; then
+    if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
         set >${thisShell_Param_ConfigFile}_AfterParseConfig.temp.log
     fi
 

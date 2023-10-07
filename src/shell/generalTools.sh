@@ -18,7 +18,7 @@
 #
 # 注意事項:
 # - 使用此通用函式，有相依於 scm.tools/src/shell/generalConst.sh
-#   - 其中有使用到 generalConst_Enable_Flag
+#   - 其中有使用到 GENERAL_CONST_ENABLE_FLAG
 #   - 需自行 include generalConst.sh
 #   - 再 include generalTools.sh
 #
@@ -177,7 +177,7 @@ function checkInputParam() {
         local func_MainBody_Title_Log="${func_Title_Log} ${1}"
 
         echo
-        echo "${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ${2}: ${3} is illegal. Error !!!${generalConst_Colors_Color_Off}"
+        echo "${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_MainBody_Title_Log} ${2}: ${3} is illegal. Error !!!${generalConst_Colors_Color_Off}"
         echo
         echo "${func_Title_Log} End ***"
         echo
@@ -223,8 +223,8 @@ function checkResultFail_And_ChangeFolder() {
         changeToDirectory "${func_Title_Log}" "${4}"
 
         echo
-        echo "${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ===> dump log : ${3} <===${generalConst_Colors_Color_Off}"
-        echo "${generalConst_Colors_Red}${generalConst_Colors_On_Cyan}${func_MainBody_Title_Log} ===> exit shell : result : ${2} <===${generalConst_Colors_Color_Off}"
+        echo "${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_MainBody_Title_Log} ===> dump log : ${3} <===${generalConst_Colors_Color_Off}"
+        echo "${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_MainBody_Title_Log} ===> exit shell : result : ${2} <===${generalConst_Colors_Color_Off}"
         echo
         echo "${func_Title_Log} End ***"
 
@@ -573,14 +573,14 @@ function check_OK_Then_Excute_Command() {
 
     local func_Title_Log="*** function [${FUNCNAME[0]}] -"
 
-    checkInputParam "${func_Title_Log}" generalConst_Enable_Flag "${generalConst_Enable_Flag}"
+    checkInputParam "${func_Title_Log}" GENERAL_CONST_ENABLE_FLAG "${GENERAL_CONST_ENABLE_FLAG}"
 
-    echo "${func_Title_Log} generalConst_Enable_Flag : ${generalConst_Enable_Flag} ***"
+    echo "${func_Title_Log} GENERAL_CONST_ENABLE_FLAG : ${GENERAL_CONST_ENABLE_FLAG} ***"
 
     local func_ReVal=0
 
     # 驗證成功再處理後續。
-    if [ ${2} = "${generalConst_Enable_Flag}" ]; then
+    if [ ${2} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
         echo
         echo "${func_Title_Log} Begin ***"
@@ -817,74 +817,74 @@ function show_Colors_Info() {
     _show_One_Color generalConst_Colors_Color_Off
 
     # Regular Colors
-    _show_One_Color generalConst_Colors_Black
-    _show_One_Color generalConst_Colors_Red
-    _show_One_Color generalConst_Colors_Green
-    _show_One_Color generalConst_Colors_Yellow
-    _show_One_Color generalConst_Colors_Blue
-    _show_One_Color generalConst_Colors_Purple
-    _show_One_Color generalConst_Colors_Cyan
-    _show_One_Color generalConst_Colors_White
+    _show_One_Color GENERAL_CONST_COLORS_BLACK
+    _show_One_Color GENERAL_CONST_COLORS_RED
+    _show_One_Color GENERAL_CONST_COLORS_GREEN
+    _show_One_Color GENERAL_CONST_COLORS_YELLOW
+    _show_One_Color GENERAL_CONST_COLORS_BLUE
+    _show_One_Color GENERAL_CONST_COLORS_PURPLE
+    _show_One_Color GENERAL_CONST_COLORS_CYAN
+    _show_One_Color GENERAL_CONST_COLORS_WHITE
 
     # Bold
-    _show_One_Color generalConst_Colors_BBlack
-    _show_One_Color generalConst_Colors_BRed
-    _show_One_Color generalConst_Colors_BGreen
-    _show_One_Color generalConst_Colors_BYellow
-    _show_One_Color generalConst_Colors_BBlue
-    _show_One_Color generalConst_Colors_BPurple
-    _show_One_Color generalConst_Colors_BCyan
-    _show_One_Color generalConst_Colors_BWhite
+    _show_One_Color GENERAL_CONST_COLORS_BBLACK
+    _show_One_Color GENERAL_CONST_COLORS_BRED
+    _show_One_Color GENERAL_CONST_COLORS_BGREEN
+    _show_One_Color GENERAL_CONST_COLORS_BYELLOW
+    _show_One_Color GENERAL_CONST_COLORS_BBLUE
+    _show_One_Color GENERAL_CONST_COLORS_BPURPLE
+    _show_One_Color GENERAL_CONST_COLORS_BCYAN
+    _show_One_Color GENERAL_CONST_COLORS_BWHITE
 
     # Underline
-    _show_One_Color generalConst_Colors_UBlack
-    _show_One_Color generalConst_Colors_URed
-    _show_One_Color generalConst_Colors_UGreen
-    _show_One_Color generalConst_Colors_UYellow
-    _show_One_Color generalConst_Colors_UBlue
-    _show_One_Color generalConst_Colors_UPurple
-    _show_One_Color generalConst_Colors_UCyan
-    _show_One_Color generalConst_Colors_UWhite
+    _show_One_Color GENERAL_CONST_COLORS_UBLACK
+    _show_One_Color GENERAL_CONST_COLORS_URED
+    _show_One_Color GENERAL_CONST_COLORS_UGREEN
+    _show_One_Color GENERAL_CONST_COLORS_UYELLOW
+    _show_One_Color GENERAL_CONST_COLORS_UBLUE
+    _show_One_Color GENERAL_CONST_COLORS_UPURPLE
+    _show_One_Color GENERAL_CONST_COLORS_UCYAN
+    _show_One_Color GENERAL_CONST_COLORS_UWHITE
 
     # Background
-    _show_One_Color generalConst_Colors_On_Black
-    _show_One_Color generalConst_Colors_On_Red
-    _show_One_Color generalConst_Colors_On_Green
-    _show_One_Color generalConst_Colors_On_Yellow
-    _show_One_Color generalConst_Colors_On_Blue
-    _show_One_Color generalConst_Colors_On_Purple
-    _show_One_Color generalConst_Colors_On_Cyan
-    _show_One_Color generalConst_Colors_On_White
+    _show_One_Color GENERAL_CONST_COLORS_ON_BLACK
+    _show_One_Color GENERAL_CONST_COLORS_ON_RED
+    _show_One_Color GENERAL_CONST_COLORS_ON_GREEN
+    _show_One_Color GENERAL_CONST_COLORS_ON_YELLOW
+    _show_One_Color GENERAL_CONST_COLORS_ON_BLUE
+    _show_One_Color GENERAL_CONST_COLORS_ON_PURPLE
+    _show_One_Color GENERAL_CONST_COLORS_ON_CYAN
+    _show_One_Color GENERAL_CONST_COLORS_ON_WHITE
 
     # High Intensity
-    _show_One_Color generalConst_Colors_IBlack
-    _show_One_Color generalConst_Colors_IRed
-    _show_One_Color generalConst_Colors_IGreen
-    _show_One_Color generalConst_Colors_IYellow
-    _show_One_Color generalConst_Colors_IBlue
-    _show_One_Color generalConst_Colors_IPurple
-    _show_One_Color generalConst_Colors_ICyan
-    _show_One_Color generalConst_Colors_IWhite
+    _show_One_Color GENERAL_CONST_COLORS_IBLACK
+    _show_One_Color GENERAL_CONST_COLORS_IRED
+    _show_One_Color GENERAL_CONST_COLORS_IGREEN
+    _show_One_Color GENERAL_CONST_COLORS_IYELLOW
+    _show_One_Color GENERAL_CONST_COLORS_IBLUE
+    _show_One_Color GENERAL_CONST_COLORS_IPURPLE
+    _show_One_Color GENERAL_CONST_COLORS_ICYAN
+    _show_One_Color GENERAL_CONST_COLORS_IWHITE
 
     # Bold High Intensity
-    _show_One_Color generalConst_Colors_BIBlack
-    _show_One_Color generalConst_Colors_BIRed
-    _show_One_Color generalConst_Colors_BIGreen
-    _show_One_Color generalConst_Colors_BIYellow
-    _show_One_Color generalConst_Colors_BIBlue
-    _show_One_Color generalConst_Colors_BIPurple
-    _show_One_Color generalConst_Colors_BICyan
-    _show_One_Color generalConst_Colors_BIWhite
+    _show_One_Color GENERAL_CONST_COLORS_BIBLACK
+    _show_One_Color GENERAL_CONST_COLORS_BIRED
+    _show_One_Color GENERAL_CONST_COLORS_BIGREEN
+    _show_One_Color GENERAL_CONST_COLORS_BIYELLOW
+    _show_One_Color GENERAL_CONST_COLORS_BIBLUE
+    _show_One_Color GENERAL_CONST_COLORS_BIPURPLE
+    _show_One_Color GENERAL_CONST_COLORS_BICYAN
+    _show_One_Color GENERAL_CONST_COLORS_BIWHITE
 
     # High Intensity backgrounds
-    _show_One_Color generalConst_Colors_On_IBlack
-    _show_One_Color generalConst_Colors_On_IRed
-    _show_One_Color generalConst_Colors_On_IGreen
-    _show_One_Color generalConst_Colors_On_IYellow
-    _show_One_Color generalConst_Colors_On_IBlue
-    _show_One_Color generalConst_Colors_On_IPurple
-    _show_One_Color generalConst_Colors_On_ICyan
-    _show_One_Color generalConst_Colors_On_IWhite
+    _show_One_Color GENERAL_CONST_COLORS_ON_IBLACK
+    _show_One_Color GENERAL_CONST_COLORS_ON_IRED
+    _show_One_Color GENERAL_CONST_COLORS_ON_IGREEN
+    _show_One_Color GENERAL_CONST_COLORS_ON_IYELLOW
+    _show_One_Color GENERAL_CONST_COLORS_ON_IBLUE
+    _show_One_Color GENERAL_CONST_COLORS_ON_IPURPLE
+    _show_One_Color GENERAL_CONST_COLORS_ON_ICYAN
+    _show_One_Color GENERAL_CONST_COLORS_ON_IWHITE
 
     echo "${func_Title_Log} End ***"
     echo
@@ -904,7 +904,7 @@ function show_Colors_Info() {
 function _show_One_Color() {
     local func_Color_Name=${1}
     local func_Color_Value=$(eval echo \$${1})
-    echo "Color Value Name : ${generalConst_Colors_White}${func_Color_Name} = ${func_Color_Value}I love you${generalConst_Colors_Color_Off}"
+    echo "Color Value Name : ${GENERAL_CONST_COLORS_WHITE}${func_Color_Name} = ${func_Color_Value}I love you${generalConst_Colors_Color_Off}"
 }
 ##
 ## ================================== Private Function Section : End ==================================

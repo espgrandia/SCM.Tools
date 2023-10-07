@@ -34,13 +34,13 @@
 #
 # 通用性 const define :
 #
-# - const define : "Y" 或 "N" 改使用 "${generalConst_Enable_Flag}" 或 "${generalConst_Disable_Flag}" 來判斷 ， 定義在 generalConst.sh
+# - const define : "Y" 或 "N" 改使用 "${GENERAL_CONST_ENABLE_FLAG}" 或 "${GENERAL_CONST_DISABLE_FLAG}" 來判斷 ， 定義在 generalConst.sh
 #
 # ---
 #
 # Toggle Feature (切換功能) 說明:
 #
-# - thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="${generalConst_Enable_Flag}" => e.g. "${generalConst_Enable_Flag}" 或 "${generalConst_Disable_Flag}"
+# - thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="${GENERAL_CONST_ENABLE_FLAG}" => e.g. "${GENERAL_CONST_ENABLE_FLAG}" 或 "${GENERAL_CONST_DISABLE_FLAG}"
 #   - 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
 #   - 上傳版本會是關閉狀態，若需要測試時，自行打開。
 #
@@ -55,7 +55,7 @@
 # SubcommandInfo :
 # - 規則 :
 #   - [0]: build subcommand name。
-#   - [1]: 是否要執行 (isExcute)。 default : "${generalConst_Disable_Flag}"。
+#   - [1]: 是否要執行 (isExcute)。 default : "${GENERAL_CONST_DISABLE_FLAG}"。
 #
 # ---
 #
@@ -188,7 +188,7 @@ function dealSumcommandInfo() {
 
     # 判斷是否為 要處理的 command (subcommand name 是否相同) .
     if [ ${func_A_Subcommand} = ${func_SumcommandInfo_Name} ]; then
-        eval ${3}="${generalConst_Enable_Flag}"
+        eval ${3}="${GENERAL_CONST_ENABLE_FLAG}"
     fi
 
     # echo "${func_Title_Log} func_A_Subcommand : ${func_A_Subcommand} ***"
@@ -443,7 +443,7 @@ function export_apk() {
     local func_Build_Command
 
 	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
-	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
+	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
 		func_Build_Command_Name="${configConst_CommandName_Fvm}"
 		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_Param_BuildConfigType}"
@@ -616,7 +616,7 @@ function export_appbundle() {
     local func_Build_Command
 
 	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
-	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
+	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
 		func_Build_Command_Name="${configConst_CommandName_Fvm}"
 		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_Param_BuildConfigType}"
@@ -801,7 +801,7 @@ function export_ios() {
     local func_Build_Command
 
 	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
-	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
+	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
 		func_Build_Command_Name="${configConst_CommandName_Fvm}"
 		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_Param_BuildConfigType}"
@@ -998,7 +998,7 @@ function export_ipa() {
     local func_Build_Command
 
 	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
-	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${generalConst_Enable_Flag}" ]; then
+	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
 		func_Build_Command_Name="${configConst_CommandName_Fvm}"
 		func_Build_Command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_Param_BuildConfigType}"
@@ -1242,7 +1242,7 @@ function process_Deal_InputParam() {
 function process_Deal_ToggleFeature() {
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="${generalConst_Disable_Flag}"
+    thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="${GENERAL_CONST_DISABLE_FLAG}"
 
     # build configutation type : 編譯組態設定，之後視情況是否要開放
     # 依據 flutter build ， 有 debug ， profile ， release，
@@ -1271,17 +1271,17 @@ function process_Init_SubcommandInfo() {
     # SubcommandInfo :
     # - 規則 :
     #   - [0]: build subcommand name。
-    #   - [1]: 是否要執行 (isExcute)。 default : "${generalConst_Disable_Flag}"。
+    #   - [1]: 是否要執行 (isExcute)。 default : "${GENERAL_CONST_DISABLE_FLAG}"。
     #
     # 目前只支援 apk 及 ios，之後視情況新增。
-    thisShell_SubcommandInfo_aar=("${configConst_Subcommand_aar}" "${generalConst_Disable_Flag}")
-    thisShell_SubcommandInfo_apk=("${configConst_Subcommand_apk}" "${generalConst_Disable_Flag}")
-    thisShell_SubcommandInfo_appbundle=("${configConst_Subcommand_appbundle}" "${generalConst_Disable_Flag}")
-    thisShell_SubcommandInfo_bundle=("${configConst_Subcommand_bundle}" "${generalConst_Disable_Flag}")
-    thisShell_SubcommandInfo_ios=("${configConst_Subcommand_ios}" "${generalConst_Disable_Flag}")
-    thisShell_SubcommandInfo_ios_framework=("${configConst_Subcommand_ios_framework}" "${generalConst_Disable_Flag}")
-    thisShell_SubcommandInfo_ipa=("${configConst_Subcommand_ipa}" "${generalConst_Disable_Flag}")
-    thisShell_SubcommandInfo_web=("${configConst_Subcommand_web}" "${generalConst_Disable_Flag}")
+    thisShell_SubcommandInfo_aar=("${configConst_Subcommand_aar}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_apk=("${configConst_Subcommand_apk}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_appbundle=("${configConst_Subcommand_appbundle}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_bundle=("${configConst_Subcommand_bundle}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_ios=("${configConst_Subcommand_ios}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_ios_framework=("${configConst_Subcommand_ios_framework}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_ipa=("${configConst_Subcommand_ipa}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_web=("${configConst_Subcommand_web}" "${GENERAL_CONST_DISABLE_FLAG}")
 }
 
 # ============= This is separation line =============
@@ -1301,7 +1301,7 @@ function process_Parse_BuildConfig() {
         create_variables "${thisShell_Param_BuildConfigFile}" "thisShell_Config_"
 
         # 開啟可以抓到此 shell 目前有哪些設定值。
-        if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "${generalConst_Enable_Flag}" ]; then
+        if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
             set >${thisShell_Param_BuildConfigFile}_BeforeParseConfig.temp.log
         fi
 
@@ -1318,7 +1318,7 @@ function process_Parse_BuildConfig() {
         parseDartDefine
 
         # 開啟可以抓到此 shell 目前有哪些設定值。
-        if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "${generalConst_Enable_Flag}" ]; then
+        if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
             set >${thisShell_Param_BuildConfigFile}_AfterParseConfig.temp.log
         fi
 

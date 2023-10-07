@@ -204,7 +204,7 @@ function configTools_Gen_Optional_Enable_FVM_Mode() {
     local func_Param_FilePath="${1}"
 
     # 呼叫此函式，一定是開啟，找不到或非 Y 都是關閉。。
-    local func_Param_KeyFeature_Value="${generalConst_Enable_Flag}"
+    local func_Param_KeyFeature_Value="${GENERAL_CONST_ENABLE_FLAG}"
 
     # for [optional]
     # for (keyFeature) : [build_name]
