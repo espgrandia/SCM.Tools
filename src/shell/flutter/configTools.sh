@@ -68,73 +68,73 @@ export configTools_Optional="optional"
 # sample e.g. configTools_Gen_Required "${sample_FilePath}" "${sample_WorkPath}" "${sample_OutputPath}" "${sample_Pubspec_version}" sample_Subcommands[@]
 function configTools_Gen_Required() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} project work path : ${2}"
-    echo "${func_Title_Log} output path : ${3}"
-    echo "${func_Title_Log} subcommands : (${!4})"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} project work path : ${2}"
+    echo "${func_title_log} output path : ${3}"
+    echo "${func_title_log} subcommands : (${!4})"
+    echo "${func_title_log} Input param : End ***"
 
     # for local varient
-    local func_Param_FilePath="${1}"
-    local func_Param_WorkPath="${2}"
-    local func_Param_OutputPath="${3}"
-    local func_Param_Subcommands=("${!4}")
+    local func_param_file_path="${1}"
+    local func_param_work_path="${2}"
+    local func_param_output_path="${3}"
+    local func_param_subcommands=("${!4}")
 
     # for base key，最上層的 key
-    local func_Required="required"
+    local func_required="required"
 
     # [required] [paths] : 有關路徑的設定。
-    local func_Required_Key_Paths="paths"
-    local func_Required_Key_Paths_Work="work"
-    local func_Required_Key_Paths_Output="output"
+    local func_required_key_paths="paths"
+    local func_required_key_paths_work="work"
+    local func_required_key_paths_output="output"
 
     # for required
     # [required] [version]: 版本資訊 : 一般對應於 flutter pubspec.yaml 中的 version。
-    local func_Required_Key_Version="version"
+    local func_required_key_version="version"
 
     # [required] [subcommands]: 編譯不同的版本 : build sumcommand (like as : apk，ios，...)。
-    local func_Required_Key_Subcommands="subcommands"
+    local func_required_key_subcommands="subcommands"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
     # for [required]:
-    echo "# ${func_Required} section" >>"${func_Param_FilePath}"
-    echo "${func_Required} :" >>"${func_Param_FilePath}"
+    echo "# ${func_required} section" >>"${func_param_file_path}"
+    echo "${func_required} :" >>"${func_param_file_path}"
 
     ## for [required] [paths]:
-    echo "" >>"${func_Param_FilePath}"
-    echo "  # [${func_Required_Key_Paths}] : 有關路徑的設定" >>"${func_Param_FilePath}"
-    echo "  ${func_Required_Key_Paths} :" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "  # [${func_required_key_paths}] : 有關路徑的設定" >>"${func_param_file_path}"
+    echo "  ${func_required_key_paths} :" >>"${func_param_file_path}"
 
     ### for [required] [paths] [work]:
-    echo "    # [${func_Required_Key_Paths_Work}] : flutter 專案目錄的路徑 : 一般與 flutter pubspec.yaml 同一個資料夾路徑" >>"${func_Param_FilePath}"
-    echo "    ${func_Required_Key_Paths_Work} : ${func_Param_WorkPath}" >>"${func_Param_FilePath}"
+    echo "    # [${func_required_key_paths_work}] : flutter 專案目錄的路徑 : 一般與 flutter pubspec.yaml 同一個資料夾路徑" >>"${func_param_file_path}"
+    echo "    ${func_required_key_paths_work} : ${func_param_work_path}" >>"${func_param_file_path}"
 
     ### for [required] [paths] [output]:
-    echo "" >>"${func_Param_FilePath}"
-    echo "    # [${func_Required_Key_Paths_Output}] : 輸出資料夾 [需帶完整路徑] : apk，ipa 等輸出的資料夾位置 => e.g. [專案路徑]/[scm]/output" >>"${func_Param_FilePath}"
-    echo "    ${func_Required_Key_Paths_Output} : ${func_Param_OutputPath}" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "    # [${func_required_key_paths_output}] : 輸出資料夾 [需帶完整路徑] : apk，ipa 等輸出的資料夾位置 => e.g. [專案路徑]/[scm]/output" >>"${func_param_file_path}"
+    echo "    ${func_required_key_paths_output} : ${func_param_output_path}" >>"${func_param_file_path}"
 
     ## for [required] [subcommands]:
-    echo "" >>"${func_Param_FilePath}"
-    echo "  # [${func_Required_Key_Subcommands}] : flutter build sumcommand" >>"${func_Param_FilePath}"
-    echo "  # - flutter(v2) build support sumcommands : ${configConst_Flutter_Provide_Subcommands_String}" >>"${func_Param_FilePath}"
-    echo "  # - [exported.sh] provide sumcommands : ${configConst_Exported_Shell_Provide_Subcommands_String}" >>"${func_Param_FilePath}"
-    echo "  ${func_Required_Key_Subcommands} :" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "  # [${func_required_key_subcommands}] : flutter build sumcommand" >>"${func_param_file_path}"
+    echo "  # - flutter(v2) build support sumcommands : ${configConst_Flutter_Provide_Subcommands_String}" >>"${func_param_file_path}"
+    echo "  # - [exported.sh] provide sumcommands : ${configConst_Exported_Shell_Provide_Subcommands_String}" >>"${func_param_file_path}"
+    echo "  ${func_required_key_subcommands} :" >>"${func_param_file_path}"
 
     local func_i
-    for ((func_i = 0; func_i < ${#func_Param_Subcommands[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+    for ((func_i = 0; func_i < ${#func_param_subcommands[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-        local aSubcommand=${func_Param_Subcommands[${func_i}]}
-        echo "    - ${aSubcommand}" >>"${func_Param_FilePath}"
+        local func_subcommand=${func_param_subcommands[${func_i}]}
+        echo "    - ${func_subcommand}" >>"${func_param_file_path}"
 
     done
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 ## ================================== buildConfig Required section : End ==================================
@@ -151,32 +151,32 @@ function configTools_Gen_Required() {
 # sample e.g. configTools_Gen_Optional_ReportFilePath "${sample_FilePath}" "${sample_ReportFilePath}"
 function configTools_Gen_Optional_ReportFilePath() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} report file path : ${2}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} report file path : ${2}"
+    echo "${func_title_log} Input param : End ***"
 
     # for local varient
-    local func_Param_FilePath="${1}"
-    local func_Param_KeyFeature_Value="${2}"
+    local func_param_file_path="${1}"
+    local func_param_key_feature_value="${2}"
 
     # for [optional]
     # for (keyFeature) : [report_path]
-    local func_Optional_Key_For_KeyFeature="report_path"
+    local func_optional_key_for_key_feature="report_path"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
-    echo "" >>"${func_Param_FilePath}"
-    echo "# ${configTools_Optional} [${func_Optional_Key_For_KeyFeature}] sction" >>"${func_Param_FilePath}"
-    echo "# - [${func_Optional_Key_For_KeyFeature}] : exported.sh 額外會用到的參數，指定 report file path (含檔名)。" >>"${func_Param_FilePath}"
-    echo "# - 為 markdown 語法撰寫，沒設定會有預設檔案名稱。" >>"${func_Param_FilePath}"    
-    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
-    echo "  ${func_Optional_Key_For_KeyFeature} : ${func_Param_KeyFeature_Value}" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "# ${configTools_Optional} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_optional_key_for_key_feature}] : exported.sh 額外會用到的參數，指定 report file path (含檔名)。" >>"${func_param_file_path}"
+    echo "# - 為 markdown 語法撰寫，沒設定會有預設檔案名稱。" >>"${func_param_file_path}"    
+    echo "${configTools_Optional} :" >>"${func_param_file_path}"
+    echo "  ${func_optional_key_for_key_feature} : ${func_param_key_feature_value}" >>"${func_param_file_path}"
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -192,35 +192,35 @@ function configTools_Gen_Optional_ReportFilePath() {
 # sample e.g. configTools_Gen_Optional_Enable_FVM_Mode "${sample_FilePath}"
 function configTools_Gen_Optional_Enable_FVM_Mode() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} Input param : End ***"
 
     # for local varient
-    local func_Param_FilePath="${1}"
+    local func_param_file_path="${1}"
 
     # 呼叫此函式，一定是開啟，找不到或非 Y 都是關閉。。
-    local func_Param_KeyFeature_Value="${GENERAL_CONST_ENABLE_FLAG}"
+    local func_param_key_feature_value="${GENERAL_CONST_ENABLE_FLAG}"
 
     # for [optional]
     # for (keyFeature) : [build_name]
-    local func_Optional_Key_For_KeyFeature="${configConst_ConfigKey_Fvm_Is_Enable_Fvm_Mode}"
+    local func_optional_key_for_key_feature="${configConst_ConfigKey_Fvm_Is_Enable_Fvm_Mode}"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
-    echo "" >>"${func_Param_FilePath}"
-    echo "# ${configTools_Optional} [${func_Optional_Key_For_KeyFeature}] sction" >>"${func_Param_FilePath}"
-    echo "# - [${func_Optional_Key_For_KeyFeature}] : 呼叫此函式則表示要開啟 FVM Mode，預設沒有開啟。" >>"${func_Param_FilePath}"
-    echo "# - e.g. 實際執行類似 下列方式 :" >>"${func_Param_FilePath}"
-    echo "#   > ${configConst_CommandName_Fvm} flutter build ..." >>"${func_Param_FilePath}"
-    echo "# - 原則上 exported.sh 有實作的 subcommands，都會支援才是。" >>"${func_Param_FilePath}"
-    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
-    echo "  ${func_Optional_Key_For_KeyFeature} : ${func_Param_KeyFeature_Value}" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "# ${configTools_Optional} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_optional_key_for_key_feature}] : 呼叫此函式則表示要開啟 FVM Mode，預設沒有開啟。" >>"${func_param_file_path}"
+    echo "# - e.g. 實際執行類似 下列方式 :" >>"${func_param_file_path}"
+    echo "#   > ${configConst_CommandName_Fvm} flutter build ..." >>"${func_param_file_path}"
+    echo "# - 原則上 exported.sh 有實作的 subcommands，都會支援才是。" >>"${func_param_file_path}"
+    echo "${configTools_Optional} :" >>"${func_param_file_path}"
+    echo "  ${func_optional_key_for_key_feature} : ${func_param_key_feature_value}" >>"${func_param_file_path}"
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -237,32 +237,32 @@ function configTools_Gen_Optional_Enable_FVM_Mode() {
 # sample e.g. configTools_Gen_Optional_Build_Name "${sample_FilePath}" "${sample_Prefix_FileName}"
 function configTools_Gen_Optional_Prefix_File_Name() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} ${configConst_ConfigKey_Prefix_FileName} value : ${2}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} ${configConst_ConfigKey_Prefix_FileName} value : ${2}"
+    echo "${func_title_log} Input param : End ***"
 
     # for local varient
-    local func_Param_FilePath="${1}"
-    local func_Param_KeyFeature_Value="${2}"
+    local func_param_file_path="${1}"
+    local func_param_key_feature_value="${2}"
 
     # for [optional]
     # for (keyFeature) : [build_name]
-    local func_Optional_Key_For_KeyFeature="${configConst_ConfigKey_Prefix_FileName}"
+    local func_optional_key_for_key_feature="${configConst_ConfigKey_Prefix_FileName}"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
-    echo "" >>"${func_Param_FilePath}"
-    echo "# ${configTools_Optional} [${func_Optional_Key_For_KeyFeature}] sction" >>"${func_Param_FilePath}"
-    echo "# - [${func_Optional_Key_For_KeyFeature}] : exported.sh 額外會用到的參數，產出的檔案名稱，加上 前綴字 (prefix)。" >>"${func_Param_FilePath}"
-    echo "# - 原則上 exported.sh 有實作的 subcommands，都會支援才是。" >>"${func_Param_FilePath}"
-    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
-    echo "  ${func_Optional_Key_For_KeyFeature} : ${func_Param_KeyFeature_Value}" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "# ${configTools_Optional} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_optional_key_for_key_feature}] : exported.sh 額外會用到的參數，產出的檔案名稱，加上 前綴字 (prefix)。" >>"${func_param_file_path}"
+    echo "# - 原則上 exported.sh 有實作的 subcommands，都會支援才是。" >>"${func_param_file_path}"
+    echo "${configTools_Optional} :" >>"${func_param_file_path}"
+    echo "  ${func_optional_key_for_key_feature} : ${func_param_key_feature_value}" >>"${func_param_file_path}"
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -281,36 +281,36 @@ function configTools_Gen_Optional_Prefix_File_Name() {
 # sample e.g. configTools_Gen_Optional_Build_Name "${sample_FilePath}" "${sample_Build_Name}"
 function configTools_Gen_Optional_Build_Name() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} ${configConst_BuildParam_Key_BuildName} value : ${2}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} ${configConst_BuildParam_Key_BuildName} value : ${2}"
+    echo "${func_title_log} Input param : End ***"
 
     # for local varient
-    local func_Param_FilePath="${1}"
-    local func_Param_KeyFeature_Value="${2}"
+    local func_param_file_path="${1}"
+    local func_param_key_feature_value="${2}"
 
     # for [optional]
     # for (keyFeature) : [build_name]
-    local func_Optional_Key_For_KeyFeature="build_name"
+    local func_optional_key_for_key_feature="build_name"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
-    echo "" >>"${func_Param_FilePath}"
-    echo "# ${configTools_Optional} [${func_Optional_Key_For_KeyFeature}] sction" >>"${func_Param_FilePath}"
-    echo "# - [${func_Optional_Key_For_KeyFeature}] : ${configConst_BuildParam_Key_BuildName} 會用到的內容，對應於 flutter build 的 ${configConst_BuildParam_Key_BuildName} 參數" >>"${func_Param_FilePath}"
-    echo "#   - flutter pubspec.yaml 中 version : [Build_Name]+[Build_Number]。" >>"${func_Param_FilePath}"
-    echo "#     一般對應於上面的 [Build_Name]，有設定則會當作產出的檔案名稱一環。" >>"${func_Param_FilePath}"
-    echo "#   - 預設 : 沒指定時，flutter build 會預設為下面的 [Build_Name]" >>"${func_Param_FilePath}"
-    echo "#     pubspec.yaml 的 version : [Build_Name]+[Build_Number]，但檔案名稱沒有對應內容。" >>"${func_Param_FilePath}"
-    echo "# - support subcommands: ${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_ios}" >>"${func_Param_FilePath}"
-    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
-    echo "  ${func_Optional_Key_For_KeyFeature} : ${func_Param_KeyFeature_Value}" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "# ${configTools_Optional} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_optional_key_for_key_feature}] : ${configConst_BuildParam_Key_BuildName} 會用到的內容，對應於 flutter build 的 ${configConst_BuildParam_Key_BuildName} 參數" >>"${func_param_file_path}"
+    echo "#   - flutter pubspec.yaml 中 version : [Build_Name]+[Build_Number]。" >>"${func_param_file_path}"
+    echo "#     一般對應於上面的 [Build_Name]，有設定則會當作產出的檔案名稱一環。" >>"${func_param_file_path}"
+    echo "#   - 預設 : 沒指定時，flutter build 會預設為下面的 [Build_Name]" >>"${func_param_file_path}"
+    echo "#     pubspec.yaml 的 version : [Build_Name]+[Build_Number]，但檔案名稱沒有對應內容。" >>"${func_param_file_path}"
+    echo "# - support subcommands: ${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_ios}" >>"${func_param_file_path}"
+    echo "${configTools_Optional} :" >>"${func_param_file_path}"
+    echo "  ${func_optional_key_for_key_feature} : ${func_param_key_feature_value}" >>"${func_param_file_path}"
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -329,36 +329,36 @@ function configTools_Gen_Optional_Build_Name() {
 # sample e.g. configTools_Gen_Optional_Build_Number "${sample_FilePath}" "${sample_Build_Number}"
 function configTools_Gen_Optional_Build_Number() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} ${configConst_BuildParam_Key_BuildNumber} value : ${2}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} ${configConst_BuildParam_Key_BuildNumber} value : ${2}"
+    echo "${func_title_log} Input param : End ***"
 
     # for local varient
-    local func_Param_FilePath="${1}"
-    local func_Param_KeyFeature_Value="${2}"
+    local func_param_file_path="${1}"
+    local func_param_key_feature_value="${2}"
 
     # for [optional]
     # for (keyFeature) : [build_name]
-    local func_Optional_Key_For_KeyFeature="build_number"
+    local func_optional_key_for_key_feature="build_number"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
-    echo "" >>"${func_Param_FilePath}"
-    echo "# ${configTools_Optional} [${func_Optional_Key_For_KeyFeature}] sction" >>"${func_Param_FilePath}"
-    echo "# - [${func_Optional_Key_For_KeyFeature}] : ${configConst_BuildParam_Key_BuildNumber} 會用到的內容，對應於 flutter build 的 ${configConst_BuildParam_Key_BuildNumber} 參數" >>"${func_Param_FilePath}"
-    echo "#   - flutter pubspec.yaml 中 version : [Build_Name]+[Build_Number]。" >>"${func_Param_FilePath}"
-    echo "#     一般對應於上面的 [Build_Number]，有設定則會當作產出的檔案名稱一環。" >>"${func_Param_FilePath}"
-    echo "#   - 預設 : 沒指定時，flutter build 會預設為下面的 [Build_Number]" >>"${func_Param_FilePath}"
-    echo "#     pubspec.yaml 的 version : [Build_Name]+[Build_Number]，但檔案名稱沒有對應內容。" >>"${func_Param_FilePath}"
-    echo "# - support subcommands: ${configConst_Subcommand_aar}，${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_bundle}，${configConst_Subcommand_ios}" >>"${func_Param_FilePath}"
-    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
-    echo "  ${func_Optional_Key_For_KeyFeature} : ${func_Param_KeyFeature_Value}" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "# ${configTools_Optional} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_optional_key_for_key_feature}] : ${configConst_BuildParam_Key_BuildNumber} 會用到的內容，對應於 flutter build 的 ${configConst_BuildParam_Key_BuildNumber} 參數" >>"${func_param_file_path}"
+    echo "#   - flutter pubspec.yaml 中 version : [Build_Name]+[Build_Number]。" >>"${func_param_file_path}"
+    echo "#     一般對應於上面的 [Build_Number]，有設定則會當作產出的檔案名稱一環。" >>"${func_param_file_path}"
+    echo "#   - 預設 : 沒指定時，flutter build 會預設為下面的 [Build_Number]" >>"${func_param_file_path}"
+    echo "#     pubspec.yaml 的 version : [Build_Name]+[Build_Number]，但檔案名稱沒有對應內容。" >>"${func_param_file_path}"
+    echo "# - support subcommands: ${configConst_Subcommand_aar}，${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_bundle}，${configConst_Subcommand_ios}" >>"${func_param_file_path}"
+    echo "${configTools_Optional} :" >>"${func_param_file_path}"
+    echo "  ${func_optional_key_for_key_feature} : ${func_param_key_feature_value}" >>"${func_param_file_path}"
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -374,40 +374,40 @@ function configTools_Gen_Optional_Build_Number() {
 # sample e.g. configTools_Gen_Optional_BuildConfigType "${sample_FilePath}" sample_BuildConfigTypes[@]
 function configTools_Gen_Optional_BuildConfigType() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} build config types : (${!2})"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} build config types : (${!2})"
+    echo "${func_title_log} Input param : End ***"
 
     # for local varient
-    local func_Param_FilePath="${1}"
-    local func_Param_BuildConfigTypes=("${!2}")
+    local func_param_file_path="${1}"
+    local func_param_build_config_types=("${!2}")
 
     # for [optional]
     # for (keyFeature) : [build_config_types]
-    local func_Optional_Key_For_KeyFeature="build_config_types"
+    local func_optional_key_for_key_feature="build_config_types"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
-    echo "" >>"${func_Param_FilePath}"
-    echo "# ${configTools_Optional} [${func_Optional_Key_For_KeyFeature}] sction" >>"${func_Param_FilePath}"
-    echo "# - [${func_Optional_Key_For_KeyFeature}] : build config type (like as : ${configConst_BuildConfigType_Debug}，${configConst_BuildConfigType_Profile}，${configConst_BuildConfigType_Release})" >>"${func_Param_FilePath}"
-    echo "# - support subcommands: ${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_bundle}，${configConst_Subcommand_ios}" >>"${func_Param_FilePath}"
-    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
-    echo "  ${func_Optional_Key_For_KeyFeature} :" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "# ${configTools_Optional} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_optional_key_for_key_feature}] : build config type (like as : ${configConst_BuildConfigType_Debug}，${configConst_BuildConfigType_Profile}，${configConst_BuildConfigType_Release})" >>"${func_param_file_path}"
+    echo "# - support subcommands: ${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_bundle}，${configConst_Subcommand_ios}" >>"${func_param_file_path}"
+    echo "${configTools_Optional} :" >>"${func_param_file_path}"
+    echo "  ${func_optional_key_for_key_feature} :" >>"${func_param_file_path}"
 
     local func_i
-    for ((func_i = 0; func_i < ${#func_Param_BuildConfigTypes[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+    for ((func_i = 0; func_i < ${#func_param_build_config_types[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-        local aBuildConfigType=${func_Param_BuildConfigTypes[${func_i}]}
-        echo "    - ${aBuildConfigType}" >>"${func_Param_FilePath}"
+        local func_build_config_type=${func_param_build_config_types[${func_i}]}
+        echo "    - ${func_build_config_type}" >>"${func_param_file_path}"
 
     done
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -422,19 +422,19 @@ function configTools_Gen_Optional_BuildConfigType() {
 # sample e.g. configTools_Gen_Optional_Dart_Define "${sample_FilePath}" "${sample_Separator}" sample_DartDefines[@]
 function configTools_Gen_Optional_Dart_Define() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} separator : ${2}"
-    echo "${func_Title_Log} ${configConst_BuildParam_Key_DartDefine} values : (${!3})"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} separator : ${2}"
+    echo "${func_title_log} ${configConst_BuildParam_Key_DartDefine} values : (${!3})"
+    echo "${func_title_log} Input param : End ***"
 
     # for local varient
-    local func_Param_FilePath="${1}"
-    local func_Param_Separator="${2}"
+    local func_param_file_path="${1}"
+    local func_param_separator="${2}"
     local func_Param_Defines=("${!3}")
 
     # for [optional]
@@ -445,24 +445,24 @@ function configTools_Gen_Optional_Dart_Define() {
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
     # for dart-define
-    echo "" >>"${func_Param_FilePath}"
-    echo "# ${configTools_Optional} [${func_Optional_Key_DartDef}] sction" >>"${func_Param_FilePath}"
-    echo "# - [${func_Optional_Key_DartDef}] : ${configConst_BuildParam_Key_DartDefine} 會用到的內容，為 list 型態，{key}{separator}{value}" >>"${func_Param_FilePath}"
-    echo "# - support subcommands: ${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_ios}，${configConst_Subcommand_ios_framework}" >>"${func_Param_FilePath}"
-    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
-    echo "  ${func_Optional_Key_DartDef} :" >>"${func_Param_FilePath}"
-    echo "    ${func_Optional_Key_DartDef_Key_Separator} : ${func_Param_Separator}" >>"${func_Param_FilePath}"
-    echo "    ${func_Optional_Key_DartDef_Key_Defines} :" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "# ${configTools_Optional} [${func_Optional_Key_DartDef}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_Optional_Key_DartDef}] : ${configConst_BuildParam_Key_DartDefine} 會用到的內容，為 list 型態，{key}{separator}{value}" >>"${func_param_file_path}"
+    echo "# - support subcommands: ${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_ios}，${configConst_Subcommand_ios_framework}" >>"${func_param_file_path}"
+    echo "${configTools_Optional} :" >>"${func_param_file_path}"
+    echo "  ${func_Optional_Key_DartDef} :" >>"${func_param_file_path}"
+    echo "    ${func_Optional_Key_DartDef_Key_Separator} : ${func_param_separator}" >>"${func_param_file_path}"
+    echo "    ${func_Optional_Key_DartDef_Key_Defines} :" >>"${func_param_file_path}"
 
     local func_i
     for ((func_i = 0; func_i < ${#func_Param_Defines[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
         local aDefine=${func_Param_Defines[${func_i}]}
-        echo "      - ${aDefine}" >>"${func_Param_FilePath}"
+        echo "      - ${aDefine}" >>"${func_param_file_path}"
 
     done
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -475,33 +475,33 @@ function configTools_Gen_Optional_Dart_Define() {
 # sample e.g. configTools_Gen_Optional_Flavor "${sample_FilePath}" "${sample_Flavor}"
 function configTools_Gen_Optional_Flavor() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} ${configConst_BuildParam_Key_Flavor} value : ${2}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} ${configConst_BuildParam_Key_Flavor} value : ${2}"
+    echo "${func_title_log} Input param : End ***"
 
     # for local varient
-    local func_Param_FilePath="${1}"
-    local func_Param_KeyFeature_Value="${2}"
+    local func_param_file_path="${1}"
+    local func_param_key_feature_value="${2}"
 
     # for [optional]
     # for (keyFeature) : [flavor]
     #    > 剛好跟 fultter --flavor 參數是一樣可以使用。
-    local func_Optional_Key_For_KeyFeature="${configConst_BuildParam_Key_Flavor}"
+    local func_optional_key_for_key_feature="${configConst_BuildParam_Key_Flavor}"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
-    echo "" >>"${func_Param_FilePath}"
-    echo "# ${configTools_Optional} [${func_Optional_Key_For_KeyFeature}] sction" >>"${func_Param_FilePath}"
-    echo "# - [${func_Optional_Key_For_KeyFeature}] : ${configConst_BuildParam_Key_flavor} 會用到的內容，對應於 flutter build 的 ${configConst_BuildParam_Key_Flavor} 參數" >>"${func_Param_FilePath}"
-    echo "# - support subcommands: ${configConst_Subcommand_aar}，${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_bundle}，${configConst_Subcommand_ios}，${configConst_Subcommand_ios_framework}" >>"${func_Param_FilePath}"
-    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
-    echo "  ${func_Optional_Key_For_KeyFeature} : ${func_Param_KeyFeature_Value}" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "# ${configTools_Optional} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_optional_key_for_key_feature}] : ${configConst_BuildParam_Key_flavor} 會用到的內容，對應於 flutter build 的 ${configConst_BuildParam_Key_Flavor} 參數" >>"${func_param_file_path}"
+    echo "# - support subcommands: ${configConst_Subcommand_aar}，${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_bundle}，${configConst_Subcommand_ios}，${configConst_Subcommand_ios_framework}" >>"${func_param_file_path}"
+    echo "${configTools_Optional} :" >>"${func_param_file_path}"
+    echo "  ${func_optional_key_for_key_feature} : ${func_param_key_feature_value}" >>"${func_param_file_path}"
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -521,32 +521,32 @@ function configTools_Gen_Optional_Flavor() {
 #                                                  [android-arm (default), android-arm64 (default), android-x86, android-x64 (default)]
 function configTools_Gen_Optional_Target_Platform() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} file path : ${1}"
-    echo "${func_Title_Log} ${configConst_BuildParam_Key_TargetPlatform} value : ${2}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} ${configConst_BuildParam_Key_TargetPlatform} value : ${2}"
+    echo "${func_title_log} Input param : End ***"
 
     # for local varient
-    local func_Param_FilePath="${1}"
-    local func_Param_KeyFeature_Value="${2}"
+    local func_param_file_path="${1}"
+    local func_param_key_feature_value="${2}"
 
     # for [optional]
     # for (keyFeature) : [target_platform]
-    local func_Optional_Key_For_KeyFeature=target_platform
+    local func_optional_key_for_key_feature=target_platform
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
-    echo "" >>"${func_Param_FilePath}"
-    echo "# ${configTools_Optional} [${func_Optional_Key_For_KeyFeature}] sction" >>"${func_Param_FilePath}"
-    echo "# - [${func_Optional_Key_For_KeyFeature}] : ${configConst_BuildParam_Key_TargetPlatform} 會用到的內容，對應於 flutter build 的 ${configConst_BuildParam_Key_TargetPlatform} 參數" >>"${func_Param_FilePath}"
-    echo "# - support subcommands: ${configConst_Subcommand_aar}，${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_bundle}" >>"${func_Param_FilePath}"
-    echo "${configTools_Optional} :" >>"${func_Param_FilePath}"
-    echo "  ${func_Optional_Key_For_KeyFeature} : ${func_Param_KeyFeature_Value}" >>"${func_Param_FilePath}"
+    echo "" >>"${func_param_file_path}"
+    echo "# ${configTools_Optional} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_optional_key_for_key_feature}] : ${configConst_BuildParam_Key_TargetPlatform} 會用到的內容，對應於 flutter build 的 ${configConst_BuildParam_Key_TargetPlatform} 參數" >>"${func_param_file_path}"
+    echo "# - support subcommands: ${configConst_Subcommand_aar}，${configConst_Subcommand_apk}，${configConst_Subcommand_appbundle}，${configConst_Subcommand_bundle}" >>"${func_param_file_path}"
+    echo "${configTools_Optional} :" >>"${func_param_file_path}"
+    echo "  ${func_optional_key_for_key_feature} : ${func_param_key_feature_value}" >>"${func_param_file_path}"
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 

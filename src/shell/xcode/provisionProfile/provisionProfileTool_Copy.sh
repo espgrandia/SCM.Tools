@@ -88,7 +88,7 @@ function process_Init() {
 # @param $1 : provision profile source folder : 要 copy 的 profision profile 的來源根目錄。
 function process_Deal_InputParam() {
 
-  local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+  local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
   # set input param variable
   thisShell_Param_ProvisionProfile_SourceFolder="${1}"
@@ -97,9 +97,9 @@ function process_Deal_InputParam() {
   check_input_param "${thisShell_Title_Log}" thisShell_Param_ProvisionProfile_SourceFolder "${thisShell_Param_ProvisionProfile_SourceFolder}"
 
   echo
-  echo "${func_Title_Log} ||==========> Begin <==========||"
-  echo "${func_Title_Log} thisShell_Param_ProvisionProfile_SourceFolder : ${thisShell_Param_ProvisionProfile_SourceFolder}"
-  echo "${func_Title_Log} ||==========> End <==========||"
+  echo "${func_title_log} ||==========> Begin <==========||"
+  echo "${func_title_log} thisShell_Param_ProvisionProfile_SourceFolder : ${thisShell_Param_ProvisionProfile_SourceFolder}"
+  echo "${func_title_log} ||==========> End <==========||"
   echo
 }
 
@@ -107,19 +107,19 @@ function process_Deal_InputParam() {
 # @brief function : [程序] 執行 確保 Provision Profile 目標資料夾是合法的。
 function process_Guarantee_ProvisionProfile_DestFolder_Legal() {
 
-  local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+  local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
   # 暫存此區塊的起始時間。
-  local func_Temp_Seconds=${SECONDS}
+  local func_temp_seconds=${SECONDS}
 
   echo
-  echo "${func_Title_Log} ||==========> Begin <==========||"
+  echo "${func_title_log} ||==========> Begin <==========||"
 
-  echo "${func_Title_Log} mkdir -p ${configConst_Xcode_Using_ProvisionProfile_Folder}"
+  echo "${func_title_log} mkdir -p ${configConst_Xcode_Using_ProvisionProfile_Folder}"
 
   mkdir -p "${configConst_Xcode_Using_ProvisionProfile_Folder}"
 
-  echo "${func_Title_Log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+  echo "${func_title_log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_temp_seconds}))s"
   echo
 }
 
@@ -127,13 +127,13 @@ function process_Guarantee_ProvisionProfile_DestFolder_Legal() {
 # @brief function : [程序] 執行 Copy Provision Profile。
 function process_Deal_Copy_ProvisionProfile() {
 
-  local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+  local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
   # 暫存此區塊的起始時間。
-  local func_Temp_Seconds=${SECONDS}
+  local func_temp_seconds=${SECONDS}
 
   echo
-  echo "${func_Title_Log} ||==========> Begin <==========||"
+  echo "${func_title_log} ||==========> Begin <==========||"
 
   # 搜尋 thisShell_Param_ProvisionProfile_SourceFolder 下的 mobileprovision。
   local func_FilePaths=$(find "${thisShell_Param_ProvisionProfile_SourceFolder}" -name "*.mobileprovision")
@@ -141,11 +141,11 @@ function process_Deal_Copy_ProvisionProfile() {
   # 複製.mobileprovision檔案到 MobileDevice/Provisioning Profiles。
   local func_A_FilePath
   for func_A_FilePath in ${func_FilePaths[@]}; do
-    echo "${func_Title_Log} func_A_FilePath : ${func_A_FilePath}"
+    echo "${func_title_log} func_A_FilePath : ${func_A_FilePath}"
     cp $func_A_FilePath "${configConst_Xcode_Using_ProvisionProfile_Folder}"
   done
 
-  echo "${func_Title_Log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+  echo "${func_title_log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_temp_seconds}))s"
   echo
 
 }

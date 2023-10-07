@@ -146,25 +146,25 @@
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
 function parseReruiredSection() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     # check input parameters
-    check_input_param "${func_Title_Log}" thisShell_Config_required_keychain_name "${thisShell_Config_required_keychain_name}"
-    check_input_param "${func_Title_Log}" thisShell_Config_required_keychain_password "${thisShell_Config_required_keychain_password}"
-    check_input_param "${func_Title_Log}" thisShell_Config_required_cer_info_key_names "${thisShell_Config_required_cer_info_key_names[@]}"
+    check_input_param "${func_title_log}" thisShell_Config_required_keychain_name "${thisShell_Config_required_keychain_name}"
+    check_input_param "${func_title_log}" thisShell_Config_required_keychain_password "${thisShell_Config_required_keychain_password}"
+    check_input_param "${func_title_log}" thisShell_Config_required_cer_info_key_names "${thisShell_Config_required_cer_info_key_names[@]}"
 
     echo
-    echo "${func_Title_Log} ============= Param : Begin ============="
-    echo "${func_Title_Log} thisShell_Config_required_keychain_name : ${thisShell_Config_required_keychain_name}"
-    echo "${func_Title_Log} thisShell_Config_required_keychain_password : ${thisShell_Config_required_keychain_password}"
-    echo "${func_Title_Log} thisShell_Config_required_cer_info_key_names : ${thisShell_Config_required_cer_info_key_names[@]}"
-    echo "${func_Title_Log} ============= Param : End ============="
+    echo "${func_title_log} ============= Param : Begin ============="
+    echo "${func_title_log} thisShell_Config_required_keychain_name : ${thisShell_Config_required_keychain_name}"
+    echo "${func_title_log} thisShell_Config_required_keychain_password : ${thisShell_Config_required_keychain_password}"
+    echo "${func_title_log} thisShell_Config_required_cer_info_key_names : ${thisShell_Config_required_cer_info_key_names[@]}"
+    echo "${func_title_log} ============= Param : End ============="
     echo
 
-    echo "${func_Title_Log} ||==========> End <==========||"
+    echo "${func_title_log} ||==========> End <==========||"
     echo
 }
 
@@ -185,10 +185,10 @@ function parseReruiredSection() {
 # @param $1 : cer_info_key_name
 function check_ExtraCerInfoUnit_Legal() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     local func_Param_CerInfoKeyName=${1}
 
@@ -196,23 +196,23 @@ function check_ExtraCerInfoUnit_Legal() {
     local func_Check_Legal_CerInfoKeyName_FilePassword_Separator=thisShell_Config_${func_Param_CerInfoKeyName}_file_password_separator
     local func_Check_Legal_CerInfoKeyName_FilePassword_List=thisShell_Config_${func_Param_CerInfoKeyName}_file_password_list
 
-    # check_input_param "${func_Title_Log}" ${func_Check_Legal_CerInfoKeyName_FilePassword_Separator} "$(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
-    check_input_param "${func_Title_Log}" ${func_Check_Legal_CerInfoKeyName_FilePassword_List} "$(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
+    # check_input_param "${func_title_log}" ${func_Check_Legal_CerInfoKeyName_FilePassword_Separator} "$(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
+    check_input_param "${func_title_log}" ${func_Check_Legal_CerInfoKeyName_FilePassword_List} "$(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
 
-    echo "${func_Title_Log} ${func_Check_Legal_CerInfoKeyName_FilePassword_Separator} : $(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
+    echo "${func_title_log} ${func_Check_Legal_CerInfoKeyName_FilePassword_Separator} : $(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
 
-    echo "${func_Title_Log} ${func_Check_Legal_CerInfoKeyName_FilePassword_List} : $(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
-    echo "${func_Title_Log} ${func_Check_Legal_CerInfoKeyName_FilePassword_List} count : $(eval echo \${\#$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
+    echo "${func_title_log} ${func_Check_Legal_CerInfoKeyName_FilePassword_List} : $(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
+    echo "${func_title_log} ${func_Check_Legal_CerInfoKeyName_FilePassword_List} count : $(eval echo \${\#$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
 
     local func_FilePassword_Separator="$(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
     local func_FilePassword_List=($(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]}))
 
-    echo "${func_Title_Log} func_FilePassword_Separator : ${func_FilePassword_Separator}"
+    echo "${func_title_log} func_FilePassword_Separator : ${func_FilePassword_Separator}"
 
-    echo "${func_Title_Log} func_FilePassword_List : ${func_FilePassword_List[@]}"
-    echo "${func_Title_Log} func_FilePassword_List count : ${#func_FilePassword_List[@]}"
+    echo "${func_title_log} func_FilePassword_List : ${func_FilePassword_List[@]}"
+    echo "${func_title_log} func_FilePassword_List count : ${#func_FilePassword_List[@]}"
 
-    echo "${func_Title_Log} ||==========> End <==========||"
+    echo "${func_title_log} ||==========> End <==========||"
     echo
 }
 
@@ -231,10 +231,10 @@ function check_ExtraCerInfoUnit_Legal() {
 #   - 只檢查是否為合法設定。
 function parseExtraCerInfoSection() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     local func_i
     for ((func_i = 0; func_i < ${#thisShell_Config_required_cer_info_key_names[@]}; func_i++)); do #請注意 ((   )) 雙層括號
@@ -246,7 +246,7 @@ function parseExtraCerInfoSection() {
 
     done
 
-    echo "${func_Title_Log} ||==========> End <==========||"
+    echo "${func_title_log} ||==========> End <==========||"
     echo
 }
 ## ================================== config function section : End ==================================
@@ -311,10 +311,10 @@ function addCerToKeychain() {
 #    之前的流程已經呼叫 [check_ExtraCerInfoUnit_Legal] 驗證過，在此直接使用，不再次驗證。
 function execute_Add_Cer_To_Keychain_From_ExtraCerInfoUnit() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     local func_Param_CerInfoKeyName=${1}
 
@@ -322,18 +322,18 @@ function execute_Add_Cer_To_Keychain_From_ExtraCerInfoUnit() {
     local func_Check_Legal_CerInfoKeyName_FilePassword_Separator=thisShell_Config_${func_Param_CerInfoKeyName}_file_password_separator
     local func_Check_Legal_CerInfoKeyName_FilePassword_List=thisShell_Config_${func_Param_CerInfoKeyName}_file_password_list
 
-    echo "${func_Title_Log} ${func_Check_Legal_CerInfoKeyName_FilePassword_Separator} : $(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
+    echo "${func_title_log} ${func_Check_Legal_CerInfoKeyName_FilePassword_Separator} : $(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
 
-    echo "${func_Title_Log} ${func_Check_Legal_CerInfoKeyName_FilePassword_List} : $(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
-    echo "${func_Title_Log} ${func_Check_Legal_CerInfoKeyName_FilePassword_List} count : $(eval echo \${\#$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
+    echo "${func_title_log} ${func_Check_Legal_CerInfoKeyName_FilePassword_List} : $(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
+    echo "${func_title_log} ${func_Check_Legal_CerInfoKeyName_FilePassword_List} count : $(eval echo \${\#$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]})"
 
     local func_FilePassword_Separator="$(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_Separator})"
     local func_FilePassword_List=($(eval echo \${$func_Check_Legal_CerInfoKeyName_FilePassword_List[@]}))
 
-    echo "${func_Title_Log} func_FilePassword_Separator : ${func_FilePassword_Separator}"
+    echo "${func_title_log} func_FilePassword_Separator : ${func_FilePassword_Separator}"
 
-    echo "${func_Title_Log} func_FilePassword_List : ${func_FilePassword_List[@]}"
-    echo "${func_Title_Log} func_FilePassword_List count : ${#func_FilePassword_List[@]}"
+    echo "${func_title_log} func_FilePassword_List : ${func_FilePassword_List[@]}"
+    echo "${func_title_log} func_FilePassword_List count : ${#func_FilePassword_List[@]}"
 
     # 頗析 file passweord list
     local i
@@ -348,11 +348,11 @@ function execute_Add_Cer_To_Keychain_From_ExtraCerInfoUnit() {
         # split_string_to_pair 會自行判斷是否要進行 split，所以可以直接呼叫之。
         split_string_to_pair "${thisShell_Title_Log}" "${aFilePassword}" "${func_FilePassword_Separator}" aFile aPassword
 
-        addCerToKeychain "${func_Title_Log}" "${thisShell_Config_required_keychain_name}" "${aFile}" "${aPassword}"
+        addCerToKeychain "${func_title_log}" "${thisShell_Config_required_keychain_name}" "${aFile}" "${aPassword}"
 
     done
 
-    echo "${func_Title_Log} ||==========> End <==========||"
+    echo "${func_title_log} ||==========> End <==========||"
     echo
 }
 ## ================================== extra function section : End ==================================
@@ -421,24 +421,24 @@ function process_Init() {
 # @brief function : [程序] 處理 input param。
 function process_Deal_InputParam() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     # set input param variable
     thisShell_Param_ConfigFile="${1}"
 
     # check input parameters
-    check_input_param "${func_Title_Log}" thisShell_Param_ConfigFile "${thisShell_Param_ConfigFile}"
+    check_input_param "${func_title_log}" thisShell_Param_ConfigFile "${thisShell_Param_ConfigFile}"
 
     echo
-    echo "${func_Title_Log} ============= Param : Begin ============="
-    echo "${func_Title_Log} thisShell_Param_ConfigFile : ${thisShell_Param_ConfigFile}"
-    echo "${func_Title_Log} ============= Param : End ============="
+    echo "${func_title_log} ============= Param : Begin ============="
+    echo "${func_title_log} thisShell_Param_ConfigFile : ${thisShell_Param_ConfigFile}"
+    echo "${func_title_log} ============= Param : End ============="
     echo
 
-    echo "${func_Title_Log} ||==========> End <==========||"
+    echo "${func_title_log} ||==========> End <==========||"
     echo
 }
 
@@ -446,21 +446,21 @@ function process_Deal_InputParam() {
 # @brief function : [程序] Toggle Feature 設定。
 function process_Deal_ToggleFeature() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
     thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile="${GENERAL_CONST_DISABLE_FLAG}"
 
     echo
-    echo "${func_Title_Log} ============= Toogle Feature : Begin ============="
-    echo "${func_Title_Log} thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile : ${thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile}"
-    echo "${func_Title_Log} ============= Toogle Feature : End ============="
+    echo "${func_title_log} ============= Toogle Feature : Begin ============="
+    echo "${func_title_log} thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile : ${thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile}"
+    echo "${func_title_log} ============= Toogle Feature : End ============="
     echo
 
-    echo "${func_Title_Log} ||==========> End <==========||"
+    echo "${func_title_log} ||==========> End <==========||"
     echo
 
 }
@@ -469,13 +469,13 @@ function process_Deal_ToggleFeature() {
 # @brief function : [程序] 剖析 config file。
 function process_Parse_ConfigFile() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     # parse build config file
-    echo "${func_Title_Log} 將剖析 Build Config File 來做細微的設定。"
+    echo "${func_title_log} 將剖析 Build Config File 來做細微的設定。"
 
     create_variables "${thisShell_Param_ConfigFile}" "thisShell_Config_"
 
@@ -498,7 +498,7 @@ function process_Parse_ConfigFile() {
     # FIXME
     # exit 1
 
-    echo "${func_Title_Log} ||==========> End <==========||"
+    echo "${func_title_log} ||==========> End <==========||"
     echo
 }
 
@@ -506,10 +506,10 @@ function process_Parse_ConfigFile() {
 # @brief function : [程序] 處理路徑相關 (包含 flutter work path)。
 function process_Deal_Paths() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     # 判斷是否要切換到 config file 設定的 work path。
     # 有的話，會切換到該目錄，再執行 keycahin 相關命令 (之後會切回到原有呼叫的目錄)。
@@ -520,16 +520,16 @@ function process_Deal_Paths() {
     thisShell_Execute_Keychain_WorkPath=$(pwd)
 
     echo
-    echo "${func_Title_Log} //========== dump paths : Begin ==========//"
-    echo "${func_Title_Log} thisShell_OldPath                     : ${thisShell_OldPath}"
-    echo "${func_Title_Log} thisShell_Shell_WorkPath              : ${thisShell_Shell_WorkPath}"
-    echo "${func_Title_Log} thisShell_Config_optional_work_path   : ${thisShell_Config_optional_work_path}"
-    echo "${func_Title_Log} thisShell_Execute_Keychain_WorkPath   : ${thisShell_Execute_Keychain_WorkPath}"
-    echo "${func_Title_Log} current path                          : $(pwd)"
-    echo "${func_Title_Log} //========== dump paths : End ==========//"
+    echo "${func_title_log} //========== dump paths : Begin ==========//"
+    echo "${func_title_log} thisShell_OldPath                     : ${thisShell_OldPath}"
+    echo "${func_title_log} thisShell_Shell_WorkPath              : ${thisShell_Shell_WorkPath}"
+    echo "${func_title_log} thisShell_Config_optional_work_path   : ${thisShell_Config_optional_work_path}"
+    echo "${func_title_log} thisShell_Execute_Keychain_WorkPath   : ${thisShell_Execute_Keychain_WorkPath}"
+    echo "${func_title_log} current path                          : $(pwd)"
+    echo "${func_title_log} //========== dump paths : End ==========//"
     echo
 
-    echo "${func_Title_Log} ||==========> End <==========||"
+    echo "${func_title_log} ||==========> End <==========||"
     echo
 }
 
@@ -537,25 +537,25 @@ function process_Deal_Paths() {
 # @brief function : [程序] 處理 keychain 基礎資訊。
 function process_Deal_KeyChain_BaseInfo() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     # 刪除同名鑰匙圈
     security delete-keychain "${thisShell_Config_required_keychain_name}"
 
-    echo "${func_Title_Log} || security delete-keychain ${thisShell_Config_required_keychain_name} => result : ${?} ||"
+    echo "${func_title_log} || security delete-keychain ${thisShell_Config_required_keychain_name} => result : ${?} ||"
 
     # 重設keychain list
     security list-keychain -s
 
-    echo "${func_Title_Log} || security list-keychain -s => result : ${?}||"
+    echo "${func_title_log} || security list-keychain -s => result : ${?}||"
 
     # 產生新的keychain。
     security create-keychain -p "${thisShell_Config_required_keychain_password}" "${thisShell_Config_required_keychain_name}"
 
-    echo "${func_Title_Log} || security create-keychain -p ${thisShell_Config_required_keychain_password} ${thisShell_Config_required_keychain_name} => result : ${?}||"
+    echo "${func_title_log} || security create-keychain -p ${thisShell_Config_required_keychain_password} ${thisShell_Config_required_keychain_name} => result : ${?}||"
 
     # 加入鑰匙圈
     # 有 login.keychain，則將 login.keychain 也加入 keychain 的收尋清單 (search list)。
@@ -565,26 +565,26 @@ function process_Deal_KeyChain_BaseInfo() {
         security list-keychain -s "${thisShell_Config_required_keychain_name}"
     fi
 
-    echo "${func_Title_Log} || security list-keychain -s ${thisShell_Config_required_keychain_name} ... => result : ${?}||"
+    echo "${func_title_log} || security list-keychain -s ${thisShell_Config_required_keychain_name} ... => result : ${?}||"
 
     # 設為預設鑰匙圈。
     security default-keychain -s "${thisShell_Config_required_keychain_name}"
 
-    echo "${func_Title_Log} || security default-keychain -s ${thisShell_Config_required_keychain_name} => result : ${?}||"
+    echo "${func_title_log} || security default-keychain -s ${thisShell_Config_required_keychain_name} => result : ${?}||"
 
     # 解鎖。
     security unlock-keychain -p "${thisShell_Config_required_keychain_password}" "${thisShell_Config_required_keychain_name}"
 
-    echo "${func_Title_Log} || security unlock-keychain -p ${thisShell_Config_required_keychain_password} ${thisShell_Config_required_keychain_name} => result : ${?}||"
+    echo "${func_title_log} || security unlock-keychain -p ${thisShell_Config_required_keychain_password} ${thisShell_Config_required_keychain_name} => result : ${?}||"
 
     #帶參數-l 表示要在休眠後自動上鎖。
     #帶參數-u 表示要在閑置後自動上鎖。
     #不帶任何參數，表示無論是閒置後或休眠後都不要自動上鎖。
     security set-keychain-settings "${thisShell_Config_required_keychain_name}"
 
-    echo "${func_Title_Log} || security set-keychain-settings ${thisShell_Config_required_keychain_name} => result : ${?}||"
+    echo "${func_title_log} || security set-keychain-settings ${thisShell_Config_required_keychain_name} => result : ${?}||"
 
-    echo "${func_Title_Log} ||==========> End <==========||"
+    echo "${func_title_log} ||==========> End <==========||"
     echo
 }
 
@@ -592,10 +592,10 @@ function process_Deal_KeyChain_BaseInfo() {
 # @brief function : [程序] 處理 cer 加入到 鑰匙圈。
 function process_Deal_KeyChain_AddCerToKeychain() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     local func_i
     for ((func_i = 0; func_i < ${#thisShell_Config_required_cer_info_key_names[@]}; func_i++)); do #請注意 ((   )) 雙層括號
@@ -607,7 +607,7 @@ function process_Deal_KeyChain_AddCerToKeychain() {
 
     done
 
-    echo "${func_Title_Log} ||==========> End <==========||"
+    echo "${func_title_log} ||==========> End <==========||"
     echo
 }
 

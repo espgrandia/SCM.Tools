@@ -76,19 +76,19 @@ function process_Init() {
 # @brief function : [程序] 執行 刪除 Xcode 引用的 Provision Profiles。
 function process_Deal_Delete_ProvisionProfiles_From_DestFolder() {
 
-    local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
-    local func_Temp_Seconds=${SECONDS}
+    local func_temp_seconds=${SECONDS}
 
     echo
-    echo "${func_Title_Log} ||==========> Begin <==========||"
+    echo "${func_title_log} ||==========> Begin <==========||"
 
     # cd ~/Library/MobileDevice/Provisioning\ Profiles
     cd "${configConst_Xcode_Using_ProvisionProfile_Folder}"
     rm *.mobileprovision
 
-    echo "${func_Title_Log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_Temp_Seconds}))s"
+    echo "${func_title_log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_temp_seconds}))s"
     echo
 
 }

@@ -36,71 +36,71 @@
 # @param ${7} : is enable fvm mode : "Y" 或 "N" : e.g. $"{sample_Is_Enable_FVM_Mode}"
 function releastNoteTools_Gen_Init() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} TitleLog: ${1}"
-    echo "${func_Title_Log} release note file path: ${2}"
-    echo "${func_Title_Log} name : ${3}"
-    echo "${func_Title_Log} version : ${4}"
-    echo "${func_Title_Log} gitCommmit : ${5}"
-    echo "${func_Title_Log} change folder path : ${6}"
-    echo "${func_Title_Log} is enable fvm mode : ${7}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} TitleLog: ${1}"
+    echo "${func_title_log} release note file path: ${2}"
+    echo "${func_title_log} name : ${3}"
+    echo "${func_title_log} version : ${4}"
+    echo "${func_title_log} gitCommmit : ${5}"
+    echo "${func_title_log} change folder path : ${6}"
+    echo "${func_title_log} is enable fvm mode : ${7}"
+    echo "${func_title_log} Input param : End ***"
 
-    local func_Param_ReleaseNote_File="${2}"
-    local func_Param_Name="${3}"
-    local func_Param_Version="${4}"
-    local func_Param_GitCommit="${5}"
-    local func_Param_ChangeFolderPath="${6}"
-    local func_Param_Is_Enable_FVM_Mode="${7}"
+    local func_param_release_note_file="${2}"
+    local func_param_name="${3}"
+    local func_param_version="${4}"
+    local func_param_git_commit="${5}"
+    local func_param_change_folder_path="${6}"
+    local func_param_is_enable_fvm_mode="${7}"
 
     echo
-    echo "${func_Title_Log} ${1} ============= Release Note Init Info - Begin ============="
+    echo "${func_title_log} ${1} ============= Release Note Init Info - Begin ============="
 
-    echo "${func_Title_Log} ${1} ReleaseNote_File in ${func_Param_ReleaseNote_File}"
+    echo "${func_title_log} ${1} ReleaseNote_File in ${func_param_release_note_file}"
 
-    echo "# Release Note" >>"${func_Param_ReleaseNote_File}"
+    echo "# Release Note" >>"${func_param_release_note_file}"
 
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "---" >>"${func_Param_ReleaseNote_File}"
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "## Project Info" >>"${func_Param_ReleaseNote_File}"
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "- Name : ${func_Param_Name}" >>"${func_Param_ReleaseNote_File}"
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "- Version : ${func_Param_Version}" >>"${func_Param_ReleaseNote_File}"
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "- Git Commit ID : ${func_Param_GitCommit}" >>"${func_Param_ReleaseNote_File}"
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "- Is Enable FVM Mode : ${func_Param_Is_Enable_FVM_Mode}" >>"${func_Param_ReleaseNote_File}"
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "  > 只有為 ${GENERAL_CONST_ENABLE_FLAG} 才會使用 ${configConst_CommandName_Fvm} 功能呼叫 ${configConst_CommandName_Flutter} 。" >>"${func_Param_ReleaseNote_File}"
+    echo >>"${func_param_release_note_file}"
+    echo "---" >>"${func_param_release_note_file}"
+    echo >>"${func_param_release_note_file}"
+    echo "## Project Info" >>"${func_param_release_note_file}"
+    echo >>"${func_param_release_note_file}"
+    echo "- Name : ${func_param_name}" >>"${func_param_release_note_file}"
+    echo >>"${func_param_release_note_file}"
+    echo "- Version : ${func_param_version}" >>"${func_param_release_note_file}"
+    echo >>"${func_param_release_note_file}"
+    echo "- Git Commit ID : ${func_param_git_commit}" >>"${func_param_release_note_file}"
+    echo >>"${func_param_release_note_file}"
+    echo "- Is Enable FVM Mode : ${func_param_is_enable_fvm_mode}" >>"${func_param_release_note_file}"
+    echo >>"${func_param_release_note_file}"
+    echo "  > 只有為 ${GENERAL_CONST_ENABLE_FLAG} 才會使用 ${configConst_CommandName_Fvm} 功能呼叫 ${configConst_CommandName_Flutter} 。" >>"${func_param_release_note_file}"
 
     # ===> flutter pub get <===
     # 執行 flutter pub get 會以 pubspec.lock 為主要優先插件版本的參考檔案
     # 若是沒有 pubspec.lock 則才會以 pubspec.yaml 為主下載插件資源
-    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_Param_Is_Enable_FVM_Mode}" "pub get" \
-        "${func_Param_ChangeFolderPath}"
+    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_param_is_enable_fvm_mode}" "pub get" \
+        "${func_param_change_folder_path}"
 
     # ===> flutter --version --machine <===
-    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_Param_Is_Enable_FVM_Mode}" "--version --machine" \
-        "${func_Param_ChangeFolderPath}" "${func_Param_ReleaseNote_File}"
+    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_param_is_enable_fvm_mode}" "--version --machine" \
+        "${func_param_change_folder_path}" "${func_param_release_note_file}"
 
     # ===> flutter doctor <===
-    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_Param_Is_Enable_FVM_Mode}" "doctor -v" \
-        "${func_Param_ChangeFolderPath}" "${func_Param_ReleaseNote_File}"
+    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_param_is_enable_fvm_mode}" "doctor -v" \
+        "${func_param_change_folder_path}" "${func_param_release_note_file}"
 
     # ===> flutter pub deps <===
-    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_Param_Is_Enable_FVM_Mode}" "pub deps" \
-        "${func_Param_ChangeFolderPath}" "${func_Param_ReleaseNote_File}"
+    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_param_is_enable_fvm_mode}" "pub deps" \
+        "${func_param_change_folder_path}" "${func_param_release_note_file}"
 
-    echo "${func_Title_Log} ============= Release Note Init Info - End ============="
+    echo "${func_title_log} ============= Release Note Init Info - End ============="
     echo
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -112,22 +112,22 @@ function releastNoteTools_Gen_Init() {
 # @param ${1} : release note file path: 檔名含路徑 e.g. "${sample_ReleaseNote_File}"
 function releastNoteTools_Gen_Exported_Title() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} release note file path: ${1}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} release note file path: ${1}"
+    echo "${func_title_log} Input param : End ***"
 
-    local func_Param_ReleaseNote_File="${1}"
+    local func_param_release_note_file="${1}"
 
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "---" >>"${func_Param_ReleaseNote_File}"
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "## Exported Info" >>"${func_Param_ReleaseNote_File}"
+    echo >>"${func_param_release_note_file}"
+    echo "---" >>"${func_param_release_note_file}"
+    echo >>"${func_param_release_note_file}"
+    echo "## Exported Info" >>"${func_param_release_note_file}"
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -139,24 +139,24 @@ function releastNoteTools_Gen_Exported_Title() {
 # @param ${2} : Elapsed time (單位 : 秒): 整個 shell 的執行時間 e.g. "${SECONDS}" or "${sample_TotalTime}"
 function releastNoteTools_Gen_Final() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} release note file path: ${1}"
-    echo "${func_Title_Log} Elapsed time: ${2}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} release note file path: ${1}"
+    echo "${func_title_log} Elapsed time: ${2}"
+    echo "${func_title_log} Input param : End ***"
 
-    local func_Param_ReleaseNote_File="${1}"
-    local func_TotalTime="${2}"
+    local func_param_release_note_file="${1}"
+    local func_total_time="${2}"
 
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "---" >>"${func_Param_ReleaseNote_File}"
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "## Total Exported Time" >>"${func_Param_ReleaseNote_File}"
-    echo >>"${func_Param_ReleaseNote_File}"
-    echo "- Elapsed time: ${func_TotalTime}s" >>"${func_Param_ReleaseNote_File}"
+    echo >>"${func_param_release_note_file}"
+    echo "---" >>"${func_param_release_note_file}"
+    echo >>"${func_param_release_note_file}"
+    echo "## Total Exported Time" >>"${func_param_release_note_file}"
+    echo >>"${func_param_release_note_file}"
+    echo "- Elapsed time: ${func_total_time}s" >>"${func_param_release_note_file}"
 }
 ## ================================== Public Function Section : End ==================================
 
@@ -173,67 +173,67 @@ function releastNoteTools_Gen_Final() {
 #  - 沒有值，則直接用 console 執行。
 function _releastNoteTools_Gen_Init_Excecute_Command_Section() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} TitleLog: ${1}"
-    echo "${func_Title_Log} is enable fvm mode : ${2}"
-    echo "${func_Title_Log} excecute subCommand Content : ${3}"
-    echo "${func_Title_Log} change folder path : ${4}"
-    echo "${func_Title_Log} release note file path: ${5}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} TitleLog: ${1}"
+    echo "${func_title_log} is enable fvm mode : ${2}"
+    echo "${func_title_log} excecute subCommand Content : ${3}"
+    echo "${func_title_log} change folder path : ${4}"
+    echo "${func_title_log} release note file path: ${5}"
+    echo "${func_title_log} Input param : End ***"
 
-    local func_Param_Is_Enable_FVM_Mode="${2}"
+    local func_param_is_enable_fvm_mode="${2}"
     local func_Param_Execute_SubCommand_Content="${3}"
-    local func_Param_ChangeFolderPath="${4}"
-    local func_Param_ReleaseNote_File="${5}"
+    local func_param_change_folder_path="${4}"
+    local func_param_release_note_file="${5}"
 
     # ===> flutter command <===
     # command 初始設定
-    local func_Execute_Command_Name
-    local func_Execute_Command_Content
+    local func_execute_command_name
+    local func_execute_command_content
 
-    # 判斷 func_Param_Is_Enable_FVM_Mode
-    if [ ${func_Param_Is_Enable_FVM_Mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
+    # 判斷 func_param_is_enable_fvm_mode
+    if [ ${func_param_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-        func_Execute_Command_Name="${configConst_CommandName_Fvm}"
-        func_Execute_Command_Content="${configConst_CommandName_Flutter} ${func_Param_Execute_SubCommand_Content}"
+        func_execute_command_name="${configConst_CommandName_Fvm}"
+        func_execute_command_content="${configConst_CommandName_Flutter} ${func_Param_Execute_SubCommand_Content}"
 
     else
 
-        func_Execute_Command_Name="${configConst_CommandName_Flutter}"
-        func_Execute_Command_Content="${func_Param_Execute_SubCommand_Content}"
+        func_execute_command_name="${configConst_CommandName_Flutter}"
+        func_execute_command_content="${func_Param_Execute_SubCommand_Content}"
     fi
 
-    echo "${func_Title_Log} ${1} ============= ${func_Execute_Command_Name} ${func_Execute_Command_Content} - Begin ============="
+    echo "${func_title_log} ${1} ============= ${func_execute_command_name} ${func_execute_command_content} - Begin ============="
 
     # 若有 release note file
-    if [ -n "${func_Param_ReleaseNote_File}" ]; then
+    if [ -n "${func_param_release_note_file}" ]; then
 
         # for ReleaseNote
-        echo >>"${func_Param_ReleaseNote_File}"
-        echo "---" >>"${func_Param_ReleaseNote_File}"
-        echo >>"${func_Param_ReleaseNote_File}"
-        echo "## ${func_Execute_Command_Name} ${func_Execute_Command_Content}" >>"${func_Param_ReleaseNote_File}"
-        echo >>"${func_Param_ReleaseNote_File}"
+        echo >>"${func_param_release_note_file}"
+        echo "---" >>"${func_param_release_note_file}"
+        echo >>"${func_param_release_note_file}"
+        echo "## ${func_execute_command_name} ${func_execute_command_content}" >>"${func_param_release_note_file}"
+        echo >>"${func_param_release_note_file}"
 
         # execute command
-        echo "${func_Title_Log} ${1} ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_ReleaseNote_File}"
-        ${func_Execute_Command_Name} ${func_Execute_Command_Content} >>"${func_Param_ReleaseNote_File}"
+        echo "${func_title_log} ${1} ${func_execute_command_name} ${func_execute_command_content} >> ${func_param_release_note_file}"
+        ${func_execute_command_name} ${func_execute_command_content} >>"${func_param_release_note_file}"
 
     else
 
         # execute command
-        echo "${func_Title_Log} ${1} ${func_Execute_Command_Name} ${func_Execute_Command_Content}"
-        ${func_Execute_Command_Name} ${func_Execute_Command_Content}
+        echo "${func_title_log} ${1} ${func_execute_command_name} ${func_execute_command_content}"
+        ${func_execute_command_name} ${func_execute_command_content}
 
     fi
 
-    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ ${func_Execute_Command_Name} ${func_Execute_Command_Content} => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+    check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ ${func_execute_command_name} ${func_execute_command_content} => fail ~ !!!" "${func_param_change_folder_path}"
 
-    echo "${func_Title_Log} ${1} ============= ${func_Execute_Command_Name} ${func_Execute_Command_Content} - End ============="
+    echo "${func_title_log} ${1} ============= ${func_execute_command_name} ${func_execute_command_content} - End ============="
     echo
 
 }

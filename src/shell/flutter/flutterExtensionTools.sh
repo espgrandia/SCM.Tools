@@ -43,61 +43,61 @@
 #  "${sample_Title_Log}" "${sample_Is_Enable_FVM_Mode}" "${sample_IsExcute}" sample_CommandParams[@] "${sample_ChangeFolder}"
 function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} TitleLog: ${1}"
-    echo "${func_Title_Log} is enable fvm mode : ${2}"
-    echo "${func_Title_Log} isExcute : ${3}"
-    echo "${func_Title_Log} command params : ${!4}"
-    echo "${func_Title_Log} change folder : ${5}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} TitleLog: ${1}"
+    echo "${func_title_log} is enable fvm mode : ${2}"
+    echo "${func_title_log} isExcute : ${3}"
+    echo "${func_title_log} command params : ${!4}"
+    echo "${func_title_log} change folder : ${5}"
+    echo "${func_title_log} Input param : End ***"
 
     # 應用於函式中主體的 title log。
-    local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+    local func_main_body_title_log="${func_title_log} ${1}"
 
     # [params]
-    local func_Param_Is_Enable_FVM_Mode="${2}"
-    local func_Param_IsExcute="${3}"
-    local func_Param_CoommandParams=("${!4}")
-    local func_Param_ChangeFolder="${5}"
+    local func_param_is_enable_fvm_mode="${2}"
+    local func_param_is_excute="${3}"
+    local func_param_command_params=("${!4}")
+    local func_param_change_folder="${5}"
 
     # ===> flutter command <===
     # command 初始設定
-    local func_CommandName=""
-    local func_CommandParams=()
+    local func_command_name=""
+    local func_command_params=()
 
-    # 判斷 func_Param_Is_Enable_FVM_Mode
-    if [ ${func_Param_Is_Enable_FVM_Mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
+    # 判斷 func_param_is_enable_fvm_mode
+    if [ ${func_param_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-        func_CommandName="${configConst_CommandName_Fvm}"
-        func_CommandParams+=("${configConst_CommandName_Flutter}")
+        func_command_name="${configConst_CommandName_Fvm}"
+        func_command_params+=("${configConst_CommandName_Flutter}")
 
     else
 
-        func_CommandName="${configConst_CommandName_Flutter}"
+        func_command_name="${configConst_CommandName_Flutter}"
 
     fi
 
     # 處理 execute params。
-    func_CommandParams+=("${func_Param_CoommandParams[@]}")
+    func_command_params+=("${func_param_command_params[@]}")
 
     echo
-    echo "${func_MainBody_Title_Log} command info : Begin ***"
-    echo "${func_MainBody_Title_Log} func_CommandName : ${func_CommandName}"
-    echo "${func_MainBody_Title_Log} func_CommandParams : ${func_CommandParams[@]}"
-    echo "${func_MainBody_Title_Log} func_CommandParams count : ${#func_CommandParams[@]}"
-    echo "${func_MainBody_Title_Log} command info : End ***"
+    echo "${func_main_body_title_log} command info : Begin ***"
+    echo "${func_main_body_title_log} func_command_name : ${func_command_name}"
+    echo "${func_main_body_title_log} func_command_params : ${func_command_params[@]}"
+    echo "${func_main_body_title_log} func_command_params count : ${#func_command_params[@]}"
+    echo "${func_main_body_title_log} command info : End ***"
     echo
 
     # execute command
     # 呼叫通用函式來處理是否要執行該 command 以及錯誤的後續處理。
-    check_ok_then_excute_command__if__result_fail_then_change_folder "${func_Title_Log}" "${func_Param_IsExcute}" \
-        "${func_CommandName}" func_CommandParams[@] "${func_Param_ChangeFolder}"
+    check_ok_then_excute_command__if__result_fail_then_change_folder "${func_title_log}" "${func_param_is_excute}" \
+        "${func_command_name}" func_command_params[@] "${func_param_change_folder}"
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
@@ -113,65 +113,65 @@ function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then
 # @param ${4} : 若失敗要切換的路徑，change folder path : e.g. "${sample_OldPath}"
 function flutterExtensionTools_Generator_VersionMachine_File() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] -"
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} TitleLog: ${1}"
-    echo "${func_Title_Log} is enable fvm mode : ${2}"
-    echo "${func_Title_Log} generator file path: ${3}"
-    echo "${func_Title_Log} change folder path : ${4}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} TitleLog: ${1}"
+    echo "${func_title_log} is enable fvm mode : ${2}"
+    echo "${func_title_log} generator file path: ${3}"
+    echo "${func_title_log} change folder path : ${4}"
+    echo "${func_title_log} Input param : End ***"
 
     # 應用於函式中主體的 title log。
-    local func_MainBody_Title_Log="${func_Title_Log} ${1}"
+    local func_main_body_title_log="${func_title_log} ${1}"
 
     # [params]
-    local func_Param_Is_Enable_FVM_Mode="${2}"
-    local func_Param_Generator_File="${3}"
-    local func_Param_ChangeFolderPath="${4}"
+    local func_param_is_enable_fvm_mode="${2}"
+    local func_param_generator_file="${3}"
+    local func_param_change_folder_path="${4}"
 
     echo
-    echo "${func_MainBody_Title_Log} ============= Generator Flutter Version Machine To File - Begin ============="
+    echo "${func_main_body_title_log} ============= Generator Flutter Version Machine To File - Begin ============="
 
-    echo "" >"${func_Param_Generator_File}"
-    echo "const Map<String, String> flutterVersionMachine = const <String, String>" >>"${func_Param_Generator_File}"
+    echo "" >"${func_param_generator_file}"
+    echo "const Map<String, String> flutterVersionMachine = const <String, String>" >>"${func_param_generator_file}"
 
     # ===> flutter command <===
     # command 初始設定
-    local func_Execute_Command_Name
-    local func_Execute_Command_Content
-    local func_Execute_Command_SubCommand_Content="--version --machine"
+    local func_execute_command_name
+    local func_execute_command_content
+    local func_execute_command_subcommand_content="--version --machine"
 
-    # 判斷 func_Param_Is_Enable_FVM_Mode
-    if [ ${func_Param_Is_Enable_FVM_Mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
+    # 判斷 func_param_is_enable_fvm_mode
+    if [ ${func_param_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-        func_Execute_Command_Name="${configConst_CommandName_Fvm}"
-        func_Execute_Command_Content="${configConst_CommandName_Flutter} ${func_Execute_Command_SubCommand_Content}"
+        func_execute_command_name="${configConst_CommandName_Fvm}"
+        func_execute_command_content="${configConst_CommandName_Flutter} ${func_execute_command_subcommand_content}"
 
     else
 
-        func_Execute_Command_Name="${configConst_CommandName_Flutter}"
-        func_Execute_Command_Content="${func_Execute_Command_SubCommand_Content}"
+        func_execute_command_name="${configConst_CommandName_Flutter}"
+        func_execute_command_content="${func_execute_command_subcommand_content}"
     fi
 
     # [execute command] : 於 terminal 先呼叫一次，有可能 local 第一次下載此版本，此時需要手動操作，使用者需按下允許更新。
-    echo "${func_MainBody_Title_Log} Execute Command => [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} ] <="
-    ${func_Execute_Command_Name} ${func_Execute_Command_Content}
-    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ ${func_Execute_Command_Name} ${func_Execute_Command_Content} => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+    echo "${func_main_body_title_log} Execute Command => [ ${func_execute_command_name} ${func_execute_command_content} ] <="
+    ${func_execute_command_name} ${func_execute_command_content}
+    check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ ${func_execute_command_name} ${func_execute_command_content} => fail ~ !!!" "${func_param_change_folder_path}"
 
     # [execute command] : 再次呼叫 command，此次會寫到檔案。
-    echo "${func_MainBody_Title_Log} Execute Command => [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_Generator_File} ] <="
-    ${func_Execute_Command_Name} ${func_Execute_Command_Content} >>"${func_Param_Generator_File}"
-    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ [ ${func_Execute_Command_Name} ${func_Execute_Command_Content} >> ${func_Param_Generator_File} ] => fail ~ !!!" "${func_Param_ChangeFolderPath}"
+    echo "${func_main_body_title_log} Execute Command => [ ${func_execute_command_name} ${func_execute_command_content} >> ${func_param_generator_file} ] <="
+    ${func_execute_command_name} ${func_execute_command_content} >>"${func_param_generator_file}"
+    check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ [ ${func_execute_command_name} ${func_execute_command_content} >> ${func_param_generator_file} ] => fail ~ !!!" "${func_param_change_folder_path}"
 
-    echo ";" >>"${func_Param_Generator_File}"
+    echo ";" >>"${func_param_generator_file}"
 
-    echo "${func_MainBody_Title_Log} ============= Generator Flutter Version Machine To File - End ============="
+    echo "${func_main_body_title_log} ============= Generator Flutter Version Machine To File - End ============="
     echo
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 ##

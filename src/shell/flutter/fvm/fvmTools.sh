@@ -33,68 +33,68 @@
 #
 function dealFvmSetActiveToGlobal() {
 
-    local func_Title_Log="*** function [${FUNCNAME[0]}] - ${1}"
+    local func_title_log="*** function [${FUNCNAME[0]}] - ${1}"
 
     echo
-    echo "${func_Title_Log} Begin ***"
-    echo "${func_Title_Log} Input param : Begin ***"
-    echo "${func_Title_Log} TitleLog: ${1}"
-    echo "${func_Title_Log} ChangePath: ${2}"
-    echo "${func_Title_Log} fvm config file: ${3}"
-    echo "${func_Title_Log} parse json file by python: ${4}"
-    echo "${func_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} TitleLog: ${1}"
+    echo "${func_title_log} ChangePath: ${2}"
+    echo "${func_title_log} fvm config file: ${3}"
+    echo "${func_title_log} parse json file by python: ${4}"
+    echo "${func_title_log} Input param : End ***"
 
-    local func_Param_TitleLog="${1}"
-    local func_Param_ChangeFolder="${2}"
-    local func_Param_Fvm_Config_File="${3}"
-    local func_Param_Parse_JsonFile_BY_Python="${4}"
+    local func_param_title_log="${1}"
+    local func_param_change_folder="${2}"
+    local func_param_fvm_config_file="${3}"
+    local func_param_parse_json_file_by_python="${4}"
 
     echo
-    echo "${func_Title_Log} ============= parse json file - Begin ============="
+    echo "${func_title_log} ============= parse json file - Begin ============="
 
-    local func_Key_FlutterSdkVersion="flutterSdkVersion"
+    local func_key_flutter_sdk_version="flutterSdkVersion"
 
     # [get python command name] : 設定支援的 python command name。
-    local func_PythonList=(python python3 python2)
-    local func_Execute_Python=""
+    local func_python_list=(python python3 python2)
+    local func_execute_python=""
 
-    echo "${func_Title_Log} func_PythonList : ${func_PythonList[@]}"
+    echo "${func_title_log} func_python_list : ${func_python_list[@]}"
 
     # [get python command name] : 使用 scm.tools 工具。
     get_first_found_command_from_input_command_list_by_using_which_command__if__result_fail_then_change_folder \
-        "${func_Param_TitleLog}" func_PythonList[@] func_Execute_Python "${func_Param_ChangeFolder}"
+        "${func_param_title_log}" func_python_list[@] func_execute_python "${func_param_change_folder}"
 
-    # [get python command name] : 可以到這，表示有找到合法的 python ， func_Execute_Python 一定有內容。
-    echo "${func_Title_Log} func_Execute_Python : ${func_Execute_Python}"
+    # [get python command name] : 可以到這，表示有找到合法的 python ， func_execute_python 一定有內容。
+    echo "${func_title_log} func_execute_python : ${func_execute_python}"
 
     # [取得 jsonfile] : key 為 [flutterSdkVersion] 的內容。
-    echo "${func_Title_Log} will execute python command : ${func_Execute_Python} ${func_Param_Parse_JsonFile_BY_Python} ${func_Param_Fvm_Config_File} ${func_Key_FlutterSdkVersion}"
-    local func_FlutterSdkVersion=$(${func_Execute_Python} ${func_Param_Parse_JsonFile_BY_Python} ${func_Param_Fvm_Config_File} ${func_Key_FlutterSdkVersion})
-    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ parse json file => fail ~ !!!" "${2}"
+    echo "${func_title_log} will execute python command : ${func_execute_python} ${func_param_parse_json_file_by_python} ${func_param_fvm_config_file} ${func_key_flutter_sdk_version}"
+    local func_flutter_sdk_version=$(${func_execute_python} ${func_param_parse_json_file_by_python} ${func_param_fvm_config_file} ${func_key_flutter_sdk_version})
+    check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ parse json file => fail ~ !!!" "${2}"
 
-    echo "${func_Title_Log} ${func_Key_FlutterSdkVersion} value : ${func_FlutterSdkVersion}"
+    echo "${func_title_log} ${func_key_flutter_sdk_version} value : ${func_flutter_sdk_version}"
 
-    echo "${func_Title_Log} ============= parse json file - End ============="
+    echo "${func_title_log} ============= parse json file - End ============="
 
     echo
-    echo "${func_Title_Log} ============= fvm - Begin ============="
-    echo "${func_Title_Log} fvm list [before fvm global ${func_FlutterSdkVersion}]"
+    echo "${func_title_log} ============= fvm - Begin ============="
+    echo "${func_title_log} fvm list [before fvm global ${func_flutter_sdk_version}]"
     fvm list
-    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
+    check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
 
     echo
-    echo "${func_Title_Log} fvm global ${func_FlutterSdkVersion}"
-    fvm global "${func_FlutterSdkVersion}"
-    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ fvm global ${func_FlutterSdkVersion} => fail ~ !!!" "${2}"
+    echo "${func_title_log} fvm global ${func_flutter_sdk_version}"
+    fvm global "${func_flutter_sdk_version}"
+    check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ fvm global ${func_flutter_sdk_version} => fail ~ !!!" "${2}"
 
     echo
-    echo "${func_Title_Log} fvm list [after fvm global ${func_FlutterSdkVersion}]"
+    echo "${func_title_log} fvm list [after fvm global ${func_flutter_sdk_version}]"
     fvm list
-    check_result_if_fail_then_change_folder "${func_Title_Log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
+    check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ fvm list => fail ~ !!!" "${2}"
 
-    echo "${func_Title_Log} ============= fvm - End ============="
+    echo "${func_title_log} ============= fvm - End ============="
     echo
 
-    echo "${func_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
