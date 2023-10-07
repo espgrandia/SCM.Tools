@@ -15,7 +15,7 @@
 #   - scm.tools/src/shell/generalConst.sh
 #     > func => check_result_if_fail_then_change_folder ...
 #   - configConst.sh
-#     > export 參數 => configConst_CommandName_Fvm ...
+#     > export 參數 => CONFIG_CONST_COMMAND_NAME_FVM ...
 #   - include 方式 :
 #     - 需自行 include generalConst.sh
 #     - 需自行 include generalTools.sh
@@ -72,12 +72,12 @@ function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then
     # 判斷 func_param_is_enable_fvm_mode
     if [ ${func_param_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-        func_command_name="${configConst_CommandName_Fvm}"
-        func_command_params+=("${configConst_CommandName_Flutter}")
+        func_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+        func_command_params+=("${CONFIG_CONST_COMMAND_NAME_FLUTTER}")
 
     else
 
-        func_command_name="${configConst_CommandName_Flutter}"
+        func_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
 
     fi
 
@@ -147,12 +147,12 @@ function flutterExtensionTools_Generator_VersionMachine_File() {
     # 判斷 func_param_is_enable_fvm_mode
     if [ ${func_param_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-        func_execute_command_name="${configConst_CommandName_Fvm}"
-        func_execute_command_content="${configConst_CommandName_Flutter} ${func_execute_command_subcommand_content}"
+        func_execute_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+        func_execute_command_content="${CONFIG_CONST_COMMAND_NAME_FLUTTER} ${func_execute_command_subcommand_content}"
 
     else
 
-        func_execute_command_name="${configConst_CommandName_Flutter}"
+        func_execute_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
         func_execute_command_content="${func_execute_command_subcommand_content}"
     fi
 

@@ -18,7 +18,7 @@
 # @brief : 透過 flutter 通用的。
 
 # flutter 的 command name
-export configConst_CommandName_Flutter="flutter"
+export CONFIG_CONST_COMMAND_NAME_FLUTTER="flutter"
 
 ### ---------------------------------- flutter command section : End ----------------------------------
 
@@ -29,26 +29,26 @@ export configConst_CommandName_Flutter="flutter"
 # @sa
 #   - configTools.sh 中 configTools_Gen_Required 參數可參考此區塊來設定
 #   - exported.sh 會使用到。
-export configConst_Subcommand_aar="aar"
-export configConst_Subcommand_apk="apk"
-export configConst_Subcommand_appbundle="appbundle"
-export configConst_Subcommand_bundle="bundle"
-export configConst_Subcommand_ios="ios"
-export configConst_Subcommand_ios_framework="ios-framework"
-export configConst_Subcommand_ipa="ipa"
-export configConst_Subcommand_web="web"
+export CONFIG_CONST_SUBCOMMAND_AAR="aar"
+export CONFIG_CONST_SUBCOMMAND_APK="apk"
+export CONFIG_CONST_SUBCOMMAND_APPBUNDLE="appbundle"
+export CONFIG_CONST_SUBCOMMAND_BUNDLE="bundle"
+export CONFIG_CONST_SUBCOMMAND_IOS="ios"
+export CONFIG_CONST_SUBCOMMAND_IOS_FRAMEWORK="ios-framework"
+export CONFIG_CONST_SUBCOMMAND_IPA="ipa"
+export CONFIG_CONST_SUBCOMMAND_WEB="web"
 
 
 # 目前 flutter build 提供的 subcommands，flutter version (2.2.3)。
-export configConst_Flutter_Provide_Subcommands_String="${configConst_Subcommand_aar} ${configConst_Subcommand_apk}\
- ${configConst_Subcommand_appbundle} ${configConst_Subcommand_bundle}\
- ${configConst_Subcommand_ios} ${configConst_Subcommand_ios_framework} ${configConst_Subcommand_ipa}\
- ${configConst_Subcommand_web}"
+export CONFIG_CONST_FLUTTER_PROVIDE_SUBCOMMANDS_STRING="${CONFIG_CONST_SUBCOMMAND_AAR} ${CONFIG_CONST_SUBCOMMAND_APK}\
+ ${CONFIG_CONST_SUBCOMMAND_APPBUNDLE} ${CONFIG_CONST_SUBCOMMAND_BUNDLE}\
+ ${CONFIG_CONST_SUBCOMMAND_IOS} ${CONFIG_CONST_SUBCOMMAND_IOS_FRAMEWORK} ${CONFIG_CONST_SUBCOMMAND_IPA}\
+ ${CONFIG_CONST_SUBCOMMAND_WEB}"
 
 # 目前 exported.sh 提供的 subcommands。
-export configConst_Exported_Shell_Provide_Subcommands_String="${configConst_Subcommand_apk}\
- ${configConst_Subcommand_appbundle}\
- ${configConst_Subcommand_ios} ${configConst_Subcommand_ipa}"
+export CONFIG_CONST_EXPORTED_SHELL_PROVIDE_SUBCOMMANDS_STRING="${CONFIG_CONST_SUBCOMMAND_APK}\
+ ${CONFIG_CONST_SUBCOMMAND_APPBUNDLE}\
+ ${CONFIG_CONST_SUBCOMMAND_IOS} ${CONFIG_CONST_SUBCOMMAND_IPA}"
 
 ### ---------------------------------- subcommand key section : End ----------------------------------
 
@@ -69,19 +69,19 @@ export configConst_Exported_Shell_Provide_Subcommands_String="${configConst_Subc
 #
 
 # config file 中， Optional 關於 
-export configConst_ConfigKey_Fvm_Is_Enable_Fvm_Mode="is_enable_fvm_mode"
+export CONFIG_CONST_CONFIG_KEY_FVM_IS_ENABLE_FVM_MODE="is_enable_fvm_mode"
 
 # fvm 的 command line 的名稱。
-export configConst_CommandName_Fvm="fvm"
+export CONFIG_CONST_COMMAND_NAME_FVM="fvm"
 
 ### ---------------------------------- fvm mode section : End ----------------------------------
 
 ### ---------------------------------- buildConfigType key section : Begin ----------------------------------
 # 支援的 subcommand : [apk] [appbundle] [bundle] [ios]。
 # 依據 flutter build ， 有 debug ， profile ， release
-export configConst_BuildConfigType_Debug="debug"
-export configConst_BuildConfigType_Profile="profile"
-export configConst_BuildConfigType_Release="release"
+export CONFIG_CONST_BUILD_CONFIG_TYPE_DEBUG="debug"
+export CONFIG_CONST_BUILD_CONFIG_TYPE_PROFILE="profile"
+export CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE="release"
 
 ### ---------------------------------- buildConfigType key section : End ----------------------------------
 
@@ -93,7 +93,7 @@ export configConst_BuildConfigType_Release="release"
 #  - exported.sh 會依照此 subcommand 有支援的 feature 來帶入。
 
 # 不更新 pub。
-export configConst_BuildParam_ToggleFeature_NoPub="no-pub"
+export CONFIG_CONST_BUILD_PARAM_TOGGLE_FEATURE_NO_PUB="no-pub"
 ### ================================== ToogleFeature key section : End ==================================
 
 ### ---------------------------------- Parm that needed contains value section : Begin ----------------------------------
@@ -108,29 +108,29 @@ export configConst_BuildParam_ToggleFeature_NoPub="no-pub"
 #     一般對應於上面的 [Build_Name]，有設定則會當作產出的檔案名稱一環。
 #   - 預設 : 沒指定時，flutter build 會預設為下面的 [Build_Name]
 #     pubspec.yaml 的 version : [Build_Name]+[Build_Number]，但檔案名稱沒有對應內容。
-export configConst_BuildParam_Key_BuildName="build-name"
+export CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NAME="build-name"
 
 # [build-number] 指定編譯的 build number。
 #   - flutter pubspec.yaml 中 version : [Build_Name]+[Build_Number]。
 #     一般對應於上面的 [Build_Number]，有設定則會當作產出的檔案名稱一環。
 #   - 預設 : 沒指定時，flutter build 會預設為下面的 [Build_Number]
 #     pubspec.yaml 的 version : [Build_Name]+[Build_Number]，但檔案名稱沒有對應內容。
-export configConst_BuildParam_Key_BuildNumber="build-number"
+export CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NUMBER="build-number"
 
 # [dart-define] 設定 dart 的環境變數，可於 dart 層取得。
-export configConst_BuildParam_Key_DartDefine="dart-define"
+export CONFIG_CONST_BUILD_PARAM_KEY_DART_DEFINE="dart-define"
 
 # [flavor] 依照 flavor 來做編譯，Android 為 flavor， iOS 為 Xcode schemes。
-export configConst_BuildParam_Key_Flavor="flavor"
+export CONFIG_CONST_BUILD_PARAM_KEY_FLAVOR="flavor"
 
 # [target-platform] 設定 Android 的發佈平台。
-export configConst_BuildParam_Key_TargetPlatform="target-platform"
+export CONFIG_CONST_BUILD_PARAM_KEY_TARGET_PLATFORM="target-platform"
 
 # [target-platform] [value] Android 的發佈平台可設定的 value [android-arm (default), android-arm64 (default), android-x86, android-x64 (default)]
-export configConst_BuildParam_TargetPlatform_arm="android-arm"
-export configConst_BuildParam_TargetPlatform_arm64="android-arm64"
-export configConst_BuildParam_TargetPlatform_x86="android-x86"
-export configConst_BuildParam_TargetPlatform_x64="android-x64"
+export CONFIG_CONST_BUILD_PARAM_TARGET_PLATFORM_ARM="android-arm"
+export CONFIG_CONST_BUILD_PARAM_TARGET_PLATFORM_ARM64="android-arm64"
+export CONFIG_CONST_BUILD_PARAM_TARGET_PLATFORM_X86="android-x86"
+export CONFIG_CONST_BUILD_PARAM_TARGET_PLATFORM_X64="android-x64"
 ### ---------------------------------- Parm that needed contains value section : End ----------------------------------
 
 ### ---------------------------------- config (yaml) key that needed contains value section : Begin ----------------------------------
@@ -138,10 +138,10 @@ export configConst_BuildParam_TargetPlatform_x64="android-x64"
 # @detail 首先會用到的是 confitTools.sh，其餘的 exported.sh 看看是否能使用。
 
 # for config key。
-export configConst_ConfigKey_Optional="optional"
+export CONFIG_CONST_CONFIG_KEY_OPTIONAL="optional"
 
 # 產出的檔案名稱，加上 前綴字 (prefix)。
-export configConst_ConfigKey_Prefix_FileName="prefix_file_name"
+export CONFIG_CONST_CONFIG_KEY_PREFIX_FILE_NAME="prefix_file_name"
 
 ### ---------------------------------- config key (yaml) that needed contains value section : End ----------------------------------
 

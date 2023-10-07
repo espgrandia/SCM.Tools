@@ -288,7 +288,7 @@ function parseBuildConfigTypeSection() {
 
     if [ -n "${thisShell_Config_optional_build_config_types}" ]; then
 
-        local func_SrcList=("${configConst_BuildConfigType_Debug}" "${configConst_BuildConfigType_Profile}" "${configConst_BuildConfigType_Release}")
+        local func_SrcList=("${CONFIG_CONST_BUILD_CONFIG_TYPE_DEBUG}" "${CONFIG_CONST_BUILD_CONFIG_TYPE_PROFILE}" "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}")
 
         local func_i
         for ((func_i = 0; func_i < ${#thisShell_Config_optional_build_config_types[@]}; func_i++)); do #請注意 ((   )) 雙層括號
@@ -313,7 +313,7 @@ function parseDartDefine() {
     if [ -n "${thisShell_Config_optional_dart_define_defines}" ] && [ -n "${thisShell_Config_optional_dart_define_separator}" ]; then
 
         echo
-        echo "${thisShell_Title_Log} ============= parse "${configConst_BuildParam_Key_DartDefine}" : Begin ============="
+        echo "${thisShell_Title_Log} ============= parse "${CONFIG_CONST_BUILD_PARAM_KEY_DART_DEFINE}" : Begin ============="
 
         # check input parameters
         check_input_param "${thisShell_Title_Log}" thisShell_Config_optional_dart_define_defines "${thisShell_Config_optional_dart_define_defines[@]}"
@@ -339,12 +339,12 @@ function parseDartDefine() {
             # 第一次，尚未設定。
             if [ -z "${thisShell_DartDef_PartOf_Command}" ] && [ -z "${thisShell_DartDef_PartOf_FileName}" ]; then
 
-                thisShell_DartDef_PartOf_Command="--"${configConst_BuildParam_Key_DartDefine}"=${aKey}=${aVal}"
+                thisShell_DartDef_PartOf_Command="--"${CONFIG_CONST_BUILD_PARAM_KEY_DART_DEFINE}"=${aKey}=${aVal}"
                 thisShell_DartDef_PartOf_FileName="${aKey}_${aVal}"
 
             else
 
-                thisShell_DartDef_PartOf_Command="${thisShell_DartDef_PartOf_Command} --"${configConst_BuildParam_Key_DartDefine}"=${aKey}=${aVal}"
+                thisShell_DartDef_PartOf_Command="${thisShell_DartDef_PartOf_Command} --"${CONFIG_CONST_BUILD_PARAM_KEY_DART_DEFINE}"=${aKey}=${aVal}"
                 thisShell_DartDef_PartOf_FileName="${thisShell_DartDef_PartOf_FileName}-${aKey}_${aVal}"
 
             fi
@@ -358,7 +358,7 @@ function parseDartDefine() {
         echo "${thisShell_Title_Log} thisShell_DartDef_PartOf_Command  : ${thisShell_DartDef_PartOf_Command}"
         echo "${thisShell_Title_Log} thisShell_DartDef_PartOf_FileName : ${thisShell_DartDef_PartOf_FileName}"
 
-        echo "${thisShell_Title_Log} ============= parse "${configConst_BuildParam_Key_DartDefine}" : End ============="
+        echo "${thisShell_Title_Log} ============= parse "${CONFIG_CONST_BUILD_PARAM_KEY_DART_DEFINE}" : End ============="
         echo
 
     fi
@@ -439,29 +439,29 @@ function export_apk() {
 	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
 	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-		func_build_command_name="${configConst_CommandName_Fvm}"
-		func_build_command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_param_build_config_type}"
+		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+		func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_Subcommand} --${func_param_build_config_type}"
 
 	else
 
-		func_build_command_name="${configConst_CommandName_Flutter}"
+		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
 		func_build_command="build ${func_Subcommand} --${func_param_build_config_type}"
 
 	fi
    
     # 若有 build_name
     if [ -n "${thisShell_Config_optional_build_name}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_BuildName} ${thisShell_Config_optional_build_name}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NAME} ${thisShell_Config_optional_build_name}"
     fi
 
     # 若有 build_number
     if [ -n "${thisShell_Config_optional_build_number}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_BuildNumber} ${thisShell_Config_optional_build_number}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NUMBER} ${thisShell_Config_optional_build_number}"
     fi
 
     # 若有 flavor
     if [ -n "${thisShell_Config_optional_flavor}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_Flavor}=${thisShell_Config_optional_flavor}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_FLAVOR}=${thisShell_Config_optional_flavor}"
     fi
 
     # 若有 dart-define
@@ -471,7 +471,7 @@ function export_apk() {
 
     # 若有 target-platform
     if [ -n "${thisShell_Config_optional_target_platform}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_TargetPlatform} ${thisShell_Config_optional_target_platform}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_TARGET_PLATFORM} ${thisShell_Config_optional_target_platform}"
     fi
 
     # ===> OutputFile 設定 <===
@@ -612,29 +612,29 @@ function export_appbundle() {
 	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
 	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-		func_build_command_name="${configConst_CommandName_Fvm}"
-		func_build_command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_param_build_config_type}"
+		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+		func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_Subcommand} --${func_param_build_config_type}"
 
 	else
 
-		func_build_command_name="${configConst_CommandName_Flutter}"
+		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
 		func_build_command="build ${func_Subcommand} --${func_param_build_config_type}"
 
 	fi
    
     # 若有 build_name
     if [ -n "${thisShell_Config_optional_build_name}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_BuildName} ${thisShell_Config_optional_build_name}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NAME} ${thisShell_Config_optional_build_name}"
     fi
 
     # 若有 build_number
     if [ -n "${thisShell_Config_optional_build_number}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_BuildNumber} ${thisShell_Config_optional_build_number}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NUMBER} ${thisShell_Config_optional_build_number}"
     fi
 
     # 若有 flavor
     if [ -n "${thisShell_Config_optional_flavor}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_Flavor}=${thisShell_Config_optional_flavor}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_FLAVOR}=${thisShell_Config_optional_flavor}"
     fi
 
     # 若有 dart-define
@@ -644,7 +644,7 @@ function export_appbundle() {
 
     # 若有 target-platform
     if [ -n "${thisShell_Config_optional_target_platform}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_TargetPlatform} ${thisShell_Config_optional_target_platform}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_TARGET_PLATFORM} ${thisShell_Config_optional_target_platform}"
     fi
 
     # ===> OutputFile 設定 <===
@@ -797,29 +797,29 @@ function export_ios() {
 	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
 	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-		func_build_command_name="${configConst_CommandName_Fvm}"
-		func_build_command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_param_build_config_type}"
+		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+		func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_Subcommand} --${func_param_build_config_type}"
 
 	else
 
-		func_build_command_name="${configConst_CommandName_Flutter}"
+		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
 		func_build_command="build ${func_Subcommand} --${func_param_build_config_type}"
 
 	fi
 
     # 若有 build_name
     if [ -n "${thisShell_Config_optional_build_name}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_BuildName} ${thisShell_Config_optional_build_name}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NAME} ${thisShell_Config_optional_build_name}"
     fi
 
     # 若有 build_number
     if [ -n "${thisShell_Config_optional_build_number}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_BuildNumber} ${thisShell_Config_optional_build_number}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NUMBER} ${thisShell_Config_optional_build_number}"
     fi
 
     # 若有 flavor
     if [ -n "${thisShell_Config_optional_flavor}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_Flavor}=${thisShell_Config_optional_flavor}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_FLAVOR}=${thisShell_Config_optional_flavor}"
     fi
 
     # 若有 dart-define
@@ -994,29 +994,29 @@ function export_ipa() {
 	# 判斷 thisShell_Config_flutter_run_config_is_enable_fvm_mode
 	if [ ${thisShell_Config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-		func_build_command_name="${configConst_CommandName_Fvm}"
-		func_build_command="${configConst_CommandName_Flutter} build ${func_Subcommand} --${func_param_build_config_type}"
+		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+		func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_Subcommand} --${func_param_build_config_type}"
 
 	else
 
-		func_build_command_name="${configConst_CommandName_Flutter}"
+		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
 		func_build_command="build ${func_Subcommand} --${func_param_build_config_type}"
 
 	fi
 
     # 若有 build_name
     if [ -n "${thisShell_Config_optional_build_name}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_BuildName} ${thisShell_Config_optional_build_name}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NAME} ${thisShell_Config_optional_build_name}"
     fi
 
     # 若有 build_number
     if [ -n "${thisShell_Config_optional_build_number}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_BuildNumber} ${thisShell_Config_optional_build_number}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NUMBER} ${thisShell_Config_optional_build_number}"
     fi
 
     # 若有 flavor
     if [ -n "${thisShell_Config_optional_flavor}" ]; then
-        func_build_command="${func_build_command} --${configConst_BuildParam_Key_Flavor}=${thisShell_Config_optional_flavor}"
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_FLAVOR}=${thisShell_Config_optional_flavor}"
     fi
 
     # 若有 dart-define
@@ -1241,7 +1241,7 @@ function process_Deal_ToggleFeature() {
     # build configutation type : 編譯組態設定，之後視情況是否要開放
     # 依據 flutter build ， 有 debug ， profile ， release，
     # 可參考 configConst.sh 中的 configConst_BuildConfigType_xxx
-    thisShell_ToogleFeature_DefaultBuildConfigType="${configConst_BuildConfigType_Release}"
+    thisShell_ToogleFeature_DefaultBuildConfigType="${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}"
 
     echo
     echo "${thisShell_Title_Log} ============= Toogle Feature : Begin ============="
@@ -1268,14 +1268,14 @@ function process_Init_SubcommandInfo() {
     #   - [1]: 是否要執行 (isExcute)。 default : "${GENERAL_CONST_DISABLE_FLAG}"。
     #
     # 目前只支援 apk 及 ios，之後視情況新增。
-    thisShell_SubcommandInfo_aar=("${configConst_Subcommand_aar}" "${GENERAL_CONST_DISABLE_FLAG}")
-    thisShell_SubcommandInfo_apk=("${configConst_Subcommand_apk}" "${GENERAL_CONST_DISABLE_FLAG}")
-    thisShell_SubcommandInfo_appbundle=("${configConst_Subcommand_appbundle}" "${GENERAL_CONST_DISABLE_FLAG}")
-    thisShell_SubcommandInfo_bundle=("${configConst_Subcommand_bundle}" "${GENERAL_CONST_DISABLE_FLAG}")
-    thisShell_SubcommandInfo_ios=("${configConst_Subcommand_ios}" "${GENERAL_CONST_DISABLE_FLAG}")
-    thisShell_SubcommandInfo_ios_framework=("${configConst_Subcommand_ios_framework}" "${GENERAL_CONST_DISABLE_FLAG}")
-    thisShell_SubcommandInfo_ipa=("${configConst_Subcommand_ipa}" "${GENERAL_CONST_DISABLE_FLAG}")
-    thisShell_SubcommandInfo_web=("${configConst_Subcommand_web}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_aar=("${CONFIG_CONST_SUBCOMMAND_AAR}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_apk=("${CONFIG_CONST_SUBCOMMAND_APK}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_appbundle=("${CONFIG_CONST_SUBCOMMAND_APPBUNDLE}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_bundle=("${CONFIG_CONST_SUBCOMMAND_BUNDLE}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_ios=("${CONFIG_CONST_SUBCOMMAND_IOS}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_ios_framework=("${CONFIG_CONST_SUBCOMMAND_IOS_FRAMEWORK}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_ipa=("${CONFIG_CONST_SUBCOMMAND_IPA}" "${GENERAL_CONST_DISABLE_FLAG}")
+    thisShell_SubcommandInfo_web=("${CONFIG_CONST_SUBCOMMAND_WEB}" "${GENERAL_CONST_DISABLE_FLAG}")
 }
 
 # ============= This is separation line =============
@@ -1354,8 +1354,8 @@ function process_Clean_Cache() {
     echo "${thisShell_Title_Log} 刪除 build"
     find . -d -name "build" | xargs rm -rf
 
-    echo "${thisShell_Title_Log} ${configConst_CommandName_Flutter} clean"
-    ${configConst_CommandName_Flutter} clean
+    echo "${thisShell_Title_Log} ${CONFIG_CONST_COMMAND_NAME_FLUTTER} clean"
+    ${CONFIG_CONST_COMMAND_NAME_FLUTTER} clean
 }
 
 # ============= This is separation line =============

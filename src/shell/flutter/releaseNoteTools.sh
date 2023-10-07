@@ -15,7 +15,7 @@
 #   - scm.tools/src/shell/generalTools.sh
 #     > func => check_result_if_fail_then_change_folder ...
 #   - configConst.sh
-#     > export 參數 => configConst_CommandName_Fvm ...
+#     > export 參數 => CONFIG_CONST_COMMAND_NAME_FVM ...
 #   - include 方式 :
 #     - 需自行 include generalConst.sh
 #     - 需自行 include generalTools.sh
@@ -77,7 +77,7 @@ function releastNoteTools_Gen_Init() {
     echo >>"${func_param_release_note_file}"
     echo "- Is Enable FVM Mode : ${func_param_is_enable_fvm_mode}" >>"${func_param_release_note_file}"
     echo >>"${func_param_release_note_file}"
-    echo "  > 只有為 ${GENERAL_CONST_ENABLE_FLAG} 才會使用 ${configConst_CommandName_Fvm} 功能呼叫 ${configConst_CommandName_Flutter} 。" >>"${func_param_release_note_file}"
+    echo "  > 只有為 ${GENERAL_CONST_ENABLE_FLAG} 才會使用 ${CONFIG_CONST_COMMAND_NAME_FVM} 功能呼叫 ${CONFIG_CONST_COMMAND_NAME_FLUTTER} 。" >>"${func_param_release_note_file}"
 
     # ===> flutter pub get <===
     # 執行 flutter pub get 會以 pubspec.lock 為主要優先插件版本的參考檔案
@@ -198,12 +198,12 @@ function _releastNoteTools_Gen_Init_Excecute_Command_Section() {
     # 判斷 func_param_is_enable_fvm_mode
     if [ ${func_param_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-        func_execute_command_name="${configConst_CommandName_Fvm}"
-        func_execute_command_content="${configConst_CommandName_Flutter} ${func_Param_Execute_SubCommand_Content}"
+        func_execute_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+        func_execute_command_content="${CONFIG_CONST_COMMAND_NAME_FLUTTER} ${func_Param_Execute_SubCommand_Content}"
 
     else
 
-        func_execute_command_name="${configConst_CommandName_Flutter}"
+        func_execute_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
         func_execute_command_content="${func_Param_Execute_SubCommand_Content}"
     fi
 

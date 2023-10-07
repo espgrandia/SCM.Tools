@@ -281,10 +281,10 @@ function configTools_Gen_Optional_Work_Path() {
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
     echo "" >>"${func_param_file_path}"
-    echo "# ${configConst_ConfigKey_Optional} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
+    echo "# ${CONFIG_CONST_CONFIG_KEY_OPTIONAL} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
     echo "# - [${func_optional_key_for_key_feature}] : 指定 shell 執行的工作目錄。" >>"${func_param_file_path}"
     echo "# - => e.g. \"/Users/[UserName]/Desktop/Code/[some_app_project]/submodules/app.share\"。" >>"${func_param_file_path}"
-    echo "${configConst_ConfigKey_Optional} :" >>"${func_param_file_path}"
+    echo "${CONFIG_CONST_CONFIG_KEY_OPTIONAL} :" >>"${func_param_file_path}"
     echo "  ${func_optional_key_for_key_feature} : ${func_param_key_feature_value}" >>"${func_param_file_path}"
 
     echo "${func_title_log} End ***"

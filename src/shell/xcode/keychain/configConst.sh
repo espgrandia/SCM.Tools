@@ -54,7 +54,7 @@ export configConst_ConfigKey_CerInfoUnit_FilePasswordList="file_password_list"
 # @sa [configTools.sh] [configTools_Gen_Optional_Work_Path]
 
 # for [optional] key。
-export configConst_ConfigKey_Optional="optional"
+export CONFIG_CONST_CONFIG_KEY_OPTIONAL="optional"
 
 # for [optional] [work_path]。
 # - 有設定的話，則會以該資料夾為工作目錄，
