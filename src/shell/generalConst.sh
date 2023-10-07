@@ -43,7 +43,7 @@ export GENERAL_CONST_DISABLE_FLAG="N"
 # @brief Color Const Value 設定，可修改 Cosole log 上文字的顏色。
 
 # Reset
-generalConst_Colors_Color_Off='\033[0m' # Text Reset
+GENERAL_CONST_COLORS_COLOR_OFF='\033[0m' # Text Reset
 
 # Regular Colors
 GENERAL_CONST_COLORS_BLACK='\033[0;30m'  # Black

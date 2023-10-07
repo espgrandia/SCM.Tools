@@ -177,7 +177,7 @@ function check_input_param() {
         local func_MainBody_Title_Log="${func_Title_Log} ${1}"
 
         echo
-        echo "${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_MainBody_Title_Log} ${2}: ${3} is illegal. Error !!!${generalConst_Colors_Color_Off}"
+        echo "${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_MainBody_Title_Log} ${2}: ${3} is illegal. Error !!!${GENERAL_CONST_COLORS_COLOR_OFF}"
         echo
         echo "${func_Title_Log} End ***"
         echo
@@ -223,8 +223,8 @@ function check_result_if_fail_then_change_folder() {
         change_to_directory "${func_Title_Log}" "${4}"
 
         echo
-        echo "${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_MainBody_Title_Log} ===> dump log : ${3} <===${generalConst_Colors_Color_Off}"
-        echo "${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_MainBody_Title_Log} ===> exit shell : result : ${2} <===${generalConst_Colors_Color_Off}"
+        echo "${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_MainBody_Title_Log} ===> dump log : ${3} <===${GENERAL_CONST_COLORS_COLOR_OFF}"
+        echo "${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_MainBody_Title_Log} ===> exit shell : result : ${2} <===${GENERAL_CONST_COLORS_COLOR_OFF}"
         echo
         echo "${func_Title_Log} End ***"
 
@@ -814,7 +814,7 @@ function show_colors_info() {
     echo "${func_Title_Log} Begin ***"
 
     # reset
-    _show_one_color generalConst_Colors_Color_Off
+    _show_one_color GENERAL_CONST_COLORS_COLOR_OFF
 
     # Regular Colors
     _show_one_color GENERAL_CONST_COLORS_BLACK
@@ -904,7 +904,7 @@ function show_colors_info() {
 function _show_one_color() {
     local func_Color_Name=${1}
     local func_Color_Value=$(eval echo \$${1})
-    echo "Color Value Name : ${GENERAL_CONST_COLORS_WHITE}${func_Color_Name} = ${func_Color_Value}I love you${generalConst_Colors_Color_Off}"
+    echo "Color Value Name : ${GENERAL_CONST_COLORS_WHITE}${func_Color_Name} = ${func_Color_Value}I love you${GENERAL_CONST_COLORS_COLOR_OFF}"
 }
 ##
 ## ================================== Private Function Section : End ==================================
