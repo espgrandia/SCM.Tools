@@ -374,16 +374,10 @@ function export_NotyetSupportSubcommand() {
 
     local func_Title_Log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
-    # for echo color
-    local func_Bold_Black='\033[1;30m'
-    local func_ForegroundColor_Red='\033[0;31m'
-    local func_BackgroundColor_Cyan='\033[46m'
-    local func_Color_Off='\033[0m'
-
     # 暫存此區塊的起始時間。
     local func_Subcommand=${1}
 
-    echo "${func_Bold_Black}${func_ForegroundColor_Red}${func_BackgroundColor_Cyan}${func_Title_Log} OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***${func_Color_Off}"
+    echo "${GENERAL_CONST_COLORS_BBLACK}${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_Title_Log} OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***${GENERAL_CONST_COLORS_COLOR_OFF}"
 
     check_result_if_fail_then_change_folder "${func_Title_Log}" "50" "!!! ~ OPPS!! Notyet support this subcommand ( ${func_Subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_Subcommand} ).\n    Error !!! ***" "${thisShell_OldPath}"
 }
