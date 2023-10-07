@@ -32,7 +32,7 @@
 #  - 說明 :
 #    由於 shell 中使用 ~/xxx 不會自動轉換成使用者的資料夾，所以要自己兜使用者路徑。
 #    且因為是用直接用參數設定，所以不需要 Provisioning\ Profiles"
-export configConst_Xcode_Using_ProvisionProfile_Folder="/Users/${USER}/Library/MobileDevice/Provisioning Profiles"
+export CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER="/Users/${USER}/Library/MobileDevice/Provisioning Profiles"
 
 ### ---------------------------------- general section : End ----------------------------------
 

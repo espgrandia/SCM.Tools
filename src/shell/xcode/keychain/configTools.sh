@@ -115,33 +115,33 @@ function configTools_Gen_Required() {
 
     # for local varient
     local func_param_file_path="${1}"
-    local func_Param_KeychainName="${2}"
-    local func_Param_KeychianPassword="${3}"
-    local func_Param_CerInfoKeyNames=("${!4}")
+    local func_param_keychain_name="${2}"
+    local func_param_keychain_password="${3}"
+    local func_param_cer_info_key_names=("${!4}")
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
     # for [required]:
-    echo "# ${configConst_ConfigKey_Required} section" >>"${func_param_file_path}"
-    echo "${configConst_ConfigKey_Required} :" >>"${func_param_file_path}"
+    echo "# ${CONFIG_CONST_CONFIG_KEY_REQUIRED} section" >>"${func_param_file_path}"
+    echo "${CONFIG_CONST_CONFIG_KEY_REQUIRED} :" >>"${func_param_file_path}"
 
     ## for [required] [keychain]:
     echo "" >>"${func_param_file_path}"
-    echo "  # [${configConst_ConfigKey_Required_Keychain}] : 要設定的鑰匙圈資訊 (會設定為 keychain 中 default) " >>"${func_param_file_path}"
-    echo "  ${configConst_ConfigKey_Required_Keychain} :" >>"${func_param_file_path}"
+    echo "  # [${CONFIG_CONST_CONFIG_KEY_REQUIRED_KEYCHAIN}] : 要設定的鑰匙圈資訊 (會設定為 keychain 中 default) " >>"${func_param_file_path}"
+    echo "  ${CONFIG_CONST_CONFIG_KEY_REQUIRED_KEYCHAIN} :" >>"${func_param_file_path}"
 
     ### for [required] [keychain] [name]:
     echo "" >>"${func_param_file_path}"
-    echo "    # [${configConst_ConfigKey_Required_Keychian_Name}] : 要設定的鑰匙圈名稱，在 \`keychain Access.App\` 會顯示的名稱 => e.g. xxx.App.Keychain" >>"${func_param_file_path}"
-    echo "    ${configConst_ConfigKey_Required_Keychian_Name} : ${func_Param_KeychainName}" >>"${func_param_file_path}"
+    echo "    # [${CONFIG_CONST_CONFIG_KEY_REQUIRED_KEYCHAIN_NAME}] : 要設定的鑰匙圈名稱，在 \`keychain Access.App\` 會顯示的名稱 => e.g. xxx.App.Keychain" >>"${func_param_file_path}"
+    echo "    ${CONFIG_CONST_CONFIG_KEY_REQUIRED_KEYCHAIN_NAME} : ${func_param_keychain_name}" >>"${func_param_file_path}"
 
     ### for [required] [keychain] [password]:
-    echo "    # [${configConst_ConfigKey_Required_Keychian_Password}] : 要設定的鑰匙圈密碼，需要存取該鑰匙圈需要輸入的密碼 => e.g. abc123" >>"${func_param_file_path}"
-    echo "    ${configConst_ConfigKey_Required_Keychian_Password} : ${func_Param_KeychianPassword}" >>"${func_param_file_path}"
+    echo "    # [${CONFIG_CONST_CONFIG_KEY_REQUIRED_KEYCHAIN_PASSWORD}] : 要設定的鑰匙圈密碼，需要存取該鑰匙圈需要輸入的密碼 => e.g. abc123" >>"${func_param_file_path}"
+    echo "    ${CONFIG_CONST_CONFIG_KEY_REQUIRED_KEYCHAIN_PASSWORD} : ${func_param_keychain_password}" >>"${func_param_file_path}"
 
     ## for [required] [cer_info_key_names]:
     echo "" >>"${func_param_file_path}"
-    echo "  # [${configConst_ConfigKey_Required_CerInfoKeyNames}] : 需要額外處理的 cer infos，針對每一個 key name，會動態去取得 cer info unit 資訊。" >>"${func_param_file_path}"
-    echo "  # [${configConst_ConfigKey_Required_CerInfoKeyNames}] : input like as (cer_info_appA cer_info_appB)。" >>"${func_param_file_path}"
+    echo "  # [${CONFIG_CONST_CONFIG_KEY_REQUIRED_CER_INFO_KEY_NAMES}] : 需要額外處理的 cer infos，針對每一個 key name，會動態去取得 cer info unit 資訊。" >>"${func_param_file_path}"
+    echo "  # [${CONFIG_CONST_CONFIG_KEY_REQUIRED_CER_INFO_KEY_NAMES}] : input like as (cer_info_appA cer_info_appB)。" >>"${func_param_file_path}"
     echo "  # Note : => 每一個 cer info 在 config file (yaml) 須符合下列格式 (以下為範例) :" >>"${func_param_file_path}"
     echo "  #   \`\`\` yaml" >>"${func_param_file_path}"
     echo "  #   # cer info unit key。" >>"${func_param_file_path}"
@@ -158,12 +158,12 @@ function configTools_Gen_Required() {
     echo "  #     - app.share/doc/jkl.cer" >>"${func_param_file_path}"
     echo "  #   \`\`\`" >>"${func_param_file_path}"
 
-    echo "  ${configConst_ConfigKey_Required_CerInfoKeyNames} :" >>"${func_param_file_path}"
+    echo "  ${CONFIG_CONST_CONFIG_KEY_REQUIRED_CER_INFO_KEY_NAMES} :" >>"${func_param_file_path}"
 
     local func_i
-    for ((func_i = 0; func_i < ${#func_Param_CerInfoKeyNames[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+    for ((func_i = 0; func_i < ${#func_param_cer_info_key_names[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-        local func_subcommand=${func_Param_CerInfoKeyNames[${func_i}]}
+        local func_subcommand=${func_param_cer_info_key_names[${func_i}]}
         echo "    - ${func_subcommand}" >>"${func_param_file_path}"
 
     done
@@ -212,14 +212,14 @@ function configTools_Gen_Extra_CerInfo_Unit() {
     echo "${func_title_log} file path : ${1}"
     echo "${func_title_log} cer info unit key name: ${2}"
     echo "${func_title_log} file_password_separator : ${3}"
-    echo "${func_title_log} ${configConst_ConfigKey_CerInfoUnit_FilePasswordList} values : (${!4})"
+    echo "${func_title_log} ${CONFIG_CONST_CONFIG_KEY_CER_INFO_UNIT_FILE_PASSWORD_LIST} values : (${!4})"
     echo "${func_title_log} Input param : End ***"
 
     # for local varient
     local func_param_file_path="${1}"
-    local func_Param_CerInfo_Unit_Key="${2}"
+    local func_param_cer_info_unit_key="${2}"
     local func_param_separator="${3}"
-    local func_Param_FilePasswordList=("${!4}")
+    local func_param_file_password_list=("${!4}")
 
     local func_CerInfo_Unit_Title="cer info unit"
 
@@ -227,20 +227,20 @@ function configTools_Gen_Extra_CerInfo_Unit() {
     # for extra cer info unit
     echo "" >>"${func_param_file_path}"
     echo "# extra [${func_CerInfo_Unit_Title}] sction" >>"${func_param_file_path}"
-    echo "# - [${func_CerInfo_Unit_Title}] : ${configConst_ConfigKey_CerInfoUnit_FilePasswordList} 會用到的內容，為 list 型態，{p12/cer}{separator}{password}" >>"${func_param_file_path}"
+    echo "# - [${func_CerInfo_Unit_Title}] : ${CONFIG_CONST_CONFIG_KEY_CER_INFO_UNIT_FILE_PASSWORD_LIST} 會用到的內容，為 list 型態，{p12/cer}{separator}{password}" >>"${func_param_file_path}"
     echo "#   可接收無密碼，以 \`file_password_separator\` 做拆分，沒有後面部分，視同無密碼。" >>"${func_param_file_path}"
     echo "#     - 有密碼 : 一般為 {p12}{separator}{password}" >>"${func_param_file_path}"
     echo "#     - 無密碼 : 一般為 {cer}" >>"${func_param_file_path}"
-    echo "${func_Param_CerInfo_Unit_Key} :" >>"${func_param_file_path}"
+    echo "${func_param_cer_info_unit_key} :" >>"${func_param_file_path}"
     echo "  # 若整組都沒有密碼，允許為空，可以帶空字串 \"\"。" >>"${func_param_file_path}"
-    echo "  ${configConst_ConfigKey_CerInfoUnit_FilePasswordSeparator} : ${func_param_separator}" >>"${func_param_file_path}"
-    echo "  ${configConst_ConfigKey_CerInfoUnit_FilePasswordList} :" >>"${func_param_file_path}"
+    echo "  ${CONFIG_CONST_CONFIG_KEY_CER_INFO_UNIT_FILE_PASSWORD_SEPARATOR} : ${func_param_separator}" >>"${func_param_file_path}"
+    echo "  ${CONFIG_CONST_CONFIG_KEY_CER_INFO_UNIT_FILE_PASSWORD_LIST} :" >>"${func_param_file_path}"
 
     local func_i
-    for ((func_i = 0; func_i < ${#func_Param_FilePasswordList[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+    for ((func_i = 0; func_i < ${#func_param_file_password_list[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-        local aFilePassword=${func_Param_FilePasswordList[${func_i}]}
-        echo "    - ${aFilePassword}" >>"${func_param_file_path}"
+        local func_file_password=${func_param_file_password_list[${func_i}]}
+        echo "    - ${func_file_password}" >>"${func_param_file_path}"
 
     done
 
@@ -268,7 +268,7 @@ function configTools_Gen_Optional_Work_Path() {
     echo "${func_title_log} Begin ***"
     echo "${func_title_log} Input param : Begin ***"
     echo "${func_title_log} file path : ${1}"
-    echo "${func_title_log} ${configConst_ConfigKey_WorkPath} value : ${2}"
+    echo "${func_title_log} ${CONFIG_CONST_CONFIG_KEY_WORK_PATH} value : ${2}"
     echo "${func_title_log} Input param : End ***"
 
     # for local varient
@@ -277,7 +277,7 @@ function configTools_Gen_Optional_Work_Path() {
 
     # for [optional]
     # for (keyFeature) : [work_path]
-    local func_optional_key_for_key_feature="${configConst_ConfigKey_WorkPath}"
+    local func_optional_key_for_key_feature="${CONFIG_CONST_CONFIG_KEY_WORK_PATH}"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
     echo "" >>"${func_param_file_path}"

@@ -37,10 +37,10 @@ function process_Init() {
     echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : Begin <==========||"
 
     # 取得相對目錄.
-    local func_Shell_WorkPath=$(dirname $0)
+    local func_shell_work_path=$(dirname $0)
 
     echo
-    echo "${thisShell_Title_Log} func_Shell_WorkPath : ${func_Shell_WorkPath}"
+    echo "${thisShell_Title_Log} func_shell_work_path : ${func_shell_work_path}"
 
     # 前置處理作業
 
@@ -50,25 +50,25 @@ function process_Init() {
     # include general function
     echo
     echo "${thisShell_Title_Log} include general function"
-    . "${func_Shell_WorkPath}/../../generalTools.sh"
+    . "${func_shell_work_path}/../../generalTools.sh"
 
     # include const value
     echo
     echo "${thisShell_Title_Log} include provisionProfileTool_Const.sh"
-    . "${func_Shell_WorkPath}/provisionProfileTool_Const.sh"
+    . "${func_shell_work_path}/provisionProfileTool_Const.sh"
 
     # 設定原先的呼叫路徑。
     thisShell_OldPath=$(pwd)
 
     # 切換執行目錄.
-    change_to_directory "${thisShell_Title_Log}" "${func_Shell_WorkPath}"
+    change_to_directory "${thisShell_Title_Log}" "${func_shell_work_path}"
 
     # 設定成完整路徑。
     thisShell_Shell_WorkPath=$(pwd)
 
     echo "${thisShell_Title_Log} thisShell_OldPath : ${thisShell_OldPath}"
     echo "${thisShell_Title_Log} thisShell_Shell_WorkPath : ${thisShell_Shell_WorkPath}"
-    echo "${thisShell_Title_Log} configConst_Xcode_Using_ProvisionProfile_Folder : ${configConst_Xcode_Using_ProvisionProfile_Folder}"
+    echo "${thisShell_Title_Log} CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER : ${CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER}"
     echo
 }
 
@@ -85,7 +85,7 @@ function process_Deal_Delete_ProvisionProfiles_From_DestFolder() {
     echo "${func_title_log} ||==========> Begin <==========||"
 
     # cd ~/Library/MobileDevice/Provisioning\ Profiles
-    cd "${configConst_Xcode_Using_ProvisionProfile_Folder}"
+    cd "${CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER}"
     rm *.mobileprovision
 
     echo "${func_title_log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_temp_seconds}))s"

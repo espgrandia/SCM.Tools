@@ -339,16 +339,16 @@ function execute_Add_Cer_To_Keychain_From_ExtraCerInfoUnit() {
     local i
     for ((i = 0; i < ${#func_FilePassword_List[@]}; i++)); do #請注意 ((   )) 雙層括號
 
-        local aFilePassword=${func_FilePassword_List[$i]}
+        local func_file_password=${func_FilePassword_List[$i]}
 
         # 要設定的 split 參數，先初始化。
-        local aFile=""
-        local aPassword=""
+        local func_file=""
+        local func_password=""
 
         # split_string_to_pair 會自行判斷是否要進行 split，所以可以直接呼叫之。
-        split_string_to_pair "${thisShell_Title_Log}" "${aFilePassword}" "${func_FilePassword_Separator}" aFile aPassword
+        split_string_to_pair "${thisShell_Title_Log}" "${func_file_password}" "${func_FilePassword_Separator}" func_file func_password
 
-        addCerToKeychain "${func_title_log}" "${thisShell_Config_required_keychain_name}" "${aFile}" "${aPassword}"
+        addCerToKeychain "${func_title_log}" "${thisShell_Config_required_keychain_name}" "${func_file}" "${func_password}"
 
     done
 
@@ -373,10 +373,10 @@ function process_Init() {
     echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : Begin <==========||"
 
     # 取得相對目錄.
-    local func_Shell_WorkPath=$(dirname $0)
+    local func_shell_work_path=$(dirname $0)
 
     echo
-    echo "${thisShell_Title_Log} func_Shell_WorkPath : ${func_Shell_WorkPath}"
+    echo "${thisShell_Title_Log} func_shell_work_path : ${func_shell_work_path}"
 
     # 前置處理作業
 
@@ -388,26 +388,26 @@ function process_Init() {
     # include configConst.sh for configTools.sh using export Environment Variable。
     echo
     echo "${thisShell_Title_Log} include configConst.sh"
-    . "${func_Shell_WorkPath}"/configConst.sh
+    . "${func_shell_work_path}"/configConst.sh
 
     # include general function
     echo
     echo "${thisShell_Title_Log} include general function"
-    . "${func_Shell_WorkPath}"/../../generalConst.sh
-    . "${func_Shell_WorkPath}"/../../generalTools.sh
+    . "${func_shell_work_path}"/../../generalConst.sh
+    . "${func_shell_work_path}"/../../generalTools.sh
 
     # include parse_yaml function
     echo
     echo "${thisShell_Title_Log} include parse_yaml function"
 
     # 同樣在 scm.tools 專案下的相對路徑。
-    . "${func_Shell_WorkPath}"/../../../../submodules/bash-yaml/script/yaml.sh
+    . "${func_shell_work_path}"/../../../../submodules/bash-yaml/script/yaml.sh
 
     # 設定原先的呼叫路徑。
     thisShell_OldPath=$(pwd)
 
     # 切換執行目錄.
-    change_to_directory "${thisShell_Title_Log}" "${func_Shell_WorkPath}"
+    change_to_directory "${thisShell_Title_Log}" "${func_shell_work_path}"
 
     # 設定成完整路徑。
     thisShell_Shell_WorkPath=$(pwd)
