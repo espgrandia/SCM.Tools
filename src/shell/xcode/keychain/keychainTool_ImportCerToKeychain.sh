@@ -125,7 +125,7 @@
 #   - config function section :
 #     有關 build config 處理的相關函式。
 #
-#   - extra [addCerToKeychain] function section :
+#   - extra [add_cer_to_keychain] function section :
 #     新增 cer 到指定的 keychain 的函式。
 #
 #   - prcess function section :
@@ -144,7 +144,7 @@
 #        如 : keychain_name ， keychain_password ...
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
-function parseReruiredSection() {
+function parse_reruired_section() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -183,7 +183,7 @@ function parseReruiredSection() {
 #   - 只檢查是否為合法設定。
 #
 # @param $1 : cer_info_key_name
-function check_ExtraCerInfoUnit_Legal() {
+function check_extra_cer_info_unit_legal() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -229,7 +229,7 @@ function check_ExtraCerInfoUnit_Legal() {
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
 #   - 只檢查是否為合法設定。
-function parseExtraCerInfoSection() {
+function parse_extra_cer_info_section() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -242,7 +242,7 @@ function parseExtraCerInfoSection() {
         local aCerInfoKeyName=${thisShell_Config_required_cer_info_key_names[${func_i}]}
         echo "${thisShell_Title_Log} aCerInfoKeyName : ${aCerInfoKeyName}"
 
-        check_ExtraCerInfoUnit_Legal "${aCerInfoKeyName}"
+        check_extra_cer_info_unit_legal "${aCerInfoKeyName}"
 
     done
 
@@ -259,35 +259,35 @@ function parseExtraCerInfoSection() {
 # @param $2: keychainName: [xxx]Keychain".
 # @param $3: cerFilePath (cer 的路徑，可為 .cer 或 .p12 檔案) : e.g. "/[cer]/[acbApp].p12".
 # @param $4: p12Pwd (.p12 的密碼，可為空，若為空則不設定密碼到 keychain): e.g. "acbApp".
-function addCerToKeychain() {
+function add_cer_to_keychain() {
 
-    addCerToKeychain_Title_Log="*** function [addCerToKeychain] -"
+    add_cer_to_keychain_Title_Log="*** function [add_cer_to_keychain] -"
 
-    addCerToKeychain_Param_KeychainName="${2}"
-    addCerToKeychain_Param_CerFilePath="${3}"
-    addCerToKeychain_Param_p12Pwd="${4}"
+    add_cer_to_keychain_Param_KeychainName="${2}"
+    add_cer_to_keychain_Param_CerFilePath="${3}"
+    add_cer_to_keychain_Param_p12Pwd="${4}"
 
     echo
-    echo "${addCerToKeychain_Title_Log} Begin ***"
-    echo "${addCerToKeychain_Title_Log} Input param : Begin ***"
-    echo "${addCerToKeychain_Title_Log} TitleLog: ${1}"
-    echo "${addCerToKeychain_Title_Log} keychainName: ${addCerToKeychain_Param_KeychainName}"
-    echo "${addCerToKeychain_Title_Log} cerFilePath: ${addCerToKeychain_Param_CerFilePath}"
-    echo "${addCerToKeychain_Title_Log} p12Pwd: ${addCerToKeychain_Param_p12Pwd}"
-    echo "${addCerToKeychain_Title_Log} Input param : End ***"
+    echo "${add_cer_to_keychain_Title_Log} Begin ***"
+    echo "${add_cer_to_keychain_Title_Log} Input param : Begin ***"
+    echo "${add_cer_to_keychain_Title_Log} TitleLog: ${1}"
+    echo "${add_cer_to_keychain_Title_Log} keychainName: ${add_cer_to_keychain_Param_KeychainName}"
+    echo "${add_cer_to_keychain_Title_Log} cerFilePath: ${add_cer_to_keychain_Param_CerFilePath}"
+    echo "${add_cer_to_keychain_Title_Log} p12Pwd: ${add_cer_to_keychain_Param_p12Pwd}"
+    echo "${add_cer_to_keychain_Title_Log} Input param : End ***"
 
-    if [[ ${addCerToKeychain_Param_p12Pwd} == "" ]]; then
+    if [[ ${add_cer_to_keychain_Param_p12Pwd} == "" ]]; then
         # 無密碼.
         echo
-        echo "${addCerToKeychain_Title_Log} ${1} security import cer : ${addCerToKeychain_Param_CerFilePath} to keychain : ${addCerToKeychain_Param_KeychainName}"
-        security import "${addCerToKeychain_Param_CerFilePath}" -k "${addCerToKeychain_Param_KeychainName}" -T /usr/bin/codesign -T /usr/bin/productsign
+        echo "${add_cer_to_keychain_Title_Log} ${1} security import cer : ${add_cer_to_keychain_Param_CerFilePath} to keychain : ${add_cer_to_keychain_Param_KeychainName}"
+        security import "${add_cer_to_keychain_Param_CerFilePath}" -k "${add_cer_to_keychain_Param_KeychainName}" -T /usr/bin/codesign -T /usr/bin/productsign
     else
         echo
-        echo "${addCerToKeychain_Title_Log} ${1} security import cer : ${addCerToKeychain_Param_CerFilePath} with pw: ${addCerToKeychain_Param_p12Pwd} to keychain : ${addCerToKeychain_Param_KeychainName}"
-        security import "${addCerToKeychain_Param_CerFilePath}" -k "${addCerToKeychain_Param_KeychainName}" -P ${addCerToKeychain_Param_p12Pwd} -T /usr/bin/codesign -T /usr/bin/productsign
+        echo "${add_cer_to_keychain_Title_Log} ${1} security import cer : ${add_cer_to_keychain_Param_CerFilePath} with pw: ${add_cer_to_keychain_Param_p12Pwd} to keychain : ${add_cer_to_keychain_Param_KeychainName}"
+        security import "${add_cer_to_keychain_Param_CerFilePath}" -k "${add_cer_to_keychain_Param_KeychainName}" -P ${add_cer_to_keychain_Param_p12Pwd} -T /usr/bin/codesign -T /usr/bin/productsign
     fi
 
-    echo "${addCerToKeychain_Title_Log} End ***"
+    echo "${add_cer_to_keychain_Title_Log} End ***"
     echo
 }
 
@@ -307,9 +307,9 @@ function addCerToKeychain() {
 #   - 之前已經驗證過
 #
 # @param $1 : cer_info_key_name
-# @sa check_ExtraCerInfoUnit_Legal
-#    之前的流程已經呼叫 [check_ExtraCerInfoUnit_Legal] 驗證過，在此直接使用，不再次驗證。
-function execute_Add_Cer_To_Keychain_From_ExtraCerInfoUnit() {
+# @sa check_extra_cer_info_unit_legal
+#    之前的流程已經呼叫 [check_extra_cer_info_unit_legal] 驗證過，在此直接使用，不再次驗證。
+function execute_add_cer_to_keychain_from_extra_cer_info_unit() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -348,7 +348,7 @@ function execute_Add_Cer_To_Keychain_From_ExtraCerInfoUnit() {
         # split_string_to_pair 會自行判斷是否要進行 split，所以可以直接呼叫之。
         split_string_to_pair "${thisShell_Title_Log}" "${func_file_password}" "${func_FilePassword_Separator}" func_file func_password
 
-        addCerToKeychain "${func_title_log}" "${thisShell_Config_required_keychain_name}" "${func_file}" "${func_password}"
+        add_cer_to_keychain "${func_title_log}" "${thisShell_Config_required_keychain_name}" "${func_file}" "${func_password}"
 
     done
 
@@ -360,7 +360,7 @@ function execute_Add_Cer_To_Keychain_From_ExtraCerInfoUnit() {
 ## ================================== prcess function section : Begin ==================================
 # ============= This is separation line =============
 # @brief function : [程序] 此 shell 的初始化。
-function process_Init() {
+function process_init() {
 
     # 計時，實測結果不同 shell 不會影響，各自有各自的 SECONDS。
     SECONDS=0
@@ -419,7 +419,7 @@ function process_Init() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 處理 input param。
-function process_Deal_InputParam() {
+function process_deal_input_param() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -444,7 +444,7 @@ function process_Deal_InputParam() {
 
 # ============= This is separation line =============
 # @brief function : [程序] Toggle Feature 設定。
-function process_Deal_ToggleFeature() {
+function process_deal_toggle_feature() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -467,7 +467,7 @@ function process_Deal_ToggleFeature() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 剖析 config file。
-function process_Parse_ConfigFile() {
+function process_parse_config_file() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -485,10 +485,10 @@ function process_Parse_ConfigFile() {
     fi
 
     # 剖析 required 部分。
-    parseReruiredSection
+    parse_reruired_section
 
     # 剖析 extra cerInfo 部分。
-    parseExtraCerInfoSection
+    parse_extra_cer_info_section
 
     # 開啟可以抓到此 shell 目前有哪些設定值。
     if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_ConfigFile} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
@@ -504,7 +504,7 @@ function process_Parse_ConfigFile() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 處理路徑相關 (包含 flutter work path)。
-function process_Deal_Paths() {
+function process_deal_paths() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -535,7 +535,7 @@ function process_Deal_Paths() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 處理 keychain 基礎資訊。
-function process_Deal_KeyChain_BaseInfo() {
+function process_deal_keychain_base_info() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -590,7 +590,7 @@ function process_Deal_KeyChain_BaseInfo() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 處理 cer 加入到 鑰匙圈。
-function process_Deal_KeyChain_AddCerToKeychain() {
+function process_deal_keychain_add_cer_to_keychain() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -603,7 +603,7 @@ function process_Deal_KeyChain_AddCerToKeychain() {
         local aCerInfoKeyName=${thisShell_Config_required_cer_info_key_names[${func_i}]}
         echo "${thisShell_Title_Log} aCerInfoKeyName : ${aCerInfoKeyName}"
 
-        execute_Add_Cer_To_Keychain_From_ExtraCerInfoUnit "${aCerInfoKeyName}"
+        execute_add_cer_to_keychain_from_extra_cer_info_unit "${aCerInfoKeyName}"
 
     done
 
@@ -613,7 +613,7 @@ function process_Deal_KeyChain_AddCerToKeychain() {
 
 # ============= This is separation line =============
 # @brief function : [程序] shell 全部完成需處理的部份.
-function process_Finish() {
+function process_finish() {
 
     # 全部完成
     # 切回原有執行目錄.
@@ -627,37 +627,37 @@ function process_Finish() {
 ## ================================== deal prcess step section : Begin ==================================
 # ============= This is separation line =============
 # call - [程序] 此 shell 的初始化。
-process_Init
+process_init
 
 # ============= This is separation line =============
 # call - [程序] 處理 input param。
 # 需要帶入此 shell 的輸入參數。
 # TODO: 可思考是否有更好的方式？
-process_Deal_InputParam "${1}"
+process_deal_input_param "${1}"
 
 # ============= This is separation line =============
 # call - [程序] Toggle Feature 設定。
-process_Deal_ToggleFeature
+process_deal_toggle_feature
 
 # ============= This is separation line =============
 # call - [程序] 剖析 config file。
-process_Parse_ConfigFile
+process_parse_config_file
 
 # ============= This is separation line =============
 # call - [程序] 處理路徑相關 (包含 flutter work path)。
-process_Deal_Paths
+process_deal_paths
 
 # ============= This is separation line =============
 # call - [程序] 處理 keychain 基礎資訊。
-process_Deal_KeyChain_BaseInfo
+process_deal_keychain_base_info
 
 # ============= This is separation line =============
 # call - [程序] 處理 cer 加入到 鑰匙圈。
-process_Deal_KeyChain_AddCerToKeychain
+process_deal_keychain_add_cer_to_keychain
 
 # ============= This is separation line =============
 # call - [程序] shell 全部完成需處理的部份.
-process_Finish
+process_finish
 ## ================================== deal prcess step section : End ==================================
 
 exit 0

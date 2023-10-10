@@ -25,7 +25,7 @@
 
 ## ================================== Public Function Section : Begin ==================================
 # ============= This is separation line =============
-# @brief function : releastNoteTools_Gen_Init.
+# @brief function : release_note_tools_gen_init.
 # @details : ReleaseNote 的初始基本資訊.
 # @param ${1} : 要輸出的 title log : e.g. "${sample_Title_Log}"
 # @param ${2} : release note file path: 檔名含路徑 e.g. "${sample_ReleaseNote_File}"
@@ -34,7 +34,7 @@
 # @param ${5} : gitCommit : e.g. "cd8a0dc" ， "${sample_GitCommitHash}"
 # @param ${6} : 若失敗要切換的路徑，change folder path : e.g. "${sample_OldPath}"
 # @param ${7} : is enable fvm mode : "Y" 或 "N" : e.g. $"{sample_Is_Enable_FVM_Mode}"
-function releastNoteTools_Gen_Init() {
+function release_note_tools_gen_init() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
 
@@ -82,19 +82,19 @@ function releastNoteTools_Gen_Init() {
     # ===> flutter pub get <===
     # 執行 flutter pub get 會以 pubspec.lock 為主要優先插件版本的參考檔案
     # 若是沒有 pubspec.lock 則才會以 pubspec.yaml 為主下載插件資源
-    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_param_is_enable_fvm_mode}" "pub get" \
+    _release_note_tools_gen_init_excecute_command_section "${1}" "${func_param_is_enable_fvm_mode}" "pub get" \
         "${func_param_change_folder_path}"
 
     # ===> flutter --version --machine <===
-    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_param_is_enable_fvm_mode}" "--version --machine" \
+    _release_note_tools_gen_init_excecute_command_section "${1}" "${func_param_is_enable_fvm_mode}" "--version --machine" \
         "${func_param_change_folder_path}" "${func_param_release_note_file}"
 
     # ===> flutter doctor <===
-    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_param_is_enable_fvm_mode}" "doctor -v" \
+    _release_note_tools_gen_init_excecute_command_section "${1}" "${func_param_is_enable_fvm_mode}" "doctor -v" \
         "${func_param_change_folder_path}" "${func_param_release_note_file}"
 
     # ===> flutter pub deps <===
-    _releastNoteTools_Gen_Init_Excecute_Command_Section "${1}" "${func_param_is_enable_fvm_mode}" "pub deps" \
+    _release_note_tools_gen_init_excecute_command_section "${1}" "${func_param_is_enable_fvm_mode}" "pub deps" \
         "${func_param_change_folder_path}" "${func_param_release_note_file}"
 
     echo "${func_title_log} ============= Release Note Init Info - End ============="
@@ -105,12 +105,12 @@ function releastNoteTools_Gen_Init() {
 }
 
 # ============= This is separation line =============
-# @brief function : releastNoteTools_Gen_Exported_Title.
+# @brief function : release_note_tools_gen_exported_title.
 # @details :
 #  - 正式輸出內容的 Title : 本文內容的 title 。
 #  - 在此區塊可以輸出與不同專案的的個別資訊，比如呼叫 exported.sh 的設定差異內容或此專案才有的基本資訊.
 # @param ${1} : release note file path: 檔名含路徑 e.g. "${sample_ReleaseNote_File}"
-function releastNoteTools_Gen_Exported_Title() {
+function release_note_tools_gen_exported_title() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
 
@@ -132,12 +132,12 @@ function releastNoteTools_Gen_Exported_Title() {
 }
 
 # ============= This is separation line =============
-# @brief function : releastNoteTools_Gen_Final.
+# @brief function : release_note_tools_gen_final.
 # @details :
 #  - 結尾內容
 # @param ${1} : release note file path: 檔名含路徑 e.g. "${sample_ReleaseNote_File}"
 # @param ${2} : Elapsed time (單位 : 秒): 整個 shell 的執行時間 e.g. "${SECONDS}" or "${sample_TotalTime}"
-function releastNoteTools_Gen_Final() {
+function release_note_tools_gen_final() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
 
@@ -162,8 +162,8 @@ function releastNoteTools_Gen_Final() {
 
 ## ================================== Private Function Section : Begin ==================================
 # ============= This is separation line =============
-# @brief function (private) : _releastNoteTools_Gen_Init_Excecute_Command_Section.
-# @details : [releastNoteTools_Gen_Init] 中關於 Excecute Command Section 的通用性函式.
+# @brief function (private) : _release_note_tools_gen_init_excecute_command_section.
+# @details : [release_note_tools_gen_init] 中關於 Excecute Command Section 的通用性函式.
 # @param ${1} : 要輸出的 title log : e.g. "${sample_Title_Log}"
 # @param ${2} : is enable fvm mode : "Y" 或 "N" : e.g. $"{sample_Is_Enable_FVM_Mode}"
 # @param ${3} : Execute SubCommand Content : 部分的子 command content。 e.g. "${sample_Execute_SubCommand_Content}"， "pub get" ...
@@ -171,7 +171,7 @@ function releastNoteTools_Gen_Final() {
 # @param ${5} : [optional] release note file path: 檔名含路徑。
 #  - 若有值，則表示要將內容， dump log 到 release note file 中。 e.g. "${sample_ReleaseNote_File}"
 #  - 沒有值，則直接用 console 執行。
-function _releastNoteTools_Gen_Init_Excecute_Command_Section() {
+function _release_note_tools_gen_init_excecute_command_section() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
 

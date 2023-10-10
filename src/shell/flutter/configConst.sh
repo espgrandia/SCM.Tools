@@ -27,7 +27,7 @@ export CONFIG_CONST_COMMAND_NAME_FLUTTER="flutter"
 # @detail - 目前 flutter build 支援的 subcommands，flutter version (2.2.3)。
 #  - shell 不支援 export array，所以就沒提供 flutter 以及 exported 目前支援或提供的 subcommand 功能。
 # @sa
-#   - configTools.sh 中 configTools_Gen_Required 參數可參考此區塊來設定
+#   - configTools.sh 中 config_tools_gen_required 參數可參考此區塊來設定
 #   - exported.sh 會使用到。
 export CONFIG_CONST_SUBCOMMAND_AAR="aar"
 export CONFIG_CONST_SUBCOMMAND_APK="apk"

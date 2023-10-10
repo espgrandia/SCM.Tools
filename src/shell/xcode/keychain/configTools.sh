@@ -29,19 +29,19 @@
 #  # import configConst.sh for configTools.sh using export Environment Variable。
 #    . xcode/keychain/configConst.sh
 #
-#  # import configTools_Gen_Required 等函式。
+#  # import config_tools_gen_required 等函式。
 #  . xcode/keychain/configTools.sh
 #
-#  configTools_Gen_Required
+#  config_tools_gen_required
 #  ```
 #
 # ---
 #
 # 提供函式 :
 #  > 細節看各個的函式明
-#  - configTools_Gen_Required
-#  - configTools_Gen_Extra_CerInfo_Unit
-#  - configTools_Gen_Optional_Work_Path
+#  - config_tools_gen_required
+#  - config_tools_gen_extra_cer_info_unit
+#  - config_tools_gen_optional_work_path
 #
 # ---
 #
@@ -89,18 +89,18 @@
 
 ## ================================== Generator Config Required section : Begin ==================================
 # ============= This is separation line =============
-# @brief function : configTools_Gen_Required.
+# @brief function : config_tools_gen_required.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 # @param ${1} : file path : 要輸出的檔案位置 (含檔名)
 # @param ${2} : keychain_name : 要設定的 keychain name。
 # @param ${3} : keychian_password : 要設定的 keychain password。
 # @param ${!4} : cer_info_key_names : 要設定到 keychain 的 cer info key names (對應於 config 的其他要取得的 cer info unit) : (cer_info_app_1 cer_info_app_2)
 #   => e.g. sample_CerInfoKeyNames=(cer_info_app_1 cer_info_app_2)
-# @sa configTools_Gen_Extra_CerInfo_Unit
-#   => 每一個 cer info 在 config file (yaml) 的格式，可參考 configTools_Gen_Extra_CerInfo_Unit 說明。
+# @sa config_tools_gen_extra_cer_info_unit
+#   => 每一個 cer info 在 config file (yaml) 的格式，可參考 config_tools_gen_extra_cer_info_unit 說明。
 #
-# sample e.g. configTools_Gen_Required "${sample_FilePath}" "${sample_KeychainName}" "${sample_KeychianPassword}" sample_CerInfoKeyNames[@]
-function configTools_Gen_Required() {
+# sample e.g. config_tools_gen_required "${sample_FilePath}" "${sample_KeychainName}" "${sample_KeychianPassword}" sample_CerInfoKeyNames[@]
+function config_tools_gen_required() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
 
@@ -175,7 +175,7 @@ function configTools_Gen_Required() {
 
 ## ================================== Generator Config Extra section : Begin ==================================
 # ============= This is separation line =============
-# @brief function : configTools_Gen_Extra_CerInfo_Unit.
+# @brief function : config_tools_gen_extra_cer_info_unit.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 #  產出格式 :
 #   => 每一個 cer info 在 config file (yaml) 須符合下列格式 (以下為範例)
@@ -201,8 +201,8 @@ function configTools_Gen_Required() {
 # @param $4 : file password list : 兜好 [key][separator][value的內容]
 #   => e.g. sample_FilePasswordLis=(app.share/doc/abc.p12+abc app.share/doc/def.p12+def app.share/doc/ghi.cer+ app.share/doc/jkl.cer)
 #
-# sample e.g. configTools_Gen_Extra_CerInfo_Unit "${sample_FilePath}" "${sample_Separator}" sample_FilePasswordLis[@]
-function configTools_Gen_Extra_CerInfo_Unit() {
+# sample e.g. config_tools_gen_extra_cer_info_unit "${sample_FilePath}" "${sample_Separator}" sample_FilePasswordLis[@]
+function config_tools_gen_extra_cer_info_unit() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
 
@@ -251,7 +251,7 @@ function configTools_Gen_Extra_CerInfo_Unit() {
 
 ## ================================== Generator Config Optional section : Begin ==================================
 # ============= This is separation line =============
-# @brief function : configTools_Gen_Optional_Work_Path.
+# @brief function : config_tools_gen_optional_work_path.
 #
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
 #   - 產出的檔案名稱，加上 前綴字 (prefix)。
@@ -259,8 +259,8 @@ function configTools_Gen_Extra_CerInfo_Unit() {
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : work path : 指定 shell 執行的工作目錄 => e.g. "/Users/[UserName]/Desktop/Code/[some_app_project]/submodules/app.share"。
 #
-# sample e.g. configTools_Gen_Optional_Work_Path "${sample_FilePath}" "${sample_Work_Path}"
-function configTools_Gen_Optional_Work_Path() {
+# sample e.g. config_tools_gen_optional_work_path "${sample_FilePath}" "${sample_Work_Path}"
+function config_tools_gen_optional_work_path() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
 

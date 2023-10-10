@@ -26,7 +26,7 @@
 ## ================================== Public Function Section : Begin ==================================
 ##
 # ============= This is separation line =============
-# @brief function : [flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder]
+# @brief function : [flutter_extension_tools_deal_is_enable_fvm_mode_and_relay__to__check_ok_then_excute_command__if__result_fail_then_change_folder]
 #   - 說明 : 處理 fvm mode 資訊，會調整後續呼叫的 command name， 以及 command params，
 #           再轉呼叫 [Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder] 來執行命令。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "".
@@ -39,9 +39,9 @@
 # @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
 # @param ${5}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
 #
-# sample e.g. flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder \
+# sample e.g. flutter_extension_tools_deal_is_enable_fvm_mode_and_relay__to__check_ok_then_excute_command__if__result_fail_then_change_folder \
 #  "${sample_Title_Log}" "${sample_Is_Enable_FVM_Mode}" "${sample_IsExcute}" sample_CommandParams[@] "${sample_ChangeFolder}"
-function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then_Excute_Command__If__ResultFail_Then_ChangeFolder() {
+function flutter_extension_tools_deal_is_enable_fvm_mode_and_relay__to__check_ok_then_excute_command__if__result_fail_then_change_folder() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
 
@@ -102,7 +102,7 @@ function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then
 }
 
 # ============= This is separation line =============
-# @brief function : flutterExtensionTools_Generator_VersionMachine_File。
+# @brief function : flutter_extension_tools_generator_version_machine_file。
 # @details : 要產生的 flutter version machin 資訊的檔案。
 #  - 需注意，該檔案內容會直接覆蓋，資料夾路徑須先準備好，這裡不做資料夾路徑檢查。
 #  - 若 local 沒有該版本，在 console dump version 版本時，會需要手動按下允許。
@@ -111,7 +111,7 @@ function flutterExtensionTools_Deal_IsEnableFvmMode_And_Relay__To__Check_OK_Then
 # @param ${2} : is enable fvm mode : "Y" 或 "N" : e.g. $"{sample_Is_Enable_FVM_Mode}"
 # @param ${3} : 要產生的檔案， generator file path: 檔名含路徑 e.g. "${sample_Generator_FlutterVersionMachin_File}"
 # @param ${4} : 若失敗要切換的路徑，change folder path : e.g. "${sample_OldPath}"
-function flutterExtensionTools_Generator_VersionMachine_File() {
+function flutter_extension_tools_generator_version_machine_file() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
 

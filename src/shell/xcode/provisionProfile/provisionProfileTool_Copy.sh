@@ -35,7 +35,7 @@
 ## ================================== prcess function section : Begin ==================================
 # ============= This is separation line =============
 # @brief function : [程序] 此 shell 的初始化。
-function process_Init() {
+function process_init() {
 
   # 計時，實測結果不同 shell 不會影響，各自有各自的 SECONDS。
   SECONDS=0
@@ -86,7 +86,7 @@ function process_Init() {
 # ============= This is separation line =============
 # @brief function : [程序] 處理 input param。
 # @param $1 : provision profile source folder : 要 copy 的 profision profile 的來源根目錄。
-function process_Deal_InputParam() {
+function process_deal_input_param() {
 
   local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -105,7 +105,7 @@ function process_Deal_InputParam() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 執行 確保 Provision Profile 目標資料夾是合法的。
-function process_Guarantee_ProvisionProfile_DestFolder_Legal() {
+function process_guarantee_provision_profile_dest_folder_legal() {
 
   local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -125,7 +125,7 @@ function process_Guarantee_ProvisionProfile_DestFolder_Legal() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 執行 Copy Provision Profile。
-function process_Deal_Copy_ProvisionProfile() {
+function process_deal_copy_provision_profile() {
 
   local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -152,7 +152,7 @@ function process_Deal_Copy_ProvisionProfile() {
 
 # ============= This is separation line =============
 # @brief function : [程序] shell 全部完成需處理的部份.
-function process_Finish() {
+function process_finish() {
 
   # 全部完成
   # 切回原有執行目錄.
@@ -166,25 +166,25 @@ function process_Finish() {
 ## ================================== deal prcess step section : Begin ==================================
 # ============= This is separation line =============
 # call - [程序] 此 shell 的初始化。
-process_Init
+process_init
 
 # ============= This is separation line =============
 # call - [程序] 處理 input param。
 # 需要帶入此 shell 的輸入參數。
 # TODO: 可思考是否有更好的方式？
-process_Deal_InputParam "${1}"
+process_deal_input_param "${1}"
 
 # ============= This is separation line =============
 # call - [程序] 執行 確保 Provision Profile 目標資料夾是合法的。
-process_Guarantee_ProvisionProfile_DestFolder_Legal
+process_guarantee_provision_profile_dest_folder_legal
 
 # ============= This is separation line =============
 # call - [程序] 執行 Copy Provision Profile。
-process_Deal_Copy_ProvisionProfile
+process_deal_copy_provision_profile
 
 # ============= This is separation line =============
 # call - [程序] shell 全部完成需處理的部份.
-process_Finish
+process_finish
 ## ================================== deal prcess step section : End ==================================
 
 exit 0

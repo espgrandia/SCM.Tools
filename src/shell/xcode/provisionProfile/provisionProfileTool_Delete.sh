@@ -24,7 +24,7 @@
 ## ================================== prcess function section : Begin ==================================
 # ============= This is separation line =============
 # @brief function : [程序] 此 shell 的初始化。
-function process_Init() {
+function process_init() {
 
     # 計時，實測結果不同 shell 不會影響，各自有各自的 SECONDS。
     SECONDS=0
@@ -74,7 +74,7 @@ function process_Init() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 執行 刪除 Xcode 引用的 Provision Profiles。
-function process_Deal_Delete_ProvisionProfiles_From_DestFolder() {
+function process_deal_delete_provision_profiles_from_dest_folder() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -95,7 +95,7 @@ function process_Deal_Delete_ProvisionProfiles_From_DestFolder() {
 
 # ============= This is separation line =============
 # @brief function : [程序] shell 全部完成需處理的部份.
-function process_Finish() {
+function process_finish() {
 
     # 全部完成
     # 切回原有執行目錄.
@@ -109,15 +109,15 @@ function process_Finish() {
 ## ================================== deal prcess step section : Begin ==================================
 # ============= This is separation line =============
 # call - [程序] 此 shell 的初始化。
-process_Init
+process_init
 
 # ============= This is separation line =============
 # call - [程序] 執行 刪除 Xcode 引用的 Provision Profiles。
-process_Deal_Delete_ProvisionProfiles_From_DestFolder
+process_deal_delete_provision_profiles_from_dest_folder
 
 # ============= This is separation line =============
 # call - [程序] shell 全部完成需處理的部份.
-process_Finish
+process_finish
 ## ================================== deal prcess step section : End ==================================
 
 exit 0

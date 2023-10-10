@@ -175,8 +175,8 @@
 #
 # @TODO: 目前 SubcommandInfo 無法用 array 方式帶入，尚未測試成功，所以先分開參數帶入，之後可找時間另外找方法測試可行性。
 #
-# e.g. => dealSumcommandInfo "${func_subcommand}" "${thisShell_SubcommandInfo_aar[0]}" thisShell_SubcommandInfo_aar[1]
-function dealSumcommandInfo() {
+# e.g. => deal_subcommand_info "${func_subcommand}" "${thisShell_SubcommandInfo_aar[0]}" thisShell_SubcommandInfo_aar[1]
+function deal_subcommand_info() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
     local func_param_subcommand=$1
@@ -201,7 +201,7 @@ function dealSumcommandInfo() {
 #        如 : version，subcommands。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
-function parseReruiredSection() {
+function parse_reruired_section() {
 
     echo
     echo "${thisShell_Title_Log} ============= parse required section : Begin ============="
@@ -225,28 +225,28 @@ function parseReruiredSection() {
         local func_subcommand=${thisShell_Config_required_subcommands[${func_i}]}
 
         # 判斷是否為 aar
-        dealSumcommandInfo "${func_subcommand}" "${thisShell_SubcommandInfo_aar[0]}" thisShell_SubcommandInfo_aar[1]
+        deal_subcommand_info "${func_subcommand}" "${thisShell_SubcommandInfo_aar[0]}" thisShell_SubcommandInfo_aar[1]
 
         # 判斷是否為 apk
-        dealSumcommandInfo "${func_subcommand}" "${thisShell_SubcommandInfo_apk[0]}" thisShell_SubcommandInfo_apk[1]
+        deal_subcommand_info "${func_subcommand}" "${thisShell_SubcommandInfo_apk[0]}" thisShell_SubcommandInfo_apk[1]
 
         # 判斷是否為 appbundle
-        dealSumcommandInfo "${func_subcommand}" "${thisShell_SubcommandInfo_appbundle[0]}" thisShell_SubcommandInfo_appbundle[1]
+        deal_subcommand_info "${func_subcommand}" "${thisShell_SubcommandInfo_appbundle[0]}" thisShell_SubcommandInfo_appbundle[1]
 
         # 判斷是否為 bundle
-        dealSumcommandInfo "${func_subcommand}" "${thisShell_SubcommandInfo_bundle[0]}" thisShell_SubcommandInfo_bundle[1]
+        deal_subcommand_info "${func_subcommand}" "${thisShell_SubcommandInfo_bundle[0]}" thisShell_SubcommandInfo_bundle[1]
 
         # 判斷是否為 ios
-        dealSumcommandInfo "${func_subcommand}" "${thisShell_SubcommandInfo_ios[0]}" thisShell_SubcommandInfo_ios[1]
+        deal_subcommand_info "${func_subcommand}" "${thisShell_SubcommandInfo_ios[0]}" thisShell_SubcommandInfo_ios[1]
 
         # 判斷是否為 ios_framework
-        dealSumcommandInfo "${func_subcommand}" "${thisShell_SubcommandInfo_ios_framework[0]}" thisShell_SubcommandInfo_ios_framework[1]
+        deal_subcommand_info "${func_subcommand}" "${thisShell_SubcommandInfo_ios_framework[0]}" thisShell_SubcommandInfo_ios_framework[1]
 
         # 判斷是否為 ipa
-        dealSumcommandInfo "${func_subcommand}" "${thisShell_SubcommandInfo_ipa[0]}" thisShell_SubcommandInfo_ipa[1]
+        deal_subcommand_info "${func_subcommand}" "${thisShell_SubcommandInfo_ipa[0]}" thisShell_SubcommandInfo_ipa[1]
 
         # 判斷是否為 web
-        dealSumcommandInfo "${func_subcommand}" "${thisShell_SubcommandInfo_web[0]}" thisShell_SubcommandInfo_web[1]
+        deal_subcommand_info "${func_subcommand}" "${thisShell_SubcommandInfo_web[0]}" thisShell_SubcommandInfo_web[1]
 
     done
 
@@ -270,7 +270,7 @@ function parseReruiredSection() {
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
 #   - 只檢查是否為合法設定。
-function parseReportPathSection() {
+function parse_report_path_section() {
 
     # build config 有設定則以設定為主。
     if [ -n "${thisShell_Config_optional_report_path}" ]; then
@@ -284,7 +284,7 @@ function parseReportPathSection() {
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
 #   - 只檢查是否為合法設定。
-function parseBuildConfigTypeSection() {
+function parse_build_config_type_section() {
 
     if [ -n "${thisShell_Config_optional_build_config_types}" ]; then
 
@@ -307,7 +307,7 @@ function parseBuildConfigTypeSection() {
 # @brief function : 剖析 dart-define 。
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
 #   - 拆解成獨立函式，但是內容跟此 shell 有高度相依，只是獨立函式容易閱讀。
-function parseDartDefine() {
+function parse_dart_define_section() {
 
     # 判斷是否有 dart-define 的設定:
     if [ -n "${thisShell_Config_optional_dart_define_defines}" ] && [ -n "${thisShell_Config_optional_dart_define_separator}" ]; then
@@ -370,7 +370,7 @@ function parseDartDefine() {
 ### ==================== NotyetSupportSubcommand : Begin ====================
 # @brief 尚未支援的 subcommand 的通用函式
 # @param $1 : command name
-function export_NotyetSupportSubcommand() {
+function export_notyet_support_subcommand() {
 
     local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
@@ -396,7 +396,7 @@ function export_aar() {
     echo
     echo "${thisShell_Title_Log} ||==========> ${func_Subcommand} : Begin <==========||"
 
-    export_NotyetSupportSubcommand ${func_Subcommand}
+    export_notyet_support_subcommand ${func_Subcommand}
 
     echo "${thisShell_Title_Log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_temp_seconds}))s"
     echo
@@ -754,7 +754,7 @@ function export_bundle() {
     echo
     echo "${func_title_log} ||==========> ${func_Subcommand} : Begin <==========||"
 
-    export_NotyetSupportSubcommand ${func_Subcommand}
+    export_notyet_support_subcommand ${func_Subcommand}
 
     echo "${func_title_log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_temp_seconds}))s"
     echo
@@ -950,7 +950,7 @@ function export_ios_framework() {
     echo
     echo "${func_title_log} ||==========> ${func_Subcommand} : Begin <==========||"
 
-    export_NotyetSupportSubcommand ${func_Subcommand}
+    export_notyet_support_subcommand ${func_Subcommand}
 
     echo "${func_title_log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_temp_seconds}))s"
     echo
@@ -1145,7 +1145,7 @@ function export_web() {
     echo
     echo "${func_title_log} ||==========> ${func_Subcommand} : Begin <==========||"
 
-    export_NotyetSupportSubcommand ${func_Subcommand}
+    export_notyet_support_subcommand ${func_Subcommand}
 
     echo "${func_title_log} ||==========> ${func_Subcommand} : End <==========|| Elapsed time: $((${SECONDS} - ${func_temp_seconds}))s"
     echo
@@ -1156,7 +1156,7 @@ function export_web() {
 ## ================================== prcess function section : Begin ==================================
 # ============= This is separation line =============
 # @brief function : [程序] 此 shell 的初始化。
-function process_Init() {
+function process_init() {
 
     # 計時，實測結果不同 shell 不會影響，各自有各自的 SECONDS。
     SECONDS=0
@@ -1214,7 +1214,7 @@ function process_Init() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 處理 input param。
-function process_Deal_InputParam() {
+function process_deal_input_param() {
 
     # set input param variable
     thisShell_Param_BuildConfigFile="${1}"
@@ -1233,7 +1233,7 @@ function process_Deal_InputParam() {
 
 # ============= This is separation line =============
 # @brief function : [程序] Toggle Feature 設定。
-function process_Deal_ToggleFeature() {
+function process_deal_toggle_feature() {
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
     thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile="${GENERAL_CONST_DISABLE_FLAG}"
@@ -1254,7 +1254,7 @@ function process_Deal_ToggleFeature() {
 
 # ============= This is separation line =============
 # @brief function : [程序] SubcommandInfo 的初始化。
-function process_Init_SubcommandInfo() {
+function process_init_subcommand_info() {
 
     # 設定目前支援的 subcomand
     # 搭配 flutter build 中的 subcommands，
@@ -1280,7 +1280,7 @@ function process_Init_SubcommandInfo() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 剖析 build config。
-function process_Parse_BuildConfig() {
+function process_parse_build_config() {
 
     # 判斷 build config file
     # 字串是否不為空。 (a non-empty string)
@@ -1300,16 +1300,16 @@ function process_Parse_BuildConfig() {
         fi
 
         # parse required section
-        parseReruiredSection
+        parse_reruired_section
 
         # parse report path section
-        parseReportPathSection
+        parse_report_path_section
 
         # parse build config type section
-        parseBuildConfigTypeSection
+        parse_build_config_type_section
 
         # parse dart define section
-        parseDartDefine
+        parse_dart_define_section
 
         # 開啟可以抓到此 shell 目前有哪些設定值。
         if [ ${thisShell_ToogleFeature_IsDumpSet_When_Parse_BuildConfigFile} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
@@ -1327,7 +1327,7 @@ function process_Parse_BuildConfig() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 處理路徑相關 (包含 flutter work path)。
-function process_Deal_Paths() {
+function process_deal_paths() {
 
     # 切換到 config file 設定的 flutter project work path: 為 flutter 專案的工作目錄 shell 目錄 (之後會切回到原有呼叫的目錄)
     change_to_directory "${thisShell_Title_Log}" "${thisShell_Config_required_paths_work}"
@@ -1346,7 +1346,7 @@ function process_Deal_Paths() {
 
 # ============= This is separation line =============
 # @brief function : [程序] 清除緩存 (之前編譯的暫存檔)。
-function process_Clean_Cache() {
+function process_clean_cache() {
 
     # 以 thisShell_Flutter_WorkPath 為工作目錄來執行
     # 先期準備，刪除舊的資料
@@ -1360,7 +1360,7 @@ function process_Clean_Cache() {
 
 # ============= This is separation line =============
 # call - [程序] 建立 report note 初始化部分。
-function process_Create_ReportNote_Init() {
+function process_create_report_note_init() {
 
     echo "# Report Note" >>"${thisShell_ReportNoteFile}"
     echo >>"${thisShell_ReportNoteFile}"
@@ -1378,7 +1378,7 @@ function process_Create_ReportNote_Init() {
 # ============= This is separation line =============
 # @brief function : [程序] 執行 build subcommands。
 # @details : 依照 build config 的設定來 執行 build subcommand。
-function process_Execute_Build_Sumcommands() {
+function process_execute_build_sumcommands() {
 
     # 判斷是否要出版 aar
     check_ok_then_excute_command "${thisShell_Title_Log}" ${thisShell_SubcommandInfo_aar[1]} export_aar
@@ -1427,7 +1427,7 @@ function process_Execute_Build_Sumcommands() {
 
 # ============= This is separation line =============
 # @brief function : [程序] shell 全部完成需處理的部份。
-function process_Finish() {
+function process_finish() {
 
     # 全部完成
     # 切回原有執行目錄.
@@ -1441,45 +1441,45 @@ function process_Finish() {
 ## ================================== deal prcess step section : Begin ==================================
 # ============= This is separation line =============
 # call - [程序] 此 shell 的初始化。
-process_Init
+process_init
 
 # ============= This is separation line =============
 # call - [程序] 處理 input param。
 # 需要帶入此 shell 的輸入參數。
 # TODO: 可思考是否有更好的方式？
-process_Deal_InputParam "${1}"
+process_deal_input_param "${1}"
 
 # ============= This is separation line =============
 # call - [程序] Toggle Feature 設定。
-process_Deal_ToggleFeature
+process_deal_toggle_feature
 
 # ============= This is separation line =============
 # call - [程序] SubcommandInfo 的初始化。
-process_Init_SubcommandInfo
+process_init_subcommand_info
 
 # ============= This is separation line =============
 # call - [程序] 剖析 build config。
-process_Parse_BuildConfig
+process_parse_build_config
 
 # ============= This is separation line =============
 # call - [程序] 處理路徑相關 (包含 flutter work path)。
-process_Deal_Paths
+process_deal_paths
 
 # ============= This is separation line =============
 # call - [程序] 清除緩存 (之前編譯的暫存檔)。
-process_Clean_Cache
+process_clean_cache
 
 # ============= This is separation line =============
 # call - [程序] 建立 report note 初始化部分。
-process_Create_ReportNote_Init
+process_create_report_note_init
 
 # ============= This is separation line =============
 # call - [程序] 執行 build subcommands。
-process_Execute_Build_Sumcommands
+process_execute_build_sumcommands
 
 # ============= This is separation line =============
 # call - [程序] shell 全部完成需處理的部份。
-process_Finish
+process_finish
 ## ================================== deal prcess step section : End ==================================
 
 exit 0
