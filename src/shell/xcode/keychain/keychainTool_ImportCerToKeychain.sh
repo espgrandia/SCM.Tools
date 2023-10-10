@@ -261,33 +261,33 @@ function parse_extra_cer_info_section() {
 # @param $4: p12Pwd (.p12 的密碼，可為空，若為空則不設定密碼到 keychain): e.g. "acbApp".
 function add_cer_to_keychain() {
 
-    add_cer_to_keychain_Title_Log="*** function [add_cer_to_keychain] -"
+    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
 
-    add_cer_to_keychain_Param_KeychainName="${2}"
-    add_cer_to_keychain_Param_CerFilePath="${3}"
-    add_cer_to_keychain_Param_p12Pwd="${4}"
+    local func_param_keychain_name="${2}"
+    local func_param_cer_file_path="${3}"
+    local func_param_p12_pwd="${4}"
 
     echo
-    echo "${add_cer_to_keychain_Title_Log} Begin ***"
-    echo "${add_cer_to_keychain_Title_Log} Input param : Begin ***"
-    echo "${add_cer_to_keychain_Title_Log} TitleLog: ${1}"
-    echo "${add_cer_to_keychain_Title_Log} keychainName: ${add_cer_to_keychain_Param_KeychainName}"
-    echo "${add_cer_to_keychain_Title_Log} cerFilePath: ${add_cer_to_keychain_Param_CerFilePath}"
-    echo "${add_cer_to_keychain_Title_Log} p12Pwd: ${add_cer_to_keychain_Param_p12Pwd}"
-    echo "${add_cer_to_keychain_Title_Log} Input param : End ***"
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} TitleLog: ${1}"
+    echo "${func_title_log} keychainName: ${func_param_keychain_name}"
+    echo "${func_title_log} cerFilePath: ${func_param_cer_file_path}"
+    echo "${func_title_log} p12Pwd: ${func_param_p12_pwd}"
+    echo "${func_title_log} Input param : End ***"
 
-    if [[ ${add_cer_to_keychain_Param_p12Pwd} == "" ]]; then
+    if [[ ${func_param_p12_pwd} == "" ]]; then
         # 無密碼.
         echo
-        echo "${add_cer_to_keychain_Title_Log} ${1} security import cer : ${add_cer_to_keychain_Param_CerFilePath} to keychain : ${add_cer_to_keychain_Param_KeychainName}"
-        security import "${add_cer_to_keychain_Param_CerFilePath}" -k "${add_cer_to_keychain_Param_KeychainName}" -T /usr/bin/codesign -T /usr/bin/productsign
+        echo "${func_title_log} ${1} security import cer : ${func_param_cer_file_path} to keychain : ${func_param_keychain_name}"
+        security import "${func_param_cer_file_path}" -k "${func_param_keychain_name}" -T /usr/bin/codesign -T /usr/bin/productsign
     else
         echo
-        echo "${add_cer_to_keychain_Title_Log} ${1} security import cer : ${add_cer_to_keychain_Param_CerFilePath} with pw: ${add_cer_to_keychain_Param_p12Pwd} to keychain : ${add_cer_to_keychain_Param_KeychainName}"
-        security import "${add_cer_to_keychain_Param_CerFilePath}" -k "${add_cer_to_keychain_Param_KeychainName}" -P ${add_cer_to_keychain_Param_p12Pwd} -T /usr/bin/codesign -T /usr/bin/productsign
+        echo "${func_title_log} ${1} security import cer : ${func_param_cer_file_path} with pw: ${func_param_p12_pwd} to keychain : ${func_param_keychain_name}"
+        security import "${func_param_cer_file_path}" -k "${func_param_keychain_name}" -P ${func_param_p12_pwd} -T /usr/bin/codesign -T /usr/bin/productsign
     fi
 
-    echo "${add_cer_to_keychain_Title_Log} End ***"
+    echo "${func_title_log} End ***"
     echo
 }
 
