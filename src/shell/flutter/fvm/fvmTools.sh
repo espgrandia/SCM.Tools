@@ -31,7 +31,7 @@
 #  - 此 `parse_JsonFile_With_Key_To_Console.py` 在 scm.tools//src/python/ 下，
 #    由於此函式是設計為 include 的工具函示，所以需要額外帶入，若有同樣的參數設定的不同 python 寫法，也可以替換之。
 #
-function dealFvmSetActiveToGlobal() {
+function deal_fvm_set_active_to_global() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] - ${1}"
 
