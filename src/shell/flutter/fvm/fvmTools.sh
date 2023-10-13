@@ -24,8 +24,8 @@
 # @details
 #  - 頗析專案下的， .fvm/fvm_config.json 裡的 flutterSdkVersion 版本，設定到 fvm global。
 #
-# @param $1: 要輸出的 title log : e.g. "${sample_Title_Log}"
-# @param $2: 錯誤時要切換回去的路徑: e.g. "${sample_WorkPath}"，$(dirname $0)，etc ...。
+# @param $1: 要輸出的 title log : e.g. "${sample_title_log}"
+# @param $2: 錯誤時要切換回去的路徑: e.g. "${sample_work_path}"，$(dirname $0)，etc ...。
 # @param $3: fvm config file (以當前呼叫此函式時的所屬資料夾為相對路徑思考)。
 # @param $4: 頗析 jsonfile 的 python 位置 `parse_JsonFile_With_Key_To_Console.py`，(以當前呼叫此函式時的所屬資料夾為相對路徑思考)。
 #  - 此 `parse_JsonFile_With_Key_To_Console.py` 在 scm.tools//src/python/ 下，

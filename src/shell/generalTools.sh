@@ -11,7 +11,7 @@
 #  # include change_to_directory function
 #  . src/generalTools.sh
 #
-#  change_to_directory "${sample_Title_Log}" "${sample_WorkPath}"
+#  change_to_directory "${sample_title_log}" "${sample_work_path}"
 #  ```
 #
 # ---
@@ -36,8 +36,8 @@
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #   - 設定 git short hash 到輸入的參數 ${2}。
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @param ${2}: 要設定 git hash 的參數: e.g. sample_GitHash_Short .
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
+# @param ${2}: 要設定 git hash 的參數: e.g. sample_git_hash_short .
 function get_git_short_hash() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -77,8 +77,8 @@ function get_git_short_hash() {
 #   - 刪除只會刪除 folder path 此層資料夾的所有資料
 #   - folder path (${2}) 階層中沒有的資料夾會全部建立。
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @param ${2}: 要處理的目標資料夾(含路徑) : e.g. "${sample_DestFolder}" .
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
+# @param ${2}: 要處理的目標資料夾(含路徑) : e.g. "${sample_dest_folder}" .
 function remvoe_and_make_dir() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -119,8 +119,8 @@ function remvoe_and_make_dir() {
 # @brief function : change to directory .
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @param ${2}: 切換的目的資料夾: e.g. "${sample_WorkPath}"，$(dirname $0)，etc ...
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
+# @param ${2}: 切換的目的資料夾: e.g. "${sample_work_path}"，$(dirname $0)，etc ...
 function change_to_directory() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -155,9 +155,9 @@ function change_to_directory() {
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 "" .
 #   - 判斷輸入參數的合法性，失敗會直接 exit 1 .
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @param ${2}: input param name: e.g. "sample_Param_ProjectRelativePath" .
-# @param ${3}: input param value: e.g. "${sample_Param_ProjectRelativePath}" .
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
+# @param ${2}: input param name: e.g. "sample_param_project_relative_path" .
+# @param ${3}: input param value: e.g. "${sample_param_project_relative_path}" .
 function check_input_param() {
 
     if [[ ${3} == "" ]]; then
@@ -193,7 +193,7 @@ function check_input_param() {
 #   - 檢查輸入 result 是否失敗 (0: 成功，非0: 失敗)，失敗則切換目錄，並直接 return : exit result code .
 #   - 一般為呼叫完某個 command line，判斷其回傳值是否成功，失敗則離開此 shell .
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
 # @param ${2}: 要驗證的 result value: e.g. $? : 非0為失敗 ..
 # @param ${3}: 要 dump log" .
 # @param ${4}: 切換回去的的 folder path" .
@@ -240,11 +240,11 @@ function check_result_if_fail_then_change_folder() {
 #   - value 不在 list 中，則回傳 99。
 #   - 呼叫完此函式，可使用 "$?" 來取得回傳值。
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
 # @param ${2} : check value : 要驗證的 value。
 # @param ${!3} : source list : 要驗證的 array。
 #
-# sample e.g. check_legal_val_in_list "${sample_Title_Log}" "${sample_Val}" sample_List[@]
+# sample e.g. check_legal_val_in_list "${sample_title_log}" "${sample_val}" sample_list[@]
 #
 # @retrun 0: 成功， 99: 失敗。
 function check_legal_val_in_list() {
@@ -303,12 +303,12 @@ function check_legal_val_in_list() {
 #     - 則切換指定的資料夾路徑。
 #     - 離開中斷 shell。
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
 # @param ${2} : check value : 要驗證的 value。
 # @param ${!3} : source list : 要驗證的 array。
 # @param ${4}: 切換回去的的 folder path"
 #
-# sample e.g. check_legal_val_in_list__if__result_fail_then_change_folder "${sample_Title_Log}" "${sample_Val}" sample_List[@] "${sample_ChangeFolder}"
+# sample e.g. check_legal_val_in_list__if__result_fail_then_change_folder "${sample_title_log}" "${sample_val}" sample_list[@] "${sample_change_folder}"
 function check_legal_val_in_list__if__result_fail_then_change_folder() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -348,13 +348,13 @@ function check_legal_val_in_list__if__result_fail_then_change_folder() {
 #   - check list 不可為空，若為空 :
 #     - dump 錯誤訊息。 (以及 error code : 1 失敗， shell 檢查 list 數量是否大於 0，測試的結果不成立會回傳 1)。
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
 # @param ${!2} : check list : 要驗證的 array。
 # @param ${!3} : source list : 要驗證的 array。
 # @param ${4}: 切換回去的的 folder path"
 #
-# sample e.g. check_legal_verified_list_in_list__if__result_fail_then_change_folder "${sample_Title_Log}" \
-#               sample_VerifiedList[@] sample_List[@] "${sample_ChangeFolder}"
+# sample e.g. check_legal_verified_list_in_list__if__result_fail_then_change_folder "${sample_title_log}" \
+#               sample_verified_list[@] sample_list[@] "${sample_change_folder}"
 function check_legal_verified_list_in_list__if__result_fail_then_change_folder() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -409,13 +409,13 @@ function check_legal_verified_list_in_list__if__result_fail_then_change_folder()
 #   - 依據輸入的字串，分隔符號，以及要寫入的參入名稱。
 #   - 剖析後，會取分隔後前兩筆寫入對應的參數。
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
 # @param ${2}: 要分析的字串: e.g. "1.0.0+2" .
 # @param ${3}: separator 的字串: e.g. "+" .
-# @param ${4}: 要設定的第一個參數，拆解後取第一位的內容來設定。 e.g. sample_Split_First .
-# @param ${5}: 要設定的第一個參數，拆解後取第二位的內容來設定。 e.g. sample_Split_Second .
+# @param ${4}: 要設定的第一個參數，拆解後取第一位的內容來設定。 e.g. sample_split_frst .
+# @param ${5}: 要設定的第一個參數，拆解後取第二位的內容來設定。 e.g. sample_split_second .
 #
-# sample e.g. split_string_to_pair "${sample_Title_Log}" "${sample_SourceString}" "${sample_Separator}" sample_Split_First sample_Split_Second
+# sample e.g. split_string_to_pair "${sample_title_log}" "${sample_source_string}" "${sample_separator}" sample_split_frst sample_split_second
 function split_string_to_pair() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -471,12 +471,12 @@ function split_string_to_pair() {
 #       - 有值則會 append source string 到 dest string 後面，且中間以 separator 來當分隔符號。
 #       - 空值則會 設定 source string 給 dest string。
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @param ${2}: 要設定的目標的字串，為實際會設定的參數， (有可能為空，需判斷): e.g. sample_DestString ("abc" or "") .
-# @param ${3}: 要 append 的來源的字串參數，要 dump log，所以也是用參數帶入 (有可能為空，需判斷): e.g. sample_SourceString ("App_1.0.1" or "") .
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
+# @param ${2}: 要設定的目標的字串，為實際會設定的參數， (有可能為空，需判斷): e.g. sample_dest_string ("abc" or "") .
+# @param ${3}: 要 append 的來源的字串參數，要 dump log，所以也是用參數帶入 (有可能為空，需判斷): e.g. sample_source_string ("App_1.0.1" or "") .
 # @param ${4}: separator 的字串 (要 append 時的分隔字串，允許為空字串): e.g. "-" .
 #
-# sample e.g. append_dest_string_from_source_string_with_separator "${sample_Title_Log}" sample_DestString sample_SourceString "${sample_Separator}"
+# sample e.g. append_dest_string_from_source_string_with_separator "${sample_title_log}" sample_dest_string sample_source_string "${sample_separator}"
 function append_dest_string_from_source_string_with_separator() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -532,10 +532,10 @@ function append_dest_string_from_source_string_with_separator() {
 # @brief function : [check_ok_then_excute_command] 確認成功，則執行 command.
 # @details : 要執行 command 前會判斷是否要帶入其對應參數 (commandParams)
 #
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. "${sample_IsExcute}"
-# @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. "${sample_CommandName}"，"open"，"flutter"，...。
-# @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
+# @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. "${sample_is_execute}"
+# @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. "${sample_command_name}"，"open"，"flutter"，...。
+# @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_command_params[@]
 #   - 為 option，有才會帶入到 command 後面。
 #   - array : 第 0 個為 command line，
 #   - array : 第 1 個 (含 1) 後面為依序要輸入的參數
@@ -549,11 +549,11 @@ function append_dest_string_from_source_string_with_separator() {
 #
 # @sample
 #  - e.g.1.
-#     sample_CommandParams=("help" "build" "apk")
-#     check_ok_then_excute_command "${sample_Title_Log}" "${sample_ToggleFeature_Is_Excute}" "flutter" sample_CommandParams[@]
+#     sample_command_params=("help" "build" "apk")
+#     check_ok_then_excute_command "${sample_title_log}" "${sample_toggle_feature_is_execute}" "flutter" sample_command_params[@]
 #  - e.g.2.
-#     sample_CommandParams=("${sample_OutputFolder}")
-#     check_ok_then_excute_command "${sample_Title_Log}" "${sample_ToggleFeature_Is_Excute}" "open" sample_CommandParams[@]
+#     sample_command_params=("${sample_output_folder}")
+#     check_ok_then_excute_command "${sample_title_log}" "${sample_toggle_feature_is_execute}" "open" sample_command_params[@]
 #
 # ---
 #
@@ -596,7 +596,7 @@ function check_ok_then_excute_command() {
         echo "${func_main_body_title_log} ============= excute command - Begin ============="
 
         # for local varient
-        local func_Command="${3}"
+        local func_command="${3}"
         local func_command_params=("${!4}")
 
         # 若有 func_command_params
@@ -604,18 +604,18 @@ function check_ok_then_excute_command() {
 
             echo "${func_main_body_title_log} func_command_params : ${func_command_params[@]}"
             echo "${func_main_body_title_log} func_command_params count : ${#func_command_params[@]}"
-            echo "${func_main_body_title_log} will excute command : ${func_Command} ${func_command_params[@]}"
+            echo "${func_main_body_title_log} will excute command : ${func_command} ${func_command_params[@]}"
 
-            ${func_Command} "${func_command_params[@]}"
+            ${func_command} "${func_command_params[@]}"
 
             func_return_value=$?
             echo "${func_main_body_title_log} excute command result code: ${func_return_value}"
 
         else
 
-            echo "${func_main_body_title_log} will excute command : ${func_Command}"
+            echo "${func_main_body_title_log} will excute command : ${func_command}"
 
-            ${func_Command}
+            ${func_command}
 
             func_return_value=$?
             echo "${func_main_body_title_log} excute command result code: ${func_return_value}"
@@ -640,16 +640,16 @@ function check_ok_then_excute_command() {
 #
 # @Params :
 # === copy from [check_ok_then_excute_command] - Begin
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. "${sample_IsExcute}"
-# @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. "${sample_CommandName}"，"open"，"flutter"，...。
-# @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
+# @Param ${2}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. "${sample_is_execute}"
+# @Param ${3}: command : 要執行的 command，可能為函式或 shell => e.g. "${sample_command_name}"，"open"，"flutter"，...。
+# @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_command_params[@]
 # === copy from [check_ok_then_excute_command] - End
 #
-# @param ${5}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
+# @param ${5}: 切換回去的的 folder path" => e.g. "${sample_change_folder}"
 #
 # sample e.g. check_ok_then_excute_command__if__result_fail_then_change_folder \
-#  "${sample_Title_Log}"  "${sample_IsExcute}" "${sample_CommandName}" sample_CommandParams[@] "${sample_ChangeFolder}"
+#  "${sample_title_log}"  "${sample_is_execute}" "${sample_command_name}" sample_command_params[@] "${sample_change_folder}"
 function check_ok_then_excute_command__if__result_fail_then_change_folder() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -666,15 +666,15 @@ function check_ok_then_excute_command__if__result_fail_then_change_folder() {
 
     local func_param_title_log="${1}"
     local func_param_is_excute="${2}"
-    local func_Param_CoommandName="${3}"
+    local func_param_coommand_name="${3}"
     local func_param_command_params=("${!4}")
     local func_param_change_folder="${5}"
 
-    check_ok_then_excute_command "${func_title_log}" "${func_param_is_excute}" "${func_Param_CoommandName}" func_param_command_params[@]
+    check_ok_then_excute_command "${func_title_log}" "${func_param_is_excute}" "${func_param_coommand_name}" func_param_command_params[@]
 
     # 呼叫驗證，帶入回傳值，不合法則中斷程序。
     check_result_if_fail_then_change_folder "${func_title_log}" "$?" \
-        "\r\n!!! ~ OPPS!! Execute Command Fail. \r\n- Command Name : ${func_Param_CoommandName}\r\n- Command Params: (${func_param_command_params[*]}) \r\n => fail ~ !!!" "${func_param_change_folder}"
+        "\r\n!!! ~ OPPS!! Execute Command Fail. \r\n- Command Name : ${func_param_coommand_name}\r\n- Command Params: (${func_param_command_params[*]}) \r\n => fail ~ !!!" "${func_param_change_folder}"
 
     echo "${func_title_log} End ***"
     echo
@@ -689,11 +689,11 @@ function check_ok_then_excute_command__if__result_fail_then_change_folder() {
 #     - command list 都找不到，則回傳 99。
 #   - 呼叫完此函式，可使用 "$?" 來取得回傳值。
 #
-# @param ${1} : 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @param ${!2} : source command list : 要驗證的 command list。 e.g. sample_CommandList[@]
-# @param ${3} : found first command : 第一個收尋到的 commmand。 e.g. sample_Found_First_Command .
+# @param ${1} : 要輸出的 title log : e.g. "${sample_title_log}" .
+# @param ${!2} : source command list : 要驗證的 command list。 e.g. sample_command_list[@]
+# @param ${3} : found first command : 第一個收尋到的 commmand。 e.g. sample_found_first_command .
 #
-# sample e.g. get_first_found_command_from_input_command_list_by_using_which_command "${sample_Title_Log}" sample_CommandList[@] sample_Found_First_Command
+# sample e.g. get_first_found_command_from_input_command_list_by_using_which_command "${sample_title_log}" sample_command_list[@] sample_found_first_command
 #
 # @retrun 0: 成功， 99: 失敗 (Not Found Command)。
 function get_first_found_command_from_input_command_list_by_using_which_command() {
@@ -726,15 +726,15 @@ function get_first_found_command_from_input_command_list_by_using_which_command(
     local func_i
     for ((func_i = 0; func_i < ${#func_param_command_list[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-        local aCommand=${func_param_command_list[${func_i}]}
+        local func_command=${func_param_command_list[${func_i}]}
 
-        echo "${func_main_body_title_log} which ${aCommand}"
-        which which ${aCommand}
+        echo "${func_main_body_title_log} which ${func_command}"
+        which which ${func_command}
 
         if [ $? -eq 0 ]; then
-            echo "${func_main_body_title_log} assign ${func_param_found_first_command} to ${aCommand}"
+            echo "${func_main_body_title_log} assign ${func_param_found_first_command} to ${func_command}"
             func_return_value=0
-            eval ${3}="${aCommand}"
+            eval ${3}="${func_command}"
             break
         fi
 
@@ -760,14 +760,14 @@ function get_first_found_command_from_input_command_list_by_using_which_command(
 #     - 離開中斷 shell。
 #
 # === copy from [get_first_found_command_from_input_command_list_by_using_which_command] - Begin
-# @param ${1} : 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @param ${!2} : source command list : 要驗證的 command list。 e.g. sample_CommandList[@]
-# @param ${3} : found first command : 第一個收尋到的 commmand。 e.g. sample_Found_First_Command .
+# @param ${1} : 要輸出的 title log : e.g. "${sample_title_log}" .
+# @param ${!2} : source command list : 要驗證的 command list。 e.g. sample_command_list[@]
+# @param ${3} : found first command : 第一個收尋到的 commmand。 e.g. sample_found_first_command .
 # === copy from [get_first_found_command_from_input_command_list_by_using_which_command] - End
 #
-# @param ${4}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
+# @param ${4}: 切換回去的的 folder path" => e.g. "${sample_change_folder}"
 #
-# sample e.g. get_first_found_command_from_input_command_list_by_using_which_command__if__result_fail_then_change_folder "${sample_Title_Log}" sample_CommandList[@] sample_Found_First_Command "${sample_ChangeFolder}"
+# sample e.g. get_first_found_command_from_input_command_list_by_using_which_command__if__result_fail_then_change_folder "${sample_title_log}" sample_command_list[@] sample_found_first_command "${sample_change_folder}"
 #
 # @retrun 0: 成功， 404: 失敗 (Not Found Command)。
 function get_first_found_command_from_input_command_list_by_using_which_command__if__result_fail_then_change_folder() {
@@ -897,13 +897,13 @@ function show_colors_info() {
 # @brief function : 單純秀 單一 color 設定的 log。
 #  - private function，暫時沒考慮開放。
 #
-# @param ${1}: 要輸出的 Color 參數名稱，內部會取其實際內容。 e.g. sample_Color_Name
+# @param ${1}: 要輸出的 Color 參數名稱，內部會取其實際內容。 e.g. sample_color_name
 #
-# sample e.g. _show_one_color sample_Color_Name
+# sample e.g. _show_one_color sample_color_name
 function _show_one_color() {
-    local func_Color_Name=${1}
-    local func_Color_Value=$(eval echo \$${1})
-    echo "Color Value Name : ${GENERAL_CONST_COLORS_WHITE}${func_Color_Name} = ${func_Color_Value}I love you${GENERAL_CONST_COLORS_COLOR_OFF}"
+    local func_color_name=${1}
+    local func_color_value=$(eval echo \$${1})
+    echo "Color Value Name : ${GENERAL_CONST_COLORS_WHITE}${func_color_name} = ${func_color_value}I love you${GENERAL_CONST_COLORS_COLOR_OFF}"
 }
 ##
 ## ================================== Private Function Section : End ==================================

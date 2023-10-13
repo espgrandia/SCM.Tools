@@ -7,7 +7,7 @@
 #
 # input 參數說明 :
 #
-# - $1 : thisShell_Param_ProvisionProfile_SourceFolder="[路徑]/[provision profile source folder]" : 要 copy 的 profision profile 的來源根目錄。
+# - $1 : this_shell_param_provision_profile_source_folder="[路徑]/[provision profile source folder]" : 要 copy 的 profision profile 的來源根目錄。
 #
 #   - 路徑可以帶相對路徑，也可以是完整路徑。
 #     - 相對路徑 : 是 [provision profile source folder] 相對於此 shell 的路徑，須以此 shell 角度來看相對路徑。
@@ -19,7 +19,7 @@
 #
 # - [通用規則] :
 #   函式與此 shell 有高度相依，若要抽離到獨立 shell，需調整之。
-#   其中 [thisShell_xxx] 是跨函式讀取。
+#   其中 [this_shell_xxx] 是跨函式讀取。
 #
 # - 此 shell 主要分兩個主要區塊 :
 #
@@ -41,17 +41,17 @@ function process_init() {
   SECONDS=0
 
   # 此 shell 的 dump log title.
-  thisShell_Title_Name="provisionProfileTool_Copy"
-  thisShell_Title_Log="[${thisShell_Title_Name}] -"
+  this_shell_title_name="provisionProfileTool_Copy"
+  this_shell_title_log="[${this_shell_title_name}] -"
 
   echo
-  echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : Begin <==========||"
+  echo "${this_shell_title_log} ||==========> ${this_shell_title_name} : Begin <==========||"
 
   # 取得相對目錄.
   local func_shell_work_path=$(dirname $0)
 
   echo
-  echo "${thisShell_Title_Log} func_shell_work_path : ${func_shell_work_path}"
+  echo "${this_shell_title_log} func_shell_work_path : ${func_shell_work_path}"
 
   # 前置處理作業
 
@@ -60,26 +60,26 @@ function process_init() {
 
   # include general function
   echo
-  echo "${thisShell_Title_Log} include general function"
+  echo "${this_shell_title_log} include general function"
   . "${func_shell_work_path}/../../generalTools.sh"
 
   # include const value
   echo
-  echo "${thisShell_Title_Log} include provisionProfileTool_Const.sh"
+  echo "${this_shell_title_log} include provisionProfileTool_Const.sh"
   . "${func_shell_work_path}/provisionProfileTool_Const.sh"
 
   # 設定原先的呼叫路徑。
-  thisShell_OldPath=$(pwd)
+  this_shell_old_path=$(pwd)
 
   # 切換執行目錄.
-  change_to_directory "${thisShell_Title_Log}" "${func_shell_work_path}"
+  change_to_directory "${this_shell_title_log}" "${func_shell_work_path}"
 
   # 設定成完整路徑。
-  thisShell_Shell_WorkPath=$(pwd)
+  this_shell_work_path=$(pwd)
 
-  echo "${thisShell_Title_Log} thisShell_OldPath : ${thisShell_OldPath}"
-  echo "${thisShell_Title_Log} thisShell_Shell_WorkPath : ${thisShell_Shell_WorkPath}"
-  echo "${thisShell_Title_Log} CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER : ${CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER}"
+  echo "${this_shell_title_log} this_shell_old_path : ${this_shell_old_path}"
+  echo "${this_shell_title_log} this_shell_work_path : ${this_shell_work_path}"
+  echo "${this_shell_title_log} CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER : ${CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER}"
   echo
 }
 
@@ -88,17 +88,17 @@ function process_init() {
 # @param $1 : provision profile source folder : 要 copy 的 profision profile 的來源根目錄。
 function process_deal_input_param() {
 
-  local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+  local func_title_log="${this_shell_title_log} *** function [${FUNCNAME[0]}] -"
 
   # set input param variable
-  thisShell_Param_ProvisionProfile_SourceFolder="${1}"
+  this_shell_param_provision_profile_source_folder="${1}"
 
   # check input parameters
-  check_input_param "${thisShell_Title_Log}" thisShell_Param_ProvisionProfile_SourceFolder "${thisShell_Param_ProvisionProfile_SourceFolder}"
+  check_input_param "${this_shell_title_log}" this_shell_param_provision_profile_source_folder "${this_shell_param_provision_profile_source_folder}"
 
   echo
   echo "${func_title_log} ||==========> Begin <==========||"
-  echo "${func_title_log} thisShell_Param_ProvisionProfile_SourceFolder : ${thisShell_Param_ProvisionProfile_SourceFolder}"
+  echo "${func_title_log} this_shell_param_provision_profile_source_folder : ${this_shell_param_provision_profile_source_folder}"
   echo "${func_title_log} ||==========> End <==========||"
   echo
 }
@@ -107,7 +107,7 @@ function process_deal_input_param() {
 # @brief function : [程序] 執行 確保 Provision Profile 目標資料夾是合法的。
 function process_guarantee_provision_profile_dest_folder_legal() {
 
-  local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+  local func_title_log="${this_shell_title_log} *** function [${FUNCNAME[0]}] -"
 
   # 暫存此區塊的起始時間。
   local func_temp_seconds=${SECONDS}
@@ -127,7 +127,7 @@ function process_guarantee_provision_profile_dest_folder_legal() {
 # @brief function : [程序] 執行 Copy Provision Profile。
 function process_deal_copy_provision_profile() {
 
-  local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+  local func_title_log="${this_shell_title_log} *** function [${FUNCNAME[0]}] -"
 
   # 暫存此區塊的起始時間。
   local func_temp_seconds=${SECONDS}
@@ -135,14 +135,14 @@ function process_deal_copy_provision_profile() {
   echo
   echo "${func_title_log} ||==========> Begin <==========||"
 
-  # 搜尋 thisShell_Param_ProvisionProfile_SourceFolder 下的 mobileprovision。
-  local func_FilePaths=$(find "${thisShell_Param_ProvisionProfile_SourceFolder}" -name "*.mobileprovision")
+  # 搜尋 this_shell_param_provision_profile_source_folder 下的 mobileprovision。
+  local func_file_paths=$(find "${this_shell_param_provision_profile_source_folder}" -name "*.mobileprovision")
 
   # 複製.mobileprovision檔案到 MobileDevice/Provisioning Profiles。
-  local func_A_FilePath
-  for func_A_FilePath in ${func_FilePaths[@]}; do
-    echo "${func_title_log} func_A_FilePath : ${func_A_FilePath}"
-    cp $func_A_FilePath "${CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER}"
+  local func_file_path
+  for func_file_path in ${func_file_paths[@]}; do
+    echo "${func_title_log} func_file_path : ${func_file_path}"
+    cp $func_file_path "${CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER}"
   done
 
   echo "${func_title_log} ||==========> End <==========|| Elapsed time: $((${SECONDS} - ${func_temp_seconds}))s"
@@ -156,10 +156,10 @@ function process_finish() {
 
   # 全部完成
   # 切回原有執行目錄.
-  change_to_directory "${thisShell_Title_Log}" "${thisShell_OldPath}"
+  change_to_directory "${this_shell_title_log}" "${this_shell_old_path}"
 
   echo
-  echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : End <==========|| Elapsed time: ${SECONDS}s"
+  echo "${this_shell_title_log} ||==========> ${this_shell_title_name} : End <==========|| Elapsed time: ${SECONDS}s"
 }
 ## ================================== prcess function section : End ==================================
 

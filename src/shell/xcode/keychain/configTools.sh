@@ -95,11 +95,11 @@
 # @param ${2} : keychain_name : 要設定的 keychain name。
 # @param ${3} : keychian_password : 要設定的 keychain password。
 # @param ${!4} : cer_info_key_names : 要設定到 keychain 的 cer info key names (對應於 config 的其他要取得的 cer info unit) : (cer_info_app_1 cer_info_app_2)
-#   => e.g. sample_CerInfoKeyNames=(cer_info_app_1 cer_info_app_2)
+#   => e.g. sample_cer_info_key_names=(cer_info_app_1 cer_info_app_2)
 # @sa config_tools_gen_extra_cer_info_unit
 #   => 每一個 cer info 在 config file (yaml) 的格式，可參考 config_tools_gen_extra_cer_info_unit 說明。
 #
-# sample e.g. config_tools_gen_required "${sample_FilePath}" "${sample_KeychainName}" "${sample_KeychianPassword}" sample_CerInfoKeyNames[@]
+# sample e.g. config_tools_gen_required "${sample_file_path}" "${sample_keychain_name}" "${sample_keychain_password}" sample_cer_info_key_names[@]
 function config_tools_gen_required() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -199,9 +199,9 @@ function config_tools_gen_required() {
 # @param $3 : file_password_separator : 分隔符號，不判斷，單純設定，外面需決定好內容。=> e.g. "+"
 #             若整組都沒有密碼，允許為空，可以帶空字串 ""。
 # @param $4 : file password list : 兜好 [key][separator][value的內容]
-#   => e.g. sample_FilePasswordLis=(app.share/doc/abc.p12+abc app.share/doc/def.p12+def app.share/doc/ghi.cer+ app.share/doc/jkl.cer)
+#   => e.g. sample_file_password_list=(app.share/doc/abc.p12+abc app.share/doc/def.p12+def app.share/doc/ghi.cer+ app.share/doc/jkl.cer)
 #
-# sample e.g. config_tools_gen_extra_cer_info_unit "${sample_FilePath}" "${sample_Separator}" sample_FilePasswordLis[@]
+# sample e.g. config_tools_gen_extra_cer_info_unit "${sample_file_path}" "${sample_separator}" sample_file_password_list[@]
 function config_tools_gen_extra_cer_info_unit() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -221,13 +221,13 @@ function config_tools_gen_extra_cer_info_unit() {
     local func_param_separator="${3}"
     local func_param_file_password_list=("${!4}")
 
-    local func_CerInfo_Unit_Title="cer info unit"
+    local func_cer_info_unit_title="cer info unit"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
     # for extra cer info unit
     echo "" >>"${func_param_file_path}"
-    echo "# extra [${func_CerInfo_Unit_Title}] sction" >>"${func_param_file_path}"
-    echo "# - [${func_CerInfo_Unit_Title}] : ${CONFIG_CONST_CONFIG_KEY_CER_INFO_UNIT_FILE_PASSWORD_LIST} 會用到的內容，為 list 型態，{p12/cer}{separator}{password}" >>"${func_param_file_path}"
+    echo "# extra [${func_cer_info_unit_title}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_cer_info_unit_title}] : ${CONFIG_CONST_CONFIG_KEY_CER_INFO_UNIT_FILE_PASSWORD_LIST} 會用到的內容，為 list 型態，{p12/cer}{separator}{password}" >>"${func_param_file_path}"
     echo "#   可接收無密碼，以 \`file_password_separator\` 做拆分，沒有後面部分，視同無密碼。" >>"${func_param_file_path}"
     echo "#     - 有密碼 : 一般為 {p12}{separator}{password}" >>"${func_param_file_path}"
     echo "#     - 無密碼 : 一般為 {cer}" >>"${func_param_file_path}"
@@ -259,7 +259,7 @@ function config_tools_gen_extra_cer_info_unit() {
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : work path : 指定 shell 執行的工作目錄 => e.g. "/Users/[UserName]/Desktop/Code/[some_app_project]/submodules/app.share"。
 #
-# sample e.g. config_tools_gen_optional_work_path "${sample_FilePath}" "${sample_Work_Path}"
+# sample e.g. config_tools_gen_optional_work_path "${sample_file_path}" "${sample_work_path}"
 function config_tools_gen_optional_work_path() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"

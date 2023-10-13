@@ -33,14 +33,14 @@
 #   - 主要參數及使用方式，請參考 [check_ok_then_excute_command] 說明。
 #
 # @Params :
-# @param ${1}: 要輸出的 title log : e.g. "${sample_Title_Log}" .
-# @param ${2}: is enable fvm mode : "Y" 或 "N" : e.g. "${sample_Is_Enable_FVM_Mode}"
-# @Param ${3}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. "${sample_IsExcute}"
-# @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_CommandParams[@]
-# @param ${5}: 切換回去的的 folder path" => e.g. "${sample_ChangeFolder}"
+# @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
+# @param ${2}: is enable fvm mode : "Y" 或 "N" : e.g. "${sample_is_enable_fvm_mode}"
+# @Param ${3}: isExcute : 是否要執行命令 => "Y" 或 "N" => e.g. "${sample_is_execute}"
+# @Param ${4}: commandParams : 要執行的 command 的參數資訊，為 array => e.g. sample_command_params[@]
+# @param ${5}: 切換回去的的 folder path" => e.g. "${sample_change_folder}"
 #
 # sample e.g. flutter_extension_tools_deal_is_enable_fvm_mode_and_relay__to__check_ok_then_excute_command__if__result_fail_then_change_folder \
-#  "${sample_Title_Log}" "${sample_Is_Enable_FVM_Mode}" "${sample_IsExcute}" sample_CommandParams[@] "${sample_ChangeFolder}"
+#  "${sample_title_log}" "${sample_is_enable_fvm_mode}" "${sample_is_execute}" sample_command_params[@] "${sample_change_folder}"
 function flutter_extension_tools_deal_is_enable_fvm_mode_and_relay__to__check_ok_then_excute_command__if__result_fail_then_change_folder() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -107,10 +107,10 @@ function flutter_extension_tools_deal_is_enable_fvm_mode_and_relay__to__check_ok
 #  - 需注意，該檔案內容會直接覆蓋，資料夾路徑須先準備好，這裡不做資料夾路徑檢查。
 #  - 若 local 沒有該版本，在 console dump version 版本時，會需要手動按下允許。
 #    此時若不允許，則產生的檔案會有問題，請自行排除之。
-# @param ${1} : 要輸出的 title log : e.g. "${sample_Title_Log}"
-# @param ${2} : is enable fvm mode : "Y" 或 "N" : e.g. $"{sample_Is_Enable_FVM_Mode}"
-# @param ${3} : 要產生的檔案， generator file path: 檔名含路徑 e.g. "${sample_Generator_FlutterVersionMachin_File}"
-# @param ${4} : 若失敗要切換的路徑，change folder path : e.g. "${sample_OldPath}"
+# @param ${1} : 要輸出的 title log : e.g. "${sample_title_log}"
+# @param ${2} : is enable fvm mode : "Y" 或 "N" : e.g. $"{sample_is_enable_fvm_mode}"
+# @param ${3} : 要產生的檔案， generator file path: 檔名含路徑 e.g. "${sample_generator_flutter_version_machine_file}"
+# @param ${4} : 若失敗要切換的路徑，change folder path : e.g. "${sample_old_path}"
 function flutter_extension_tools_generator_version_machine_file() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"

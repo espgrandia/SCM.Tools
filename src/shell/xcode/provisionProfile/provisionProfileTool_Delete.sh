@@ -8,7 +8,7 @@
 #
 # - [通用規則] :
 #   函式與此 shell 有高度相依，若要抽離到獨立 shell，需調整之。
-#   其中 [thisShell_xxx] 是跨函式讀取。
+#   其中 [this_shell_xxx] 是跨函式讀取。
 #
 # - 此 shell 主要分兩個主要區塊 :
 #
@@ -30,17 +30,17 @@ function process_init() {
     SECONDS=0
 
     # 此 shell 的 dump log title.
-    thisShell_Title_Name="provisionProfileTool_Delete"
-    thisShell_Title_Log="[${thisShell_Title_Name}] -"
+    this_shell_title_name="provisionProfileTool_Delete"
+    this_shell_title_log="[${this_shell_title_name}] -"
 
     echo
-    echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : Begin <==========||"
+    echo "${this_shell_title_log} ||==========> ${this_shell_title_name} : Begin <==========||"
 
     # 取得相對目錄.
     local func_shell_work_path=$(dirname $0)
 
     echo
-    echo "${thisShell_Title_Log} func_shell_work_path : ${func_shell_work_path}"
+    echo "${this_shell_title_log} func_shell_work_path : ${func_shell_work_path}"
 
     # 前置處理作業
 
@@ -49,26 +49,26 @@ function process_init() {
 
     # include general function
     echo
-    echo "${thisShell_Title_Log} include general function"
+    echo "${this_shell_title_log} include general function"
     . "${func_shell_work_path}/../../generalTools.sh"
 
     # include const value
     echo
-    echo "${thisShell_Title_Log} include provisionProfileTool_Const.sh"
+    echo "${this_shell_title_log} include provisionProfileTool_Const.sh"
     . "${func_shell_work_path}/provisionProfileTool_Const.sh"
 
     # 設定原先的呼叫路徑。
-    thisShell_OldPath=$(pwd)
+    this_shell_old_path=$(pwd)
 
     # 切換執行目錄.
-    change_to_directory "${thisShell_Title_Log}" "${func_shell_work_path}"
+    change_to_directory "${this_shell_title_log}" "${func_shell_work_path}"
 
     # 設定成完整路徑。
-    thisShell_Shell_WorkPath=$(pwd)
+    this_shell_work_path=$(pwd)
 
-    echo "${thisShell_Title_Log} thisShell_OldPath : ${thisShell_OldPath}"
-    echo "${thisShell_Title_Log} thisShell_Shell_WorkPath : ${thisShell_Shell_WorkPath}"
-    echo "${thisShell_Title_Log} CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER : ${CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER}"
+    echo "${this_shell_title_log} this_shell_old_path : ${this_shell_old_path}"
+    echo "${this_shell_title_log} this_shell_work_path : ${this_shell_work_path}"
+    echo "${this_shell_title_log} CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER : ${CONFIG_CONST_XCODE_USING_PROVISION_PROFILE_FOLDER}"
     echo
 }
 
@@ -76,7 +76,7 @@ function process_init() {
 # @brief function : [程序] 執行 刪除 Xcode 引用的 Provision Profiles。
 function process_deal_delete_provision_profiles_from_dest_folder() {
 
-    local func_title_log="${thisShell_Title_Log} *** function [${FUNCNAME[0]}] -"
+    local func_title_log="${this_shell_title_log} *** function [${FUNCNAME[0]}] -"
 
     # 暫存此區塊的起始時間。
     local func_temp_seconds=${SECONDS}
@@ -99,10 +99,10 @@ function process_finish() {
 
     # 全部完成
     # 切回原有執行目錄.
-    change_to_directory "${thisShell_Title_Log}" "${thisShell_OldPath}"
+    change_to_directory "${this_shell_title_log}" "${this_shell_old_path}"
 
     echo
-    echo "${thisShell_Title_Log} ||==========> ${thisShell_Title_Name} : End <==========|| Elapsed time: ${SECONDS}s"
+    echo "${this_shell_title_log} ||==========> ${this_shell_title_name} : End <==========|| Elapsed time: ${SECONDS}s"
 }
 ## ================================== prcess function section : End ==================================
 

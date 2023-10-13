@@ -62,10 +62,10 @@ export CONFIG_TOOLS_OPTIONAL="optional"
 # @param ${2} : flutter project work path : 指的是 flutter 專案目錄的路徑。
 # @param ${3} : output path : 指的是 輸出的資料夾路徑。
 # @param ${!4} : subcommands : 對應 flutter subcommands : (aar apk appbundle bundle ios ios-framework)
-#   => e.g. sample_Subcommands=(apk ios)
+#   => e.g. sample_subcommands=(apk ios)
 #   => sa 可參考 configCost.sh configConst_Subcommand_xxx 來設定。
 #
-# sample e.g. config_tools_gen_required "${sample_FilePath}" "${sample_WorkPath}" "${sample_OutputPath}" "${sample_Pubspec_version}" sample_Subcommands[@]
+# sample e.g. config_tools_gen_required "${sample_file_path}" "${sample_work_path}" "${sample_output_path}" sample_subcommands[@]
 function config_tools_gen_required() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -148,7 +148,7 @@ function config_tools_gen_required() {
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : report file path : 指定 exported.sh 的 report file path (含檔名)。
 #
-# sample e.g. config_tools_gen_optional_report_file_path "${sample_FilePath}" "${sample_ReportFilePath}"
+# sample e.g. config_tools_gen_optional_report_file_path "${sample_file_path}" "${sample_report_file_path}"
 function config_tools_gen_optional_report_file_path() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -189,7 +189,7 @@ function config_tools_gen_optional_report_file_path() {
 #
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 #
-# sample e.g. config_tools_gen_optional_enable_fvm_mode "${sample_FilePath}"
+# sample e.g. config_tools_gen_optional_enable_fvm_mode "${sample_file_path}"
 function config_tools_gen_optional_enable_fvm_mode() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -234,7 +234,7 @@ function config_tools_gen_optional_enable_fvm_mode() {
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : prefix file name : 輸出檔案的前贅字 => e.g. "[AppName].[version]"
 #
-# sample e.g. config_tools_gen_optional_build_name "${sample_FilePath}" "${sample_Prefix_FileName}"
+# sample e.g. config_tools_gen_optional_build_name "${sample_file_path}" "${sample_prefix_file_name}"
 function config_tools_gen_optional_prefix_file_name() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -278,7 +278,7 @@ function config_tools_gen_optional_prefix_file_name() {
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : build name : flutter --build-name 的設定內容 => e.g. "0.1.1"
 #
-# sample e.g. config_tools_gen_optional_build_name "${sample_FilePath}" "${sample_Build_Name}"
+# sample e.g. config_tools_gen_optional_build_name "${sample_file_path}" "${sample_build_name}"
 function config_tools_gen_optional_build_name() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -326,7 +326,7 @@ function config_tools_gen_optional_build_name() {
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : build number : flutter --build-number 的設定內容 => e.g. "0.1.1.4" or "12" [需看 subcommands 實際支援度]
 #
-# sample e.g. config_tools_gen_optional_build_number "${sample_FilePath}" "${sample_Build_Number}"
+# sample e.g. config_tools_gen_optional_build_number "${sample_file_path}" "${sample_build_number}"
 function config_tools_gen_optional_build_number() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -368,10 +368,10 @@ function config_tools_gen_optional_build_number() {
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param ${!2} : buildConfigTypes : 對應 flutter build config types : (debug profile release)
 # 依據 flutter build ， 有 debug ， profile ， release
-#   => e.g. sample_BuildConfigTypes=(debug release)
+#   => e.g. sample_build_config_types=(debug release)
 #   => sa 可參考 configCost.sh configConst_BuildConfigType_xxx 來設定。
 #
-# sample e.g. config_tools_gen_optional_build_config_type "${sample_FilePath}" sample_BuildConfigTypes[@]
+# sample e.g. config_tools_gen_optional_build_config_type "${sample_file_path}" sample_build_config_types[@]
 function config_tools_gen_optional_build_config_type() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -417,9 +417,9 @@ function config_tools_gen_optional_build_config_type() {
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : separator : 分隔符號，不判斷，單純設定，外面需決定好內容。=> e.g. "+"
 # @param $3 : defines : 兜好 [key][separator][value的內容]
-#   => e.g. sample_DartDefines=(gitHash+920f6fc envName+dev)
+#   => e.g. sample_dart_defines=(gitHash+920f6fc envName+dev)
 #
-# sample e.g. config_tools_gen_optional_dart_define "${sample_FilePath}" "${sample_Separator}" sample_DartDefines[@]
+# sample e.g. config_tools_gen_optional_dart_define "${sample_file_path}" "${sample_separator}" sample_dart_defines[@]
 function config_tools_gen_optional_dart_define() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -435,30 +435,30 @@ function config_tools_gen_optional_dart_define() {
     # for local varient
     local func_param_file_path="${1}"
     local func_param_separator="${2}"
-    local func_Param_Defines=("${!3}")
+    local func_param_defines=("${!3}")
 
     # for [optional]
     # [optional] [dart-define] : dart-define 會用到的內容，為 list 型態，{key}{separator}{value}
-    local func_Optional_Key_DartDef="dart_define"
-    local func_Optional_Key_DartDef_Key_Separator="separator"
-    local func_Optional_Key_DartDef_Key_Defines="defines"
+    local func_optional_key_dart_def="dart_define"
+    local func_optional_key_dart_def_Key_Separator="separator"
+    local func_optional_key_dart_def_Key_Defines="defines"
 
     # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
     # for dart-define
     echo "" >>"${func_param_file_path}"
-    echo "# ${CONFIG_TOOLS_OPTIONAL} [${func_Optional_Key_DartDef}] sction" >>"${func_param_file_path}"
-    echo "# - [${func_Optional_Key_DartDef}] : ${CONFIG_CONST_BUILD_PARAM_KEY_DART_DEFINE} 會用到的內容，為 list 型態，{key}{separator}{value}" >>"${func_param_file_path}"
+    echo "# ${CONFIG_TOOLS_OPTIONAL} [${func_optional_key_dart_def}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_optional_key_dart_def}] : ${CONFIG_CONST_BUILD_PARAM_KEY_DART_DEFINE} 會用到的內容，為 list 型態，{key}{separator}{value}" >>"${func_param_file_path}"
     echo "# - support subcommands: ${CONFIG_CONST_SUBCOMMAND_APK}，${CONFIG_CONST_SUBCOMMAND_APPBUNDLE}，${CONFIG_CONST_SUBCOMMAND_IOS}，${CONFIG_CONST_SUBCOMMAND_IOS_FRAMEWORK}" >>"${func_param_file_path}"
     echo "${CONFIG_TOOLS_OPTIONAL} :" >>"${func_param_file_path}"
-    echo "  ${func_Optional_Key_DartDef} :" >>"${func_param_file_path}"
-    echo "    ${func_Optional_Key_DartDef_Key_Separator} : ${func_param_separator}" >>"${func_param_file_path}"
-    echo "    ${func_Optional_Key_DartDef_Key_Defines} :" >>"${func_param_file_path}"
+    echo "  ${func_optional_key_dart_def} :" >>"${func_param_file_path}"
+    echo "    ${func_optional_key_dart_def_Key_Separator} : ${func_param_separator}" >>"${func_param_file_path}"
+    echo "    ${func_optional_key_dart_def_Key_Defines} :" >>"${func_param_file_path}"
 
     local func_i
-    for ((func_i = 0; func_i < ${#func_Param_Defines[@]}; func_i++)); do #請注意 ((   )) 雙層括號
+    for ((func_i = 0; func_i < ${#func_param_defines[@]}; func_i++)); do #請注意 ((   )) 雙層括號
 
-        local aDefine=${func_Param_Defines[${func_i}]}
-        echo "      - ${aDefine}" >>"${func_param_file_path}"
+        local func_define=${func_param_defines[${func_i}]}
+        echo "      - ${func_define}" >>"${func_param_file_path}"
 
     done
 
@@ -472,7 +472,7 @@ function config_tools_gen_optional_dart_define() {
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : flavor : flutter flavor 的設定內容 => e.g. "Runner"
 #
-# sample e.g. config_tools_gen_optional_flavor "${sample_FilePath}" "${sample_Flavor}"
+# sample e.g. config_tools_gen_optional_flavor "${sample_file_path}" "${sample_flavor}"
 function config_tools_gen_optional_flavor() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
@@ -511,7 +511,7 @@ function config_tools_gen_optional_flavor() {
 # @param $1 : file path : 要輸出的檔案位置 (含檔名)
 # @param $2 : platforms : flutter --target-platform 的設定內容 => e.g. "android-arm,android-arm64"
 #
-# sample e.g. config_tools_gen_optional_target_platform "${sample_FilePath}" "${sample_Target_Platform}"
+# sample e.g. config_tools_gen_optional_target_platform "${sample_file_path}" "${sample_target_platform}"
 #
 # - flutter command line sample :
 #   > flutter build apk --target-platform android-arm,android-arm64
