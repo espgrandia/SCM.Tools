@@ -10,7 +10,7 @@
 #
 #  ``` shell
 #  # include 通用性參數設定。
-#  . src/generalConst.sh
+#  . src/general_const.sh
 #
 #  # then can use export parameter
 #

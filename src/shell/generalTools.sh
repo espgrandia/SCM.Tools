@@ -17,9 +17,9 @@
 # ---
 #
 # 注意事項:
-# - 使用此通用函式，有相依於 scm.tools/src/shell/generalConst.sh
+# - 使用此通用函式，有相依於 scm.tools/src/shell/general_const.sh
 #   - 其中有使用到 GENERAL_CONST_ENABLE_FLAG
-#   - 需自行 include generalConst.sh
+#   - 需自行 include general_const.sh
 #   - 再 include generalTools.sh
 #
 # ---

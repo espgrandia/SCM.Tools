@@ -12,12 +12,12 @@
 #
 # 注意事項:
 # - 使用此通用函式，有相依 include 檔案於
-#   - scm.tools/src/shell/generalConst.sh
+#   - scm.tools/src/shell/general_const.sh
 #     > func => check_result_if_fail_then_change_folder ...
 #   - configConst.sh
 #     > export 參數 => CONFIG_CONST_COMMAND_NAME_FVM ...
 #   - include 方式 :
-#     - 需自行 include generalConst.sh
+#     - 需自行 include general_const.sh
 #     - 需自行 include generalTools.sh
 #     - 需自行 include configTools.sh
 #     - 再 include flutterExtensionTools.sh

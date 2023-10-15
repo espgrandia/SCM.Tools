@@ -34,7 +34,7 @@
 #
 # 通用性 const define :
 #
-# - const define : "Y" 或 "N" 改使用 "${GENERAL_CONST_ENABLE_FLAG}" 或 "${GENERAL_CONST_DISABLE_FLAG}" 來判斷 ， 定義在 generalConst.sh
+# - const define : "Y" 或 "N" 改使用 "${GENERAL_CONST_ENABLE_FLAG}" 或 "${GENERAL_CONST_DISABLE_FLAG}" 來判斷 ， 定義在 general_const.sh
 #
 # ---
 #
@@ -1188,7 +1188,7 @@ function process_init() {
     # include general function
     echo
     echo "${this_shell_title_log} include general function"
-    . "${func_shell_work_path}"/../generalConst.sh
+    . "${func_shell_work_path}"/../general_const.sh
     . "${func_shell_work_path}"/../generalTools.sh
 
     # include parse_yaml function
