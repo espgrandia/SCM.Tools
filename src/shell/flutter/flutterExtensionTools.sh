@@ -18,7 +18,7 @@
 #     > export 參數 => CONFIG_CONST_COMMAND_NAME_FVM ...
 #   - include 方式 :
 #     - 需自行 include general_const.sh
-#     - 需自行 include generalTools.sh
+#     - 需自行 include general_tools.sh
 #     - 需自行 include configTools.sh
 #     - 再 include flutterExtensionTools.sh
 #

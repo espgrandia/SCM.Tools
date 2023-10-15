@@ -394,7 +394,7 @@ function process_init() {
     echo
     echo "${this_shell_title_log} include general function"
     . "${func_shell_work_path}"/../../general_const.sh
-    . "${func_shell_work_path}"/../../generalTools.sh
+    . "${func_shell_work_path}"/../../general_tools.sh
 
     # include parse_yaml function
     echo

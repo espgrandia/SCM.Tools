@@ -50,7 +50,7 @@ function process_init() {
     # include general function
     echo
     echo "${this_shell_title_log} include general function"
-    . "${func_shell_work_path}/../../generalTools.sh"
+    . "${func_shell_work_path}/../../general_tools.sh"
 
     # include const value
     echo

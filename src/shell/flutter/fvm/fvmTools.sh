@@ -10,10 +10,10 @@
 # ---
 #
 # 注意事項:
-# - 使用此通用函式，有相依於 scm.tools/src/shell/generalTools.sh
+# - 使用此通用函式，有相依於 scm.tools/src/shell/general_tools.sh
 #   - 其中有使用到 [check_result_if_fail_then_change_folder]，[get_first_found_command_from_input_command_list_by_using_which_command]，etc ...。
 #   - 需自行 include general_const.sh
-#   - 需自行 include generalTools.sh
+#   - 需自行 include general_tools.sh
 #
 # - 另一個 剖析 json file 中的某 key 對應的 value to console. (parse_JsonFile_With_Key_To_Console.py)
 #   scm.tools/src/python/parse_JsonFile_With_Key_To_Console.py 中，需帶入路徑進來。
