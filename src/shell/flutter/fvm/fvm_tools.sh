@@ -15,8 +15,8 @@
 #   - 需自行 include general_const.sh
 #   - 需自行 include general_tools.sh
 #
-# - 另一個 剖析 json file 中的某 key 對應的 value to console. (parse_JsonFile_With_Key_To_Console.py)
-#   scm.tools/src/python/parse_JsonFile_With_Key_To_Console.py 中，需帶入路徑進來。
+# - 另一個 剖析 json file 中的某 key 對應的 value to console. (parse_json_file_with_key_to_console.py)
+#   scm.tools/src/python/parse_json_file_with_key_to_console.py 中，需帶入路徑進來。
 #
 
 # ============= This is separation line =============
@@ -27,8 +27,8 @@
 # @param $1: 要輸出的 title log : e.g. "${sample_title_log}"
 # @param $2: 錯誤時要切換回去的路徑: e.g. "${sample_work_path}"，$(dirname $0)，etc ...。
 # @param $3: fvm config file (以當前呼叫此函式時的所屬資料夾為相對路徑思考)。
-# @param $4: 頗析 jsonfile 的 python 位置 `parse_JsonFile_With_Key_To_Console.py`，(以當前呼叫此函式時的所屬資料夾為相對路徑思考)。
-#  - 此 `parse_JsonFile_With_Key_To_Console.py` 在 scm.tools//src/python/ 下，
+# @param $4: 頗析 jsonfile 的 python 位置 `parse_json_file_with_key_to_console.py`，(以當前呼叫此函式時的所屬資料夾為相對路徑思考)。
+#  - 此 `parse_json_file_with_key_to_console.py` 在 scm.tools//src/python/ 下，
 #    由於此函式是設計為 include 的工具函示，所以需要額外帶入，若有同樣的參數設定的不同 python 寫法，也可以替換之。
 #
 function deal_fvm_set_active_to_global() {
