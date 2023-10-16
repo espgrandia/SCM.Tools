@@ -30,7 +30,7 @@ function process_init() {
     SECONDS=0
 
     # 此 shell 的 dump log title.
-    this_shell_title_name="provisionProfileTool_Delete"
+    this_shell_title_name="provision_profile_tool_delete"
     this_shell_title_log="[${this_shell_title_name}] -"
 
     echo
@@ -54,8 +54,8 @@ function process_init() {
 
     # include const value
     echo
-    echo "${this_shell_title_log} include provisionProfileTool_Const.sh"
-    . "${func_shell_work_path}/provisionProfileTool_Const.sh"
+    echo "${this_shell_title_log} include provision_profile_tool_const.sh"
+    . "${func_shell_work_path}/provision_profile_tool_const.sh"
 
     # 設定原先的呼叫路徑。
     this_shell_old_path=$(pwd)

@@ -15,7 +15,7 @@
 #
 #   - 內容為協議好的格式，只是做成可彈性設定的方式，可選項目，沒有則以基本編譯。
 #
-#   - 目前 keychainTool_ImportCerToKeychain.sh 支援的功能，在 configTools.sh 會有對應函式可以設定到 config.yaml 中。
+#   - 目前 keychain_tool_import_cer_to_keychain.sh 支援的功能，在 config_tools.sh 會有對應函式可以設定到 config.yaml 中。
 #
 #   - sample file : keychainConfig.yaml
 #
@@ -72,7 +72,7 @@
 #
 # - 來源 : 來自於 build config 轉換成的 shell 內部參數。
 #   經由讀取 build config file (對應於 this_shell_param_config_file 內容) 來處理，
-#   細部說明可參考 configTools.sh
+#   細部說明可參考 config_tools.sh
 #
 # - required :
 #
@@ -383,12 +383,12 @@ function process_init() {
     # import function
     # 因使用 include 檔案的函式，所以在此之前需先確保路經是在此 shell 資料夾中。
 
-    # 不確定是否使用者都有使用 configTools.sh 產生 build config file， 再來呼叫 keychainTool_ImportCerToKeychain.sh
-    # 保險起見， include configConst.sh
-    # include configConst.sh for configTools.sh using export Environment Variable。
+    # 不確定是否使用者都有使用 config_tools.sh 產生 build config file， 再來呼叫 keychain_tool_import_cer_to_keychain.sh
+    # 保險起見， include config_const.sh
+    # include config_const.sh for config_tools.sh using export Environment Variable。
     echo
-    echo "${this_shell_title_log} include configConst.sh"
-    . "${func_shell_work_path}"/configConst.sh
+    echo "${this_shell_title_log} include config_const.sh"
+    . "${func_shell_work_path}"/config_const.sh
 
     # include general function
     echo

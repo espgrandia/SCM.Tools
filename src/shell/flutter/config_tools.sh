@@ -11,24 +11,24 @@
 # 注意事項:
 # - 使用此通用函式，有相依 include 檔案於
 #   - scm.tools/src/shell/general_const.sh
-#   - configConst.sh
+#   - config_const.sh
 #   - include 方式 :
 #     - 需自行 include general_const.sh
 #     - 需自行 include configTools.sh
-#     - 再 include releaseNoteTools.sh
+#     - 再 include release_note_tools.sh
 #
 # @sa:
-#  與 configConst.sh 有相依性。
+#  與 config_const.sh 有相依性。
 #  需於 import configTools.sh 或呼叫相關函式前，
-#  確保有 import configConst.sh
+#  確保有 import config_const.sh
 #  使用範例可參考下方的 @sample
 #
 # ---
 #
 # @sample :
 #  ``` shell
-#  # import configConst.sh for configTools.sh using export Environment Variable。
-#    . flutter/configConst.sh
+#  # import config_const.sh for configTools.sh using export Environment Variable。
+#    . flutter/config_const.sh
 #
 #  # import config_tools_gen_required function
 #  . flutter/configTools.sh
@@ -63,7 +63,7 @@ export CONFIG_TOOLS_OPTIONAL="optional"
 # @param ${3} : output path : 指的是 輸出的資料夾路徑。
 # @param ${!4} : subcommands : 對應 flutter subcommands : (aar apk appbundle bundle ios ios-framework)
 #   => e.g. sample_subcommands=(apk ios)
-#   => sa 可參考 configCost.sh configConst_Subcommand_xxx 來設定。
+#   => sa 可參考 config_const.sh CONFIG_CONST_SUBCOMMAND__[XXX] 來設定。
 #
 # sample e.g. config_tools_gen_required "${sample_file_path}" "${sample_work_path}" "${sample_output_path}" sample_subcommands[@]
 function config_tools_gen_required() {
@@ -369,7 +369,7 @@ function config_tools_gen_optional_build_number() {
 # @param ${!2} : buildConfigTypes : 對應 flutter build config types : (debug profile release)
 # 依據 flutter build ， 有 debug ， profile ， release
 #   => e.g. sample_build_config_types=(debug release)
-#   => sa 可參考 configCost.sh configConst_BuildConfigType_xxx 來設定。
+#   => sa 可參考 config_const.sh CONFIG_CONST_BUILD_CONFIG_TYPE_[XXX] 來設定。
 #
 # sample e.g. config_tools_gen_optional_build_config_type "${sample_file_path}" sample_build_config_types[@]
 function config_tools_gen_optional_build_config_type() {

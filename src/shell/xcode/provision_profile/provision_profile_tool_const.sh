@@ -4,8 +4,8 @@
 #
 # @details :
 #  - 目前會使用到的 shell
-#    - provisionProfileTool_Copy.sh
-#    - provisionProfileTool_Delete.sh
+#    - provision_profile_tool_copy.sh
+#    - provision_profile_tool_delete.sh
 #
 # ---
 #

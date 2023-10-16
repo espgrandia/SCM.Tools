@@ -4,15 +4,15 @@
 #
 # @details :
 #  - 目前會使用到的 shell
-#    - configTools.sh
-#    - keychainTool_ImportCerToKeychain.sh
+#    - config_tools.sh
+#    - keychain_tool_import_cer_to_keychain.sh
 #  - 部分內容會給使用 exported.sh 參考使用。
 #
 
 ## ================================== Config File (yaml) Key section : Begin ==================================
 # @brief 針對 config file (yaml) 會用到的 key，於此定義。
-# @detail 首先會用到的是 confitTools.sh，其餘的 keychainTool_ImportCerToKeychain.sh 看看是否能使用。
-# @sa [configTools.sh] [config_tools_gen_required]
+# @detail 首先會用到的是 config_tools.sh，其餘的 keychain_tool_import_cer_to_keychain.sh 看看是否能使用。
+# @sa [config_tools.sh] [config_tools_gen_required]
 
 ### ---------------------------------- [required] section : Begin ----------------------------------
 # @brief [required] 必要項目的 key。
@@ -39,7 +39,7 @@ export CONFIG_CONST_CONFIG_KEY_REQUIRED_CER_INFO_KEY_NAMES="cer_info_key_names"
 ### ---------------------------------- [extra] section : Begin ----------------------------------
 # @brief [extra] cer info unit 所需要項目的 key。
 # - 針對 [required] [cer_info_key_names] 的內容，動態取得 [some cer_info_key_name] 的資訊。
-# @sa [configTools.sh] [config_tools_gen_extra_cer_info_unit]
+# @sa [config_tools.sh] [config_tools_gen_extra_cer_info_unit]
 
 # for [some cer_info_key_name] [file_password_separator]
 # - 分合符號
@@ -51,7 +51,7 @@ export CONFIG_CONST_CONFIG_KEY_CER_INFO_UNIT_FILE_PASSWORD_LIST="file_password_l
 ### ---------------------------------- [optional] section : Begin ----------------------------------
 # @brief [optional] 項目的 key。
 # @detail 非必要項目，有設定到的功能，才會去使用。
-# @sa [configTools.sh] [config_tools_gen_optional_work_path]
+# @sa [config_tools.sh] [config_tools_gen_optional_work_path]
 
 # for [optional] key。
 export CONFIG_CONST_CONFIG_KEY_OPTIONAL="optional"

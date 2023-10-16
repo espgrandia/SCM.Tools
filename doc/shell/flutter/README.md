@@ -39,13 +39,13 @@
 
 **shell 簡易說明 :**
 
-- `configConst.sh`
+- `config_const.sh`
 
   宣告 flutter 輔助工具會用到的 const value
 
   - 初期是給 exported.sh 以及實作曾專案的使用，後來有擴大使用範圍。
 
-- `configTools.sh`
+- `config_tools.sh`
 
   flutter exported.sh 會用到的 build config 工具。
 
@@ -53,11 +53,11 @@
 
   簡單處理目前的出版 => release for apk and ipa。
 
-- `flutterExtensionTools.sh`
+- `flutter_extension_tools.sh`
 
   flutter 的擴展工具函式。
 
-- `releaseNoteTools.sh`
+- `release_note_tools.sh`
 
   flutter project 中，exporte 相關 shell ，會用到的 release note 工具。
 
@@ -65,7 +65,7 @@
 
 **shell 簡易說明 :**
 
-- `fvmTools.sh`
+- `fvm_tools.s`
 
   透過 fvm (Flutter Version Management) 用來管理 Flutter Version 切換功能。
 

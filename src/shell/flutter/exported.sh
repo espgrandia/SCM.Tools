@@ -17,7 +17,7 @@
 #
 #   - 內容為協議好的格式，只是做成可彈性設定的方式，可選項目，沒有則以基本編譯。
 #
-#   - 目前 exported.sh 支援的功能，在 configTools.sh 會有對應函式可以設定到 buildConfig.yaml 中。
+#   - 目前 exported.sh 支援的功能，在 config_tools.sh 會有對應函式可以設定到 buildConfig.yaml 中。
 #
 #   - sample file : buildConfig.yaml
 #
@@ -47,7 +47,7 @@
 # - this_shell_toogle_feature_default_build_config_type=release
 #   - build configutation type : 編譯組態設定，之後視情況是否要開放
 #   - 依據 flutter build version : 有 debug ， profile ， release 三種方式
-#   - 可參考 configTools.sh 中的 configConst_BuildConfigType_xxx。
+#   - 可參考 config_tools.sh 中的 CONFIG_CONST_BUILD_CONFIG_TYPE_[XXX]。
 #   - [註] : 若 build config 有設定 [build_config_types] 則會以該設定為主。
 #
 # ---
@@ -63,7 +63,7 @@
 #
 # - 來源 : 來自於 build config 轉換成的 shell 內部參數。
 #   經由讀取 build config file (對應於 this_shell_param_build_config_file 內容) 來處理，
-#   細部說明可參考 configTools.sh
+#   細部說明可參考 config_tools.sh
 #
 # - required :
 #
@@ -1178,12 +1178,12 @@ function process_init() {
     # import function
     # 因使用 include 檔案的函式，所以在此之前需先確保路經是在此 shell 資料夾中。
 
-    # 不確定是否使用者都有使用 configTools.sh 產生 build config file， 再來呼叫 exported.sh
-    # 保險起見， include configConst.sh
-    # include configConst.sh for configTools.sh using export Environment Variable。
+    # 不確定是否使用者都有使用 config_tools.sh 產生 build config file， 再來呼叫 exported.sh
+    # 保險起見， include config_const.sh
+    # include config_const.sh for config_tools.sh using export Environment Variable。
     echo
-    echo "${this_shell_title_log} include configConst.sh"
-    . "${func_shell_work_path}"/configConst.sh
+    echo "${this_shell_title_log} include config_const.sh"
+    . "${func_shell_work_path}"/config_const.sh
 
     # include general function
     echo
@@ -1240,7 +1240,7 @@ function process_deal_toggle_feature() {
 
     # build configutation type : 編譯組態設定，之後視情況是否要開放
     # 依據 flutter build ， 有 debug ， profile ， release，
-    # 可參考 configConst.sh 中的 configConst_BuildConfigType_xxx
+    # 可參考 config_const.sh 中的 CONFIG_CONST_BUILD_CONFIG_TYPE_[XXX]
     this_shell_toogle_feature_default_build_config_type="${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}"
 
     echo

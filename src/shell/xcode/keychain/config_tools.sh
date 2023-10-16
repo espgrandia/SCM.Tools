@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ============= This is separation line =============
-# @brief : keychainTool_ImportCerToKeychain.sh 會用到的 generator config 工具。
+# @brief : keychain_tool_import_cer_to_keychain.sh 會用到的 generator config 工具。
 # @details : 放置常用產出部分 build config 內容的工具函式，使用者可以引用此檔案來使用函式。
 # @author : esp
 # @create date : 2022-05-17
@@ -11,23 +11,23 @@
 # 注意事項:
 # - 使用此通用函式，有相依 include 檔案於
 #   - scm.tools/src/shell/general_const.sh
-#   - configConst.sh
+#   - config_const.sh
 #   - include 方式 :
 #     - 需自行 include general_const.sh
 #     - 需自行 include configTools.sh
 #
 # @sa:
-#  與 configConst.sh 有相依性。
+#  與 config_const.sh 有相依性。
 #  需於 import configTools.sh 或呼叫相關函式前，
-#  確保有 import configConst.sh
+#  確保有 import config_const.sh
 #  使用範例可參考下方的 @sample
 #
 # ---
 #
 # @sample :
 #  ``` shell
-#  # import configConst.sh for configTools.sh using export Environment Variable。
-#    . xcode/keychain/configConst.sh
+#  # import config_const.sh for configTools.sh using export Environment Variable。
+#    . xcode/keychain/config_const.sh
 #
 #  # import config_tools_gen_required 等函式。
 #  . xcode/keychain/configTools.sh

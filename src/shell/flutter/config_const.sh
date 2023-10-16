@@ -5,10 +5,10 @@
 #
 # @details :
 #  - 目前會使用到的 shell
-#    - configTools.sh
+#    - config_tools.sh
 #    - exported.sh
-#    - flutterExtensionTools.sh
-#    - releaseNoteTools.sh
+#    - flutter_extension_tools.sh
+#    - release_note_tools.sh
 #  - 部分內容會給使用 exported.sh 參考使用。
 #
 
@@ -27,7 +27,7 @@ export CONFIG_CONST_COMMAND_NAME_FLUTTER="flutter"
 # @detail - 目前 flutter build 支援的 subcommands，flutter version (2.2.3)。
 #  - shell 不支援 export array，所以就沒提供 flutter 以及 exported 目前支援或提供的 subcommand 功能。
 # @sa
-#   - configTools.sh 中 config_tools_gen_required 參數可參考此區塊來設定
+#   - config_tools.sh 中 config_tools_gen_required 參數可參考此區塊來設定
 #   - exported.sh 會使用到。
 export CONFIG_CONST_SUBCOMMAND_AAR="aar"
 export CONFIG_CONST_SUBCOMMAND_APK="apk"
@@ -89,7 +89,7 @@ export CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE="release"
 # @brief 針對 flutter build [subcommand] 的後續參數，屬於開關性質的設定。
 # @details 
 #  - optional 的功能。
-#  - 有設定則表示需要開啟此功能，使用者可設定需要的參數給 configTools.sh 的某個函式 (TODO: 尚未支援)。
+#  - 有設定則表示需要開啟此功能，使用者可設定需要的參數給 config_tools.sh 的某個函式 (TODO: 尚未支援)。
 #  - exported.sh 會依照此 subcommand 有支援的 feature 來帶入。
 
 # 不更新 pub。
@@ -100,7 +100,7 @@ export CONFIG_CONST_BUILD_PARAM_TOGGLE_FEATURE_NO_PUB="no-pub"
 # @brief 針對 flutter build [subcommand] 的後續參數，屬於需要額外帶入內容的項目。
 # @details 
 #  - optional 的功能。
-#  - confitTools.sh 會用到此區塊的 key，使用者只需要呼叫對應的函式即可。
+#  - config_tools.sh 會用到此區塊的 key，使用者只需要呼叫對應的函式即可。
 #  - exported.sh 會依照 build config 的相關設定來處理。
 
 # [build-name] 指定編譯的 build name。
@@ -135,7 +135,7 @@ export CONFIG_CONST_BUILD_PARAM_TARGET_PLATFORM_X64="android-x64"
 
 ### ---------------------------------- config (yaml) key that needed contains value section : Begin ----------------------------------
 # @brief 針對 config file (yaml) 會用到的 key，於此定義。
-# @detail 首先會用到的是 confitTools.sh，其餘的 exported.sh 看看是否能使用。
+# @detail 首先會用到的是 config_tools.sh，其餘的 exported.sh 看看是否能使用。
 
 # for config key。
 export CONFIG_CONST_CONFIG_KEY_OPTIONAL="optional"
