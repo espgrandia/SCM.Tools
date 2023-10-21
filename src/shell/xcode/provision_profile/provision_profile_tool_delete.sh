@@ -30,7 +30,8 @@ function process_init() {
     SECONDS=0
 
     # 此 shell 的 dump log title.
-    this_shell_title_name="provision_profile_tool_delete"
+    local file_name=$(basename $0)
+    this_shell_title_name="${file_name%.*}"
     this_shell_title_log="[${this_shell_title_name}] -"
 
     echo

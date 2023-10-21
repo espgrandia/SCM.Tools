@@ -13,13 +13,13 @@
 #
 # input 參數說明 :
 #
-# - $1 : this_shell_param_build_config_file="[專案路徑]/[scm]/output/buildConfig.yaml" : 設定編譯的 config 功能檔案 [需帶完整路徑].
+# - $1 : this_shell_param_build_config_file="[專案路徑]/[scm]/output/build_config.yaml" : 設定編譯的 config 功能檔案 [需帶完整路徑].
 #
 #   - 內容為協議好的格式，只是做成可彈性設定的方式，可選項目，沒有則以基本編譯。
 #
-#   - 目前 exported.sh 支援的功能，在 config_tools.sh 會有對應函式可以設定到 buildConfig.yaml 中。
+#   - 目前 exported.sh 支援的功能，在 config_tools.sh 會有對應函式可以設定到 build_config.yaml 中。
 #
-#   - sample file : buildConfig.yaml
+#   - sample file : build_config.yaml
 #
 #     ``` yaml
 #     optional:
@@ -139,7 +139,7 @@
 #
 # - 此 shell 主要分四個主要區塊 :
 #
-#   - buildConfig function section :
+#   - build_config function section :
 #     有關 build config 處理的相關函式。
 #
 #   - export function section :
@@ -159,7 +159,7 @@
 #  - apk 未瘦身，不確定是否有擾亂 ?
 #
 
-## ================================== buildConfig function section : Begin ==================================
+## ================================== build_config function section : Begin ==================================
 # ============= This is separation line =============
 # @brief function : 處理並設定單一的 subcommand info .
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
@@ -364,7 +364,7 @@ function parse_dart_define_section() {
     fi
 }
 
-## ================================== buildConfig function section : End ==================================
+## ================================== build_config function section : End ==================================
 
 ## ================================== export function section : Begin ==================================
 ### ==================== NotyetSupportSubcommand : Begin ====================
@@ -377,9 +377,9 @@ function export_notyet_support_subcommand() {
     # 暫存此區塊的起始時間。
     local func_subcommand=${1}
 
-    echo "${GENERAL_CONST_COLORS_BBLACK}${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_title_log} OPPS!! Notyet support this subcommand ( ${func_subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_subcommand} ).\n    Error !!! ***${GENERAL_CONST_COLORS_COLOR_OFF}"
+    echo "${GENERAL_CONST_COLORS_BBLACK}${GENERAL_CONST_COLORS_RED}${GENERAL_CONST_COLORS_ON_CYAN}${func_title_log} OPPS!! Notyet support this subcommand ( ${func_subcommand} ).\n    Please check your demand or make request that modify ${this_shell_title_name}.sh to support this subcommand ( ${func_subcommand} ).\n    Error !!! ***${GENERAL_CONST_COLORS_COLOR_OFF}"
 
-    check_result_if_fail_then_change_folder "${func_title_log}" "50" "!!! ~ OPPS!! Notyet support this subcommand ( ${func_subcommand} ).\n    Please check your demand or make request that modify exported.sh to support this subcommand ( ${func_subcommand} ).\n    Error !!! ***" "${this_shell_old_path}"
+    check_result_if_fail_then_change_folder "${func_title_log}" "50" "!!! ~ OPPS!! Notyet support this subcommand ( ${func_subcommand} ).\n    Please check your demand or make request that modify ${this_shell_title_name}.sh to support this subcommand ( ${func_subcommand} ).\n    Error !!! ***" "${this_shell_old_path}"
 }
 ### ==================== NotyetSupportSubcommand : End ====================
 
@@ -405,7 +405,7 @@ function export_aar() {
 
 ### ==================== apk : Begin ====================
 # @brief exported apk 部分 。
-# @param ${1}: buildConfigType :  有 debug ， profile ， release 。
+# @param ${1}: build_config_type :  有 debug ， profile ， release 。
 function export_apk() {
 
     local func_name=${FUNCNAME[0]}
@@ -566,7 +566,7 @@ function export_apk() {
 
 ### ==================== appbundle : Begin ====================
 # @brief exported appbundle 部分 。
-# @param ${1}: buildConfigType :  有 debug ， profile ， release 。
+# @param ${1}: build_config_type :  有 debug ， profile ， release 。
 function export_appbundle() {
 
     local func_name=${FUNCNAME[0]}
@@ -742,7 +742,7 @@ function export_appbundle() {
 
 ### ==================== bundle : Begin ====================
 # @brief exported bundle 部分 。
-# @param ${1}: buildConfigType :  有 debug ， profile ， release 。
+# @param ${1}: build_config_type :  有 debug ， profile ， release 。
 function export_bundle() {
 
     local func_title_log="${this_shell_title_log} *** function [${FUNCNAME[0]}] -"
@@ -763,7 +763,7 @@ function export_bundle() {
 
 ### ==================== ios : Begin ====================
 # @brief ios 部分 。
-# @param ${1}: buildConfigType :  有 debug ， profile ， release 。
+# @param ${1}: build_config_type :  有 debug ， profile ， release 。
 function export_ios() {
 
     local func_name=${FUNCNAME[0]}
@@ -960,7 +960,7 @@ function export_ios_framework() {
 
 ### ==================== ipa : Begin ====================
 # @brief exported ipa 部分 。
-# @param ${1}: buildConfigType :  有 debug ， profile ， release 。
+# @param ${1}: build_config_type :  有 debug ， profile ， release 。
 function export_ipa() {
 
     local func_name=${FUNCNAME[0]}
@@ -1162,10 +1162,12 @@ function process_init() {
     SECONDS=0
 
     # 此 shell 的 dump log title.
-    this_shell_title_log="[exported] -"
+    local file_name=$(basename $0)
+    this_shell_title_name="${file_name%.*}"
+    this_shell_title_log="[${this_shell_title_name}] -"
 
     echo
-    echo "${this_shell_title_log} ||==========> exported : Begin <==========||"
+    echo "${this_shell_title_log} ||==========> ${this_shell_title_name} : Begin <==========||"
 
     # 取得相對目錄.
     local func_shell_work_path=$(dirname $0)
@@ -1368,7 +1370,7 @@ function process_create_report_note_init() {
     echo >>"${this_shell_report_note_file}"
     echo "## Base info" >>"${this_shell_report_note_file}"
     echo >>"${this_shell_report_note_file}"
-    echo "- Subject : report info by \`exported.sh\`" >>"${this_shell_report_note_file}"
+    echo "- Subject : report info by \`${this_shell_title_name}.sh\`" >>"${this_shell_report_note_file}"
     echo >>"${this_shell_report_note_file}"
     echo "- BuildConfigFile :" >>"${this_shell_report_note_file}"
     echo >>"${this_shell_report_note_file}"
@@ -1434,7 +1436,7 @@ function process_finish() {
     change_to_directory "${this_shell_title_log}" "${this_shell_old_path}"
 
     echo
-    echo "${this_shell_title_log} ||==========> exported : End <==========|| Elapsed time: ${SECONDS}s"
+    echo "${this_shell_title_log} ||==========> ${this_shell_title_name} : End <==========|| Elapsed time: ${SECONDS}s"
 }
 ## ================================== prcess function section : End ==================================
 
