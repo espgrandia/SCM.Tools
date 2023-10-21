@@ -574,8 +574,6 @@ function check_ok_then_excute_command() {
 
     check_input_param "${func_title_log}" GENERAL_CONST_ENABLE_FLAG "${GENERAL_CONST_ENABLE_FLAG}"
 
-    echo "${func_title_log} GENERAL_CONST_ENABLE_FLAG : ${GENERAL_CONST_ENABLE_FLAG} ***"
-
     local func_return_value=0
 
     # 驗證成功再處理後續。
