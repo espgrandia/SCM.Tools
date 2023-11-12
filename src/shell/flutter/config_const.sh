@@ -17,6 +17,9 @@
 ### ---------------------------------- flutter command section : Begin ----------------------------------
 # @brief : 透過 flutter 通用的。
 
+# dart 的 command name
+export CONFIG_CONST_COMMAND_NAME_DART="dart"
+
 # flutter 的 command name
 export CONFIG_CONST_COMMAND_NAME_FLUTTER="flutter"
 
