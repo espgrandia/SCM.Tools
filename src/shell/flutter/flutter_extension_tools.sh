@@ -212,7 +212,7 @@ function flutter_extension_tools_generator_version_machine_file() {
     echo "${func_main_body_title_log} ============= Generator Flutter Version Machine To File - Begin ============="
 
     echo "" >"${func_param_generator_file}"
-    echo "const Map<String, String> flutterVersionMachine = const <String, String>" >>"${func_param_generator_file}"
+    echo "const Map<String, String> flutterVersionMachine = <String, String>" >>"${func_param_generator_file}"
 
     # ===> flutter command <===
     # command 初始設定
