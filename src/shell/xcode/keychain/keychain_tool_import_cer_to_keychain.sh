@@ -62,7 +62,7 @@
 #
 # Toggle Feature (切換功能) 說明:
 #
-# - this_shell_toogle_feature_is_dump_set_when_parse_config_file="${GENERAL_CONST_ENABLE_FLAG}" => e.g. "${GENERAL_CONST_ENABLE_FLAG}" 或 "${GENERAL_CONST_DISABLE_FLAG}"
+# - this_shell_toggle_feature_is_dump_set_when_parse_config_file="${GENERAL_CONST_ENABLE_FLAG}" => e.g. "${GENERAL_CONST_ENABLE_FLAG}" 或 "${GENERAL_CONST_DISABLE_FLAG}"
 #   - 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
 #   - 上傳版本會是關閉狀態，若需要測試時，自行打開。
 #
@@ -453,11 +453,11 @@ function process_deal_toggle_feature() {
     echo "${func_title_log} ||==========> Begin <==========||"
 
     # 是否開啟 dump set 內容，當 parse build config file 時，會去判斷。
-    this_shell_toogle_feature_is_dump_set_when_parse_config_file="${GENERAL_CONST_DISABLE_FLAG}"
+    this_shell_toggle_feature_is_dump_set_when_parse_config_file="${GENERAL_CONST_DISABLE_FLAG}"
 
     echo
     echo "${func_title_log} ============= Toogle Feature : Begin ============="
-    echo "${func_title_log} this_shell_toogle_feature_is_dump_set_when_parse_config_file : ${this_shell_toogle_feature_is_dump_set_when_parse_config_file}"
+    echo "${func_title_log} this_shell_toggle_feature_is_dump_set_when_parse_config_file : ${this_shell_toggle_feature_is_dump_set_when_parse_config_file}"
     echo "${func_title_log} ============= Toogle Feature : End ============="
     echo
 
@@ -481,7 +481,7 @@ function process_parse_config_file() {
     create_variables "${this_shell_param_config_file}" "this_shell_config_"
 
     # 開啟可以抓到此 shell 目前有哪些設定值。
-    if [ ${this_shell_toogle_feature_is_dump_set_when_parse_config_file} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
+    if [ ${this_shell_toggle_feature_is_dump_set_when_parse_config_file} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
         set >${this_shell_param_config_file}_BeforeParseConfig.temp.log
     fi
 
@@ -492,7 +492,7 @@ function process_parse_config_file() {
     parse_extra_cer_info_section
 
     # 開啟可以抓到此 shell 目前有哪些設定值。
-    if [ ${this_shell_toogle_feature_is_dump_set_when_parse_config_file} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
+    if [ ${this_shell_toggle_feature_is_dump_set_when_parse_config_file} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
         set >${this_shell_param_config_file}_AfterParseConfig.temp.log
     fi
 
