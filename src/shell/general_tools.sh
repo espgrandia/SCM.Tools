@@ -79,7 +79,7 @@ function get_git_short_hash() {
 #
 # @param ${1}: 要輸出的 title log : e.g. "${sample_title_log}" .
 # @param ${2}: 要處理的目標資料夾(含路徑) : e.g. "${sample_dest_folder}" .
-function remvoe_and_make_dir() {
+function remove_and_make_dir() {
 
     local func_title_log="*** function [${FUNCNAME[0]}] -"
 
