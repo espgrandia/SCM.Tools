@@ -688,7 +688,7 @@ function export_appbundle() {
         
         func_origin_build_file_name="${func_origin_build_file_name}/${this_shell_config_optional_flavor}${func_first_letter_trans_to_upper_for_build_config_type}/app-${this_shell_config_optional_flavor}"
     else
-        func_origin_build_file_name="${func_origin_build_file_name}/${func_first_letter_trans_to_upper_for_build_config_type}/app"
+        func_origin_build_file_name="${func_origin_build_file_name}/${func_param_build_config_type}/app"
     fi
 
     # build type
