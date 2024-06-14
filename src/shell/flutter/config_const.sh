@@ -12,9 +12,9 @@
 #  - 部分內容會給使用 exported.sh 參考使用。
 #
 
-## ================================== buildConfig Required section : Begin ==================================
+## ================================== [build config] Required section : Begin ==================================
 
-### ---------------------------------- flutter command section : Begin ----------------------------------
+### ---------------------------------- [flutter command] section : Begin ----------------------------------
 # @brief : 透過 flutter 通用的。
 
 # dart 的 command name
@@ -23,9 +23,9 @@ export CONFIG_CONST_COMMAND_NAME_DART="dart"
 # flutter 的 command name
 export CONFIG_CONST_COMMAND_NAME_FLUTTER="flutter"
 
-### ---------------------------------- flutter command section : End ----------------------------------
+### ---------------------------------- [flutter command] section : End ----------------------------------
 
-### ---------------------------------- subcommand key section : Begin ----------------------------------
+### ---------------------------------- [subcommand key] section : Begin ----------------------------------
 # @brief for flutter subcommand
 # @detail - 目前 flutter build 支援的 subcommands，flutter version (2.2.3)。
 #  - shell 不支援 export array，所以就沒提供 flutter 以及 exported 目前支援或提供的 subcommand 功能。
@@ -53,14 +53,14 @@ export CONFIG_CONST_EXPORTED_SHELL_PROVIDE_SUBCOMMANDS_STRING="${CONFIG_CONST_SU
  ${CONFIG_CONST_SUBCOMMAND_APPBUNDLE}\
  ${CONFIG_CONST_SUBCOMMAND_IOS} ${CONFIG_CONST_SUBCOMMAND_IPA}"
 
-### ---------------------------------- subcommand key section : End ----------------------------------
+### ---------------------------------- [subcommand key] section : End ----------------------------------
 
-## ================================== buildConfig Required section : End ==================================
+## ================================== [build config] Required section : End ==================================
 
 
-## ================================== buildConfig Optional section : Begin ==================================
+## ================================== [build config] Optional section : Begin ==================================
 
-### ---------------------------------- fvm mode section : Begin ----------------------------------
+### ---------------------------------- [fvm mode] section : Begin ----------------------------------
 # @brief : 透過 fvm (Flutter Version Management) 用來管理 Flutter Version 切換功能。
 # @details : exported.sh 目前主要是支援 fvm 來呼叫 flutter 命令。
 #  有使用 fvm 功能時，則會以該專案的 local active 設定為主來執行 flutter 版本。
@@ -77,18 +77,18 @@ export CONFIG_CONST_CONFIG_KEY_FVM_IS_ENABLE_FVM_MODE="is_enable_fvm_mode"
 # fvm 的 command line 的名稱。
 export CONFIG_CONST_COMMAND_NAME_FVM="fvm"
 
-### ---------------------------------- fvm mode section : End ----------------------------------
+### ---------------------------------- [fvm mode] section : End ----------------------------------
 
-### ---------------------------------- buildConfigType key section : Begin ----------------------------------
+### ---------------------------------- [build config type key] section : Begin ----------------------------------
 # 支援的 subcommand : [apk] [appbundle] [bundle] [ios]。
 # 依據 flutter build ， 有 debug ， profile ， release
 export CONFIG_CONST_BUILD_CONFIG_TYPE_DEBUG="debug"
 export CONFIG_CONST_BUILD_CONFIG_TYPE_PROFILE="profile"
 export CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE="release"
 
-### ---------------------------------- buildConfigType key section : End ----------------------------------
+### ---------------------------------- [build config type key] section : End ----------------------------------
 
-### ---------------------------------- ToogleFeature key section : Begin ----------------------------------
+### ---------------------------------- [toogle feature key] section : Begin ----------------------------------
 # @brief 針對 flutter build [subcommand] 的後續參數，屬於開關性質的設定。
 # @details 
 #  - optional 的功能。
@@ -97,9 +97,9 @@ export CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE="release"
 
 # 不更新 pub。
 export CONFIG_CONST_BUILD_PARAM_TOGGLE_FEATURE_NO_PUB="no-pub"
-### ================================== ToogleFeature key section : End ==================================
+### ---------------------------------- [toogle feature key] section : End ----------------------------------
 
-### ---------------------------------- Parm that needed contains value section : Begin ----------------------------------
+### ---------------------------------- Param that needed contains value section : Begin ----------------------------------
 # @brief 針對 flutter build [subcommand] 的後續參數，屬於需要額外帶入內容的項目。
 # @details 
 #  - optional 的功能。
@@ -126,6 +126,7 @@ export CONFIG_CONST_BUILD_PARAM_KEY_DART_DEFINE="dart-define"
 # [flavor] 依照 flavor 來做編譯，Android 為 flavor， iOS 為 Xcode schemes。
 export CONFIG_CONST_BUILD_PARAM_KEY_FLAVOR="flavor"
 
+#### ********************************** [target-platform] section : Begin **********************************
 # [target-platform] 設定 Android 的發佈平台。
 export CONFIG_CONST_BUILD_PARAM_KEY_TARGET_PLATFORM="target-platform"
 
@@ -134,7 +135,32 @@ export CONFIG_CONST_BUILD_PARAM_TARGET_PLATFORM_ARM="android-arm"
 export CONFIG_CONST_BUILD_PARAM_TARGET_PLATFORM_ARM64="android-arm64"
 export CONFIG_CONST_BUILD_PARAM_TARGET_PLATFORM_X86="android-x86"
 export CONFIG_CONST_BUILD_PARAM_TARGET_PLATFORM_X64="android-x64"
-### ---------------------------------- Parm that needed contains value section : End ----------------------------------
+#### ********************************** [target-platform] section : End **********************************
+
+#### ********************************** [obfuscate - 混淆] section : Begin **********************************
+# [混淆] 
+#  - 參考 : [Obfuscate Dart code | Flutter](https://docs.flutter.dev/deployment/obfuscate)
+#  - example : flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --extra-gen-snapshot-options=--save-obfuscation-map=/<your-path>
+# [obfuscate] 設定混淆，只有在 release 組態生效。
+export CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE="obfuscate"
+
+# [split-debug-info] 指定 Flutter 輸出 debug info 的資料夾。
+# 官方說明，不一定要與 [obfuscate] 搭配使用，不過有 [obfuscate]，通常一併使用 [split-debug-info]。
+export CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO="split-debug-info"
+
+# exported.sh 使用的預設 debug folder name。
+export CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME="Debug-Info"
+
+# [save the name obfuscation map] 在編譯時期，儲存 obfucation map file。
+export CONFIG_CONST_BUILD_PARAM_KEY_EXTRA_GEN_SNAPSHOT_OPTIONS="extra-gen-snapshot-options"
+export CONFIG_CONST_BUILD_PARAM_KEY_SAVE_OBFUCATION_MAP="save-obfuscation-map"
+
+export CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH="${CONFIG_CONST_BUILD_PARAM_KEY_EXTRA_GEN_SNAPSHOT_OPTIONS}=--${CONFIG_CONST_BUILD_PARAM_KEY_SAVE_OBFUCATION_MAP}"
+
+# exported.sh 使用的預設 file name。
+export CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME="obfuscation-map-info.json"
+#### ********************************** [obfuscate - 混淆] section : End **********************************
+### ---------------------------------- Param that needed contains value section : End ----------------------------------
 
 ### ---------------------------------- config (yaml) key that needed contains value section : Begin ----------------------------------
 # @brief 針對 config file (yaml) 會用到的 key，於此定義。
@@ -148,4 +174,6 @@ export CONFIG_CONST_CONFIG_KEY_PREFIX_FILE_NAME="prefix_file_name"
 
 ### ---------------------------------- config key (yaml) that needed contains value section : End ----------------------------------
 
-## ================================== buildConfig Optional section : End ==================================
+## ================================== [build config] Optional section : End ==================================
+
+

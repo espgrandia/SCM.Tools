@@ -436,19 +436,19 @@ function export_apk() {
     local func_build_command_name
     local func_build_command
 
-	# 判斷 this_shell_config_flutter_run_config_is_enable_fvm_mode
-	if [ ${this_shell_config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
+    # 判斷 this_shell_config_flutter_run_config_is_enable_fvm_mode
+    if [ ${this_shell_config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
-		func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_subcommand} --${func_param_build_config_type}"
+        func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+        func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_subcommand} --${func_param_build_config_type}"
 
-	else
+    else
 
-		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
-		func_build_command="build ${func_subcommand} --${func_param_build_config_type}"
+        func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
+        func_build_command="build ${func_subcommand} --${func_param_build_config_type}"
 
-	fi
-   
+    fi
+
     # 若有 build_name
     if [ -n "${this_shell_config_optional_build_name}" ]; then
         func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NAME} ${this_shell_config_optional_build_name}"
@@ -504,8 +504,30 @@ function export_apk() {
     append_dest_string_from_source_string_with_separator "${func_title_log}" \
         func_build_file_name this_shell_dart_def_part_of_file_name "${func_build_seperator}"
 
+    # 補上 時間戳記
+    func_build_file_name="${func_build_file_name}-$(date "+%Y%m%d%H%M")"
+
+    # 設定要輸出的資料夾，原有的輸出目錄，補上檔名 (尚未加上副檔名) 當子資料夾。
+    local func_output_folder=${this_shell_config_required_paths_output}/${func_build_file_name}
+
+    # 確保要輸出的的資料夾存在。
+    mkdir -p ${func_output_folder}
+
     # 補上結尾
-    func_build_file_name="${func_build_file_name}-$(date "+%Y%m%d%H%M").apk"
+    func_build_file_name="${func_build_file_name}.apk"
+
+    # 若有 混淆 功能 (obfuscate)，測試中，暫時寫死
+    # e.g. flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --extra-gen-snapshot-options=--save-obfuscation-map=/<your-path>
+    if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
+
+        # TODO: 有指定輸出資料夾，則以指定資料夾為主。
+        local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
+        mkdir -p "${func_debug_info_folder}"
+
+        # TODO: 有指定輸出檔案，則以指定輸出檔案為主。
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+
+    fi
 
     # ===> Origin build output 設定 <===
     local func_origin_build_file_name="build/app/outputs/apk"
@@ -543,7 +565,7 @@ function export_apk() {
     # ===> copy apk to destination folder <===
     echo "${func_title_log} ===> copy ${func_param_build_config_type} ${func_subcommand} to output folder <==="
 
-    cp -r "${func_origin_build_file_name}" "${this_shell_config_required_paths_output}/${func_build_file_name}"
+    cp -r "${func_origin_build_file_name}" "${func_output_folder}/${func_build_file_name}"
 
     # check result - copy apk
     check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ copy ${func_param_build_config_type} ${func_subcommand} to output folder => fail ~ !!!" "${this_shell_old_path}"
@@ -609,19 +631,19 @@ function export_appbundle() {
     local func_build_command_name
     local func_build_command
 
-	# 判斷 this_shell_config_flutter_run_config_is_enable_fvm_mode
-	if [ ${this_shell_config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
+    # 判斷 this_shell_config_flutter_run_config_is_enable_fvm_mode
+    if [ ${this_shell_config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
-		func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_subcommand} --${func_param_build_config_type}"
+        func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+        func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_subcommand} --${func_param_build_config_type}"
 
-	else
+    else
 
-		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
-		func_build_command="build ${func_subcommand} --${func_param_build_config_type}"
+        func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
+        func_build_command="build ${func_subcommand} --${func_param_build_config_type}"
 
-	fi
-   
+    fi
+
     # 若有 build_name
     if [ -n "${this_shell_config_optional_build_name}" ]; then
         func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_BUILD_NAME} ${this_shell_config_optional_build_name}"
@@ -677,15 +699,36 @@ function export_appbundle() {
     append_dest_string_from_source_string_with_separator "${func_title_log}" \
         func_build_file_name this_shell_dart_def_part_of_file_name "${func_build_seperator}"
 
+    # 補上 時間戳記
+    func_build_file_name="${func_build_file_name}-$(date "+%Y%m%d%H%M")"
+
+    # 設定要輸出的資料夾，原有的輸出目錄，補上檔名 (尚未加上副檔名) 當子資料夾。
+    local func_output_folder=${this_shell_config_required_paths_output}/${func_build_file_name}
+
+    # 確保要輸出的的資料夾存在。
+    mkdir -p ${func_output_folder}
+
     # 補上結尾
-    func_build_file_name="${func_build_file_name}-$(date "+%Y%m%d%H%M").aab"
+    func_build_file_name="${func_build_file_name}.aab"
+
+    # 若有 混淆 功能 (obfuscate)，測試中，暫時寫死
+    # e.g. flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --extra-gen-snapshot-options=--save-obfuscation-map=/<your-path>
+    if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
+
+        # TODO: 有指定輸出資料夾，則以指定資料夾為主。
+        local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
+        mkdir -p "${func_debug_info_folder}"
+
+        # TODO: 有指定輸出檔案，則以指定輸出檔案為主。
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+
+    fi
 
     # ===> Origin build output 設定 <===
     local func_origin_build_file_name="build/app/outputs/bundle"
 
     # 若有 flavor
     if [ -n "${this_shell_config_optional_flavor}" ]; then
-        
         func_origin_build_file_name="${func_origin_build_file_name}/${this_shell_config_optional_flavor}${func_first_letter_trans_to_upper_for_build_config_type}/app-${this_shell_config_optional_flavor}"
     else
         func_origin_build_file_name="${func_origin_build_file_name}/${func_param_build_config_type}/app"
@@ -719,7 +762,7 @@ function export_appbundle() {
     # ===> copy aab to destination folder <===
     echo "${func_title_log} ===> copy ${func_param_build_config_type} ${func_subcommand} to output folder <==="
 
-    cp -r "${func_origin_build_file_name}" "${this_shell_config_required_paths_output}/${func_build_file_name}"
+    cp -r "${func_origin_build_file_name}" "${func_output_folder}/${func_build_file_name}"
 
     # check result - copy aab
     check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ copy ${func_param_build_config_type} ${func_subcommand} to output folder => fail ~ !!!" "${this_shell_old_path}"
@@ -794,18 +837,18 @@ function export_ios() {
     local func_build_command_name
     local func_build_command
 
-	# 判斷 this_shell_config_flutter_run_config_is_enable_fvm_mode
-	if [ ${this_shell_config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
+    # 判斷 this_shell_config_flutter_run_config_is_enable_fvm_mode
+    if [ ${this_shell_config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
-		func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_subcommand} --${func_param_build_config_type}"
+        func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+        func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_subcommand} --${func_param_build_config_type}"
 
-	else
+    else
 
-		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
-		func_build_command="build ${func_subcommand} --${func_param_build_config_type}"
+        func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
+        func_build_command="build ${func_subcommand} --${func_param_build_config_type}"
 
-	fi
+    fi
 
     # 若有 build_name
     if [ -n "${this_shell_config_optional_build_name}" ]; then
@@ -826,6 +869,8 @@ function export_ios() {
     if [ -n "${this_shell_dart_def_part_of_command}" ]; then
         func_build_command="${func_build_command} ${this_shell_dart_def_part_of_command}"
     fi
+
+    # 若有 extra command line...
 
     # ===> OutputFile 設定 <===
     # 設定基本的輸出檔案格式。
@@ -857,8 +902,30 @@ function export_ios() {
     append_dest_string_from_source_string_with_separator "${func_title_log}" \
         func_build_file_name this_shell_dart_def_part_of_file_name "${func_build_seperator}"
 
+    # 補上 時間戳記
+    func_build_file_name="${func_build_file_name}-$(date "+%Y%m%d%H%M")"
+
+    # 設定要輸出的資料夾，原有的輸出目錄，補上檔名 (尚未加上副檔名) 當子資料夾。
+    local func_output_folder=${this_shell_config_required_paths_output}/${func_build_file_name}
+
+    # 確保要輸出的的資料夾存在。
+    mkdir -p ${func_output_folder}
+
     # 補上結尾
-    func_build_file_name="${func_build_file_name}-$(date "+%Y%m%d%H%M").ipa"
+    func_build_file_name="${func_build_file_name}.ipa"
+
+    # 若有 混淆 功能 (obfuscate)，測試中，暫時寫死
+    # e.g. flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --extra-gen-snapshot-options=--save-obfuscation-map=/<your-path>
+    if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
+
+        # TODO: 有指定輸出資料夾，則以指定資料夾為主。
+        local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
+        mkdir -p "${func_debug_info_folder}"
+
+        # TODO: 有指定輸出檔案，則以指定輸出檔案為主。
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+
+    fi
 
     # ===> Origin build output 設定 <===
     local func_origin_build_app_folder="build/ios/iphoneos"
@@ -894,17 +961,17 @@ function export_ios() {
     if [ -d ${func_origin_build_app_folder} ]; then
 
         # 切換到 輸出目錄，再打包才不會包到不該包的資料夾。
-        change_to_directory "${func_title_log}" "${this_shell_config_required_paths_output}"
+        change_to_directory "${func_title_log}" "${func_output_folder}"
 
         # 打包 ipa 的固定資料夾名稱。
         mkdir Payload
 
-        cp -r "${this_shell_flutter_work_path}/${func_origin_build_app_folder}" "${this_shell_config_required_paths_output}/Payload"
+        cp -r "${this_shell_flutter_work_path}/${func_origin_build_app_folder}" "${func_output_folder}/Payload"
 
         # check result - copy iOS Payload
         check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ copy iOS Payload => fail ~ !!!" "${this_shell_old_path}"
 
-        # zip -r -m iOS-${func_param_build_config_type}-${func_iOS_BundleVersion}-${this_shell_param_dart_def_val_git_hash}-$(date "+%Y%m%d%H%M").ipa Payload
+        # zip file
         zip -r -m ${func_build_file_name} Payload
 
         # check result - zip iOS Payload
@@ -957,7 +1024,6 @@ function export_ios_framework() {
 }
 ### ==================== ios_framework : End ====================
 
-
 ### ==================== ipa : Begin ====================
 # @brief exported ipa 部分 。
 # @param ${1}: build_config_type :  有 debug ， profile ， release 。
@@ -991,18 +1057,18 @@ function export_ipa() {
     local func_build_command_name
     local func_build_command
 
-	# 判斷 this_shell_config_flutter_run_config_is_enable_fvm_mode
-	if [ ${this_shell_config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
+    # 判斷 this_shell_config_flutter_run_config_is_enable_fvm_mode
+    if [ ${this_shell_config_optional_is_enable_fvm_mode} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
-		func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_subcommand} --${func_param_build_config_type}"
+        func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FVM}"
+        func_build_command="${CONFIG_CONST_COMMAND_NAME_FLUTTER} build ${func_subcommand} --${func_param_build_config_type}"
 
-	else
+    else
 
-		func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
-		func_build_command="build ${func_subcommand} --${func_param_build_config_type}"
+        func_build_command_name="${CONFIG_CONST_COMMAND_NAME_FLUTTER}"
+        func_build_command="build ${func_subcommand} --${func_param_build_config_type}"
 
-	fi
+    fi
 
     # 若有 build_name
     if [ -n "${this_shell_config_optional_build_name}" ]; then
@@ -1054,11 +1120,27 @@ function export_ipa() {
     append_dest_string_from_source_string_with_separator "${func_title_log}" \
         func_build_folder_name this_shell_dart_def_part_of_file_name "${func_build_seperator}"
 
-    # 補上結尾
+    # 補上 時間戳記
     func_build_folder_name="${func_build_folder_name}-$(date "+%Y%m%d%H%M")"
 
-    # 補上前綴資料夾名稱，最後再處理，是讓上面的處理名稱方式統一。
-    func_build_folder_name="archive/${func_build_folder_name}"
+    # 設定要輸出的資料夾，原有的輸出目錄，補上檔名 (尚未加上副檔名) 當子資料夾。
+    local func_output_folder=${this_shell_config_required_paths_output}/${func_build_folder_name}
+
+    # 確保要輸出的的資料夾存在。
+    mkdir -p ${func_output_folder}
+    
+    # 若有 混淆 功能 (obfuscate)，測試中，暫時寫死
+    # e.g. flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --extra-gen-snapshot-options=--save-obfuscation-map=/<your-path>
+    if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
+
+        # TODO: 有指定輸出資料夾，則以指定資料夾為主。
+        local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
+        mkdir -p "${func_debug_info_folder}"
+
+        # TODO: 有指定輸出檔案，則以指定輸出檔案為主。
+        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+
+    fi
 
     # ===> Origin build output 設定 <===
     local func_origin_build_app_folder="build/ios/archive"
@@ -1098,10 +1180,7 @@ function export_ipa() {
     # ===> zip Payload to destination folder <===
     if [ -d ${func_origin_build_app_folder} ]; then
 
-        # 確保藥輸出的 archive 的資料夾存在。
-        mkdir -p ${this_shell_config_required_paths_output}/${func_build_folder_name}
-
-        mv -v "${this_shell_flutter_work_path}/${func_origin_build_app_folder}" "${this_shell_config_required_paths_output}/${func_build_folder_name}"
+        mv -v "${this_shell_flutter_work_path}/${func_origin_build_app_folder}" "${func_output_folder}"
 
         # check result - mv iOS archive
         check_result_if_fail_then_change_folder "${func_title_log}" "$?" "!!! ~ mv -v iOS archive => fail ~ !!!" "${this_shell_old_path}"
@@ -1130,7 +1209,6 @@ function export_ipa() {
 
 }
 ### ==================== ipa : End ====================
-
 
 ### ==================== web : Begin ====================
 # @brief exported web 部分 。
