@@ -47,14 +47,13 @@
 # @附註 : 與 exported.sh 的 config 有關的產生函式。
 #
 
-## ================================== buildConfig key section : Begin ==================================
+## ================================== [build Config] key section : Begin ==================================
 # for config key
 export CONFIG_TOOLS_OPTIONAL="optional"
 
-## ================================== buildConfig key section : End ==================================
+## ================================== [build Config] key section : End ==================================
 
-
-## ================================== buildConfig Required section : Begin ==================================
+## ================================== [build Config] Required section : Begin ==================================
 # ============= This is separation line =============
 # @brief function : config_tools_gen_required.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
@@ -137,9 +136,9 @@ function config_tools_gen_required() {
     echo "${func_title_log} End ***"
     echo
 }
-## ================================== buildConfig Required section : End ==================================
+## ================================== [build Config] Required section : End ==================================
 
-## ================================== buildConfig Optional section : Begin ==================================
+## ================================== [build Config] Optional section : Begin ==================================
 # ============= This is separation line =============
 # @brief function : config_tools_gen_optional_report_file_path.
 # @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
@@ -172,7 +171,7 @@ function config_tools_gen_optional_report_file_path() {
     echo "" >>"${func_param_file_path}"
     echo "# ${CONFIG_TOOLS_OPTIONAL} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
     echo "# - [${func_optional_key_for_key_feature}] : exported.sh 額外會用到的參數，指定 report file path (含檔名)。" >>"${func_param_file_path}"
-    echo "# - 為 markdown 語法撰寫，沒設定會有預設檔案名稱。" >>"${func_param_file_path}"    
+    echo "# - 為 markdown 語法撰寫，沒設定會有預設檔案名稱。" >>"${func_param_file_path}"
     echo "${CONFIG_TOOLS_OPTIONAL} :" >>"${func_param_file_path}"
     echo "  ${func_optional_key_for_key_feature} : ${func_param_key_feature_value}" >>"${func_param_file_path}"
 
@@ -223,7 +222,6 @@ function config_tools_gen_optional_enable_fvm_mode() {
     echo "${func_title_log} End ***"
     echo
 }
-
 
 # ============= This is separation line =============
 # @brief function : config_tools_gen_optional_prefix_file_name.
@@ -550,7 +548,74 @@ function config_tools_gen_optional_target_platform() {
     echo
 }
 
+# ============= This is separation line =============
+# @brief function : config_tools_gen_optional_obfuscate.
+# @detail : 簡易函式，不再處理細節的判斷，為保持正確性，參數請自行帶上 ""。
+# @param $1 : file path : 要輸出的檔案位置 (含檔名)
+# @param $2 : assigned_split_debug_info_folder : 指定 debug info 輸出的資料夾 => e.g. "/Users/esp/Code/Publish/Debug-Info"
+#  - 可為空。
+# @param $3 : assigned_save_obfuscation_map_file_name : 指定 debug map info 的檔案名稱 => e.g. "debug-map-info.json"
+#  - 可為空。
+#
+# sample e.g. config_tools_gen_optional_obfuscate "${sample_file_path}" "${assigned_split_debug_info_folder}" "${assigned_save_obfuscation_map_file_name}"
+#
+# - flutter command line sample :
+#   > flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --extra-gen-snapshot-options=--save-obfuscation-map=/<your-path>
+#
+# @sa :
+#    --split-debug-info=<v1.2.3/>                             In a release build, this flag reduces application size by storing Dart program symbols in a separate file on the host rather than in the application. The value of the flag should be a directory where program symbol files can be stored for later use. These symbol files contain the information needed to symbolize Dart stack traces. For an app built with this flag, the "flutter symbolize" command with the right program symbol file is required to obtain a human readable stack trace.
+#                                                             This flag cannot be combined with "--analyze-size".
+#    --[no-]obfuscate                                         In a release build, this flag removes identifiers and replaces them with randomized values for the purposes of source code obfuscation. This flag must always be combined with "--split-debug-info" option, the mapping between the values and the original identifiers is stored in the symbol map created in the specified directory. For an app built with this flag, the "flutter symbolize" command with the right program symbol file is required to obtain a human readable stack trace.
+function config_tools_gen_optional_obfuscate() {
+
+    local func_title_log="*** function [${FUNCNAME[0]}] -"
+
+    echo
+    echo "${func_title_log} Begin ***"
+    echo "${func_title_log} Input param : Begin ***"
+    echo "${func_title_log} file path : ${1}"
+    echo "${func_title_log} assigned_split_debug_info_folder value : ${2}"
+    echo "${func_title_log} assigned_save_obfuscation_map_file_name value : ${3}"
+    echo "${func_title_log} Input param : End ***"
+
+    # for local varient
+    local func_param_file_path="${1}"
+    local func_param_assigned_split_debug_info_folder="${2}"
+    local func_param_assigned_save_obfuscation_map_file_name="${3}"
+
+    # 呼叫此函式，一定是開啟，找不到或非 Y 都是關閉。。
+    local func_param_key_feature_value="${GENERAL_CONST_ENABLE_FLAG}"
+
+    # for [optional]
+    # for (keyFeature) : [obfuscate]
+    local func_optional_key_for_key_feature=${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE}
+
+    # 輸出檔案格式為 yaml，尚未找到可以方便由 shell 寫 yaml 的方式，先用兜的。
+    echo "" >>"${func_param_file_path}"
+    echo "# ${CONFIG_TOOLS_OPTIONAL} [${func_optional_key_for_key_feature}] sction" >>"${func_param_file_path}"
+    echo "# - [${func_optional_key_for_key_feature}] : ${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} 會用到的內容，對應於 flutter build 的 關於混淆的相關 參數。" >>"${func_param_file_path}"
+    echo "# - 只有當 build config type 為 release ， 才會生效。" >>"${func_param_file_path}"
+    echo "# - support subcommands: ${CONFIG_CONST_SUBCOMMAND_AAR}，${CONFIG_CONST_SUBCOMMAND_APK}，${CONFIG_CONST_SUBCOMMAND_APPBUNDLE}，${CONFIG_CONST_SUBCOMMAND_BUNDLE}，${CONFIG_CONST_SUBCOMMAND_IOS}，${CONFIG_CONST_SUBCOMMAND_IOS_FRAMEWORK}，${CONFIG_CONST_SUBCOMMAND_IPA}，${CONFIG_CONST_SUBCOMMAND_MAC_OS}，${CONFIG_CONST_SUBCOMMAND_MAC_OS_FRAMEWORK}" >>"${func_param_file_path}"
+    echo "# - assigned_split_debug_info_folder : 指定 debug info 輸出的資料夾，可為空。" >>"${func_param_file_path}"
+    echo "# - assigned_save_obfuscation_map_file_name : 指定 debug map info 的檔案名稱，可為空。" >>"${func_param_file_path}"
+    echo "${CONFIG_TOOLS_OPTIONAL} :" >>"${func_param_file_path}"
+    echo "  ${func_optional_key_for_key_feature} :" >>"${func_param_file_path}"
+    echo "    ${CONFIG_CONST_CONFIG_KEY_IS_ENABLE} : ${func_param_key_feature_value}" >>"${func_param_file_path}"
+
+    # 判斷是否為空，有值才設定。 (for func_param_assigned_split_debug_info_folder)
+    if [ ! -z "${func_param_assigned_split_debug_info_folder}" -a "${func_param_assigned_split_debug_info_folder}" != " " ]; then
+        echo "    assigned_split_debug_info_folder : ${func_param_assigned_split_debug_info_folder}" >>"${func_param_file_path}"
+    fi
+
+    # 判斷是否為空，有值才設定。 (for func_param_assigned_save_obfuscation_map_file_name)
+    if [ ! -z "${func_param_assigned_save_obfuscation_map_file_name}" -a "${func_param_assigned_save_obfuscation_map_file_name}" != " " ]; then
+        echo "    assigned_save_obfuscation_map_file_name : ${func_param_assigned_save_obfuscation_map_file_name}" >>"${func_param_file_path}"
+    fi
+
+    echo "${func_title_log} End ***"
+    echo
+}
+
 # TODO:
 # target : "lib/main_abc.dart"
-## ================================== buildConfig Optional section : End ==================================
-
+## ================================== [build Config] Optional section : End ==================================

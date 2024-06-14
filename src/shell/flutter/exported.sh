@@ -516,16 +516,34 @@ function export_apk() {
     # 補上結尾
     func_build_file_name="${func_build_file_name}.apk"
 
-    # 若有 混淆 功能 (obfuscate)，測試中，暫時寫死
-    # e.g. flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --extra-gen-snapshot-options=--save-obfuscation-map=/<your-path>
-    if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
+    # 若有 混淆 功能 (obfuscate)。
+    # 判斷 this_shell_config_optional_obfuscate_is_enable
+    if [ ${this_shell_config_optional_obfuscate_is_enable} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-        # TODO: 有指定輸出資料夾，則以指定資料夾為主。
-        local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
-        mkdir -p "${func_debug_info_folder}"
+        # 只有 config type 為 release 才會生效。
+        if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
 
-        # TODO: 有指定輸出檔案，則以指定輸出檔案為主。
-        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+            # 先設定預設輸出資料夾。
+            local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
+
+            # 若有指定輸出資料夾，則以指定資料夾為主。
+            if [ -n "${this_shell_config_optional_obfuscate_assigned_split_debug_info_folder}" ]; then
+                func_debug_info_folder="${this_shell_config_optional_obfuscate_assigned_split_debug_info_folder}"
+            fi
+
+            mkdir -p "${func_debug_info_folder}"
+
+            # 先設定預設輸出 map file name。
+            local func_save_map_file_name="${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+
+            # 有指定輸出 map file name，則以指定輸出檔案名稱為主。
+            if [ -n "${this_shell_config_optional_obfuscate_assigned_save_obfuscation_map_file_name}" ]; then
+                func_save_map_file_name="${this_shell_config_optional_obfuscate_assigned_save_obfuscation_map_file_name}"
+            fi
+
+            # 補上 obfuscate 相關設定。
+            func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${func_save_map_file_name}"
+        fi
 
     fi
 
@@ -711,16 +729,34 @@ function export_appbundle() {
     # 補上結尾
     func_build_file_name="${func_build_file_name}.aab"
 
-    # 若有 混淆 功能 (obfuscate)，測試中，暫時寫死
-    # e.g. flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --extra-gen-snapshot-options=--save-obfuscation-map=/<your-path>
-    if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
+    # 若有 混淆 功能 (obfuscate)。
+    # 判斷 this_shell_config_optional_obfuscate_is_enable
+    if [ ${this_shell_config_optional_obfuscate_is_enable} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-        # TODO: 有指定輸出資料夾，則以指定資料夾為主。
-        local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
-        mkdir -p "${func_debug_info_folder}"
+        # 只有 config type 為 release 才會生效。
+        if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
 
-        # TODO: 有指定輸出檔案，則以指定輸出檔案為主。
-        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+            # 先設定預設輸出資料夾。
+            local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
+
+            # 若有指定輸出資料夾，則以指定資料夾為主。
+            if [ -n "${this_shell_config_optional_obfuscate_assigned_split_debug_info_folder}" ]; then
+                func_debug_info_folder="${this_shell_config_optional_obfuscate_assigned_split_debug_info_folder}"
+            fi
+
+            mkdir -p "${func_debug_info_folder}"
+
+            # 先設定預設輸出 map file name。
+            local func_save_map_file_name="${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+
+            # 有指定輸出 map file name，則以指定輸出檔案名稱為主。
+            if [ -n "${this_shell_config_optional_obfuscate_assigned_save_obfuscation_map_file_name}" ]; then
+                func_save_map_file_name="${this_shell_config_optional_obfuscate_assigned_save_obfuscation_map_file_name}"
+            fi
+
+            # 補上 obfuscate 相關設定。
+            func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${func_save_map_file_name}"
+        fi
 
     fi
 
@@ -914,16 +950,34 @@ function export_ios() {
     # 補上結尾
     func_build_file_name="${func_build_file_name}.ipa"
 
-    # 若有 混淆 功能 (obfuscate)，測試中，暫時寫死
-    # e.g. flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --extra-gen-snapshot-options=--save-obfuscation-map=/<your-path>
-    if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
+    # 若有 混淆 功能 (obfuscate)。
+    # 判斷 this_shell_config_optional_obfuscate_is_enable
+    if [ ${this_shell_config_optional_obfuscate_is_enable} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-        # TODO: 有指定輸出資料夾，則以指定資料夾為主。
-        local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
-        mkdir -p "${func_debug_info_folder}"
+        # 只有 config type 為 release 才會生效。
+        if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
 
-        # TODO: 有指定輸出檔案，則以指定輸出檔案為主。
-        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+            # 先設定預設輸出資料夾。
+            local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
+
+            # 若有指定輸出資料夾，則以指定資料夾為主。
+            if [ -n "${this_shell_config_optional_obfuscate_assigned_split_debug_info_folder}" ]; then
+                func_debug_info_folder="${this_shell_config_optional_obfuscate_assigned_split_debug_info_folder}"
+            fi
+
+            mkdir -p "${func_debug_info_folder}"
+
+            # 先設定預設輸出 map file name。
+            local func_save_map_file_name="${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+
+            # 有指定輸出 map file name，則以指定輸出檔案名稱為主。
+            if [ -n "${this_shell_config_optional_obfuscate_assigned_save_obfuscation_map_file_name}" ]; then
+                func_save_map_file_name="${this_shell_config_optional_obfuscate_assigned_save_obfuscation_map_file_name}"
+            fi
+
+            # 補上 obfuscate 相關設定。
+            func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${func_save_map_file_name}"
+        fi
 
     fi
 
@@ -1128,17 +1182,35 @@ function export_ipa() {
 
     # 確保要輸出的的資料夾存在。
     mkdir -p ${func_output_folder}
-    
-    # 若有 混淆 功能 (obfuscate)，測試中，暫時寫死
-    # e.g. flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --extra-gen-snapshot-options=--save-obfuscation-map=/<your-path>
-    if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
 
-        # TODO: 有指定輸出資料夾，則以指定資料夾為主。
-        local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
-        mkdir -p "${func_debug_info_folder}"
+    # 若有 混淆 功能 (obfuscate)。
+    # 判斷 this_shell_config_optional_obfuscate_is_enable
+    if [ ${this_shell_config_optional_obfuscate_is_enable} = "${GENERAL_CONST_ENABLE_FLAG}" ]; then
 
-        # TODO: 有指定輸出檔案，則以指定輸出檔案為主。
-        func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+        # 只有 config type 為 release 才會生效。
+        if [ ${func_param_build_config_type} = "${CONFIG_CONST_BUILD_CONFIG_TYPE_RELEASE}" ]; then
+
+            # 先設定預設輸出資料夾。
+            local func_debug_info_folder="${func_output_folder}/${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SPLIT_DEBUG_INFO_FOLDER_NAME}"
+
+            # 若有指定輸出資料夾，則以指定資料夾為主。
+            if [ -n "${this_shell_config_optional_obfuscate_assigned_split_debug_info_folder}" ]; then
+                func_debug_info_folder="${this_shell_config_optional_obfuscate_assigned_split_debug_info_folder}"
+            fi
+
+            mkdir -p "${func_debug_info_folder}"
+
+            # 先設定預設輸出 map file name。
+            local func_save_map_file_name="${CONFIG_CONST_EXPORTED_DEFAULT_OBFUSCATE_SAVE_MAP_FILE_NAME}"
+
+            # 有指定輸出 map file name，則以指定輸出檔案名稱為主。
+            if [ -n "${this_shell_config_optional_obfuscate_assigned_save_obfuscation_map_file_name}" ]; then
+                func_save_map_file_name="${this_shell_config_optional_obfuscate_assigned_save_obfuscation_map_file_name}"
+            fi
+
+            # 補上 obfuscate 相關設定。
+            func_build_command="${func_build_command} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE} --${CONFIG_CONST_BUILD_PARAM_KEY_SPLIT_DEBUG_INFO}=${func_debug_info_folder} --${CONFIG_CONST_BUILD_PARAM_KEY_OBFUSCATE_SAVE_MAP_PATH}=${func_debug_info_folder}/${func_save_map_file_name}"
+        fi
 
     fi
 

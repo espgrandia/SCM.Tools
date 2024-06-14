@@ -39,13 +39,16 @@ export CONFIG_CONST_SUBCOMMAND_BUNDLE="bundle"
 export CONFIG_CONST_SUBCOMMAND_IOS="ios"
 export CONFIG_CONST_SUBCOMMAND_IOS_FRAMEWORK="ios-framework"
 export CONFIG_CONST_SUBCOMMAND_IPA="ipa"
+export CONFIG_CONST_SUBCOMMAND_MAC_OS="macos"
+export CONFIG_CONST_SUBCOMMAND_MAC_OS_FRAMEWORK="macos-framework"
 export CONFIG_CONST_SUBCOMMAND_WEB="web"
 
 
-# 目前 flutter build 提供的 subcommands，flutter version (2.2.3)。
+# 目前 flutter build 提供的 subcommands，flutter version (3.19.2)。
 export CONFIG_CONST_FLUTTER_PROVIDE_SUBCOMMANDS_STRING="${CONFIG_CONST_SUBCOMMAND_AAR} ${CONFIG_CONST_SUBCOMMAND_APK}\
  ${CONFIG_CONST_SUBCOMMAND_APPBUNDLE} ${CONFIG_CONST_SUBCOMMAND_BUNDLE}\
  ${CONFIG_CONST_SUBCOMMAND_IOS} ${CONFIG_CONST_SUBCOMMAND_IOS_FRAMEWORK} ${CONFIG_CONST_SUBCOMMAND_IPA}\
+ ${CONFIG_CONST_SUBCOMMAND_MAC_OS} ${CONFIG_CONST_SUBCOMMAND_MAC_OS_FRAMEWORK}\
  ${CONFIG_CONST_SUBCOMMAND_WEB}"
 
 # 目前 exported.sh 提供的 subcommands。
@@ -171,6 +174,9 @@ export CONFIG_CONST_CONFIG_KEY_OPTIONAL="optional"
 
 # 產出的檔案名稱，加上 前綴字 (prefix)。
 export CONFIG_CONST_CONFIG_KEY_PREFIX_FILE_NAME="prefix_file_name"
+
+# 某些功能的通用 key。
+export CONFIG_CONST_CONFIG_KEY_IS_ENABLE="is_enable"
 
 ### ---------------------------------- config key (yaml) that needed contains value section : End ----------------------------------
 
